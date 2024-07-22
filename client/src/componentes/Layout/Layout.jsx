@@ -1,6 +1,29 @@
+import toast from "react-hot-toast";
 import { Nav } from "../Nav/Nav";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-export function Layout({ children }) {
+export function Layout({ children, isAuth }) {
+  const user = useSelector((state) => state.auth.user);
+  useEffect(() => {
+    if (!isAuth) {
+      toast.loading("Redirigiendo...");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 3000);
+    }
+  }, [isAuth]);
+
+  if (!isAuth) {
+    return (
+      <div className="flex items-center justify-center h-screen w-full">
+        <h1 className="text-4xl text-red-500">
+          No estás autorizado a ingresar aquí
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <div id="view" className="h-full w-full flex flex-row">
       <div className="md:hidden flex items-center justify-center p-4">
@@ -21,9 +44,9 @@ export function Layout({ children }) {
       </div>
       <div
         id="sidebar"
-        className="bg-white md:h-screen lg:max-h-full flex shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
+        className="bg-white max-h-full flex shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
       >
-        <Nav />
+        <Nav user={user} />
       </div>
       <div className="flex-grow p-4 w-screen m-2">{children}</div>
     </div>

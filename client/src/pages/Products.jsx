@@ -9,7 +9,9 @@ import { fetchSheets } from "../redux/actions/actions";
 const Products = () => {
   const [activeForm, setActiveForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [deleteRowIndex, setDeleteRowIndex] = useState(null); // Nuevo estado para manejar la fila a eliminar
+  const [deleteRowIndex, setDeleteRowIndex] = useState(null);
+  const isAuth = useSelector((state) => state.auth.isAuth);
+
   const dispatch = useDispatch();
   const data = useSelector((state) => state.sheets.sheetsData);
 
@@ -27,7 +29,7 @@ const Products = () => {
   };
 
   return (
-    <Layout>
+    <Layout isAuth={isAuth}>
       {activeForm && (
         <TabFormCreateProduct
           isOpen={activeForm}
@@ -36,9 +38,9 @@ const Products = () => {
         />
       )}
       {deleteRowIndex !== null && (
-        <TabDeleteRowButton 
-          rowIndex={deleteRowIndex} 
-          onClose={() => toggleDeleteModal(null)} 
+        <TabDeleteRowButton
+          rowIndex={deleteRowIndex}
+          onClose={() => toggleDeleteModal(null)}
         />
       )}
       <div className="flex justify-between">
@@ -51,7 +53,12 @@ const Products = () => {
         </button>
       </div>
       <div className="mt-8">
-        <SheetsData data={data} toggleModal={toggleModal} toggleDeleteModal={toggleDeleteModal} /> {/* Pasar la nueva función */}
+        <SheetsData
+          data={data}
+          toggleModal={toggleModal}
+          toggleDeleteModal={toggleDeleteModal}
+        />{" "}
+        {/* Pasar la nueva función */}
       </div>
     </Layout>
   );

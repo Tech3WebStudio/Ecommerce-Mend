@@ -1,12 +1,9 @@
 // import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { doSignOut } from "../../firebase/auth";
 // import { logout } from "../../redux/actions/actions";
 
-export const Nav = () => {
-  // const dispatch = useDispatch()
-  const handleLogout = () => {
-    // dispatch(logout())
-  };
+export const Nav = ({ user }) => {
   return (
     <div className="space-y-6 md:space-y-10 w-full mt-10">
       <h1 className="font-bold text-4xl text-center md:hidden">
@@ -17,13 +14,13 @@ export const Nav = () => {
       </h1>
       <div id="profile" className="space-y-3">
         <img
-          src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+          src={user.picture}
           alt="Avatar user"
           className="w-10 md:w-16 rounded-full mx-auto"
         />
         <div>
           <h2 className="font-medium text-xs md:text-sm text-center text-teal-500">
-            Eduard Pantazi
+            {user.name}
           </h2>
           <p className="text-xs text-gray-500 text-center">Administrator</p>
         </div>
@@ -63,7 +60,7 @@ export const Nav = () => {
           <span className="">Products</span>
         </Link>
         <button
-          onClick={() => handleLogout()}
+          onClick={() => doSignOut()}
           className="flex text-center justify-center gap-2 items-center text-sm border border-gray-200 shadow-sm mb-2 font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
