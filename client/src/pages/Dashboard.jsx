@@ -1,7 +1,15 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Layout } from "../componentes/Layout/Layout";
+import DisplayProductDashboard from "../componentes/Products/DisplayProductDashboard";
+import { useEffect } from "react";
+import { fetchSheets } from "../redux/actions/actions";
 const Dashboard = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
+  const products = useSelector((state) => state.sheets.sheetsData);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchSheets());
+  }, [dispatch]);
 
   return (
     <Layout isAuth={isAuth}>
@@ -24,8 +32,8 @@ const Dashboard = () => {
           </svg>
         </button>
       </div>
-      <div className="mt-8">
-        Info...
+      <div className="mt-8 lg:mt-0 lg:px-2 border p-4 w-full">
+        <DisplayProductDashboard products={products} />
       </div>
     </Layout>
   );
