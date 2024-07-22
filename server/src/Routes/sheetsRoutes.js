@@ -7,6 +7,7 @@ const {
   updateRow,
   deleteRow,
 } = require("../Controllers/sheets/sheetsController.js");
+const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
 sheetsRouter.get("/data", async (req, res) => {
   try {
@@ -21,7 +22,9 @@ sheetsRouter.get("/data", async (req, res) => {
 sheetsRouter.post("/data", async (req, res) => {
   try {
     const auth = await authorize();
-    const updates = await appendRow(auth, req.body);
+    console.log(req.body);
+    const rowData = req.body;
+    const updates = await appendRow(auth, rowData);
     res.json(updates);
   } catch (error) {
     console.log(error);
@@ -29,16 +32,18 @@ sheetsRouter.post("/data", async (req, res) => {
   }
 });
 
-sheetsRouter.post("/update", async (req, res) => {
+sheetsRouter.put("/update", async (req, res) => {
   try {
     const auth = await authorize();
     const rowData = req.body; // Asegúrate de que los datos de la fila están en el cuerpo de la solicitud
     const result = await updateRow(auth, rowData);
+    console.log(rowData);
     res.json(result);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
 
 sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
   try {
@@ -49,6 +54,10 @@ sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+sheetsRouter.post("/images", (req, res) => {
+  uploadToS3(req, res);
 });
 
 module.exports = sheetsRouter;
