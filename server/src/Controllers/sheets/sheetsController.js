@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require("fs").promises;
 const path = require("path");
 const { google } = require("googleapis");
@@ -19,13 +20,10 @@ async function loadSavedCredentialsIfExist() {
 }
 
 async function saveCredentials(client) {
-  const content = await fs.readFile(CREDENTIALS_PATH);
-  const keys = JSON.parse(content);
-  const key = keys.installed || keys.web;
   const payload = JSON.stringify({
     type: "authorized_user",
-    client_id: key.client_id,
-    client_secret: key.client_secret,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    client_secret: process.env.GOOGLE_CLIENT_SECRET,
     refresh_token: client.credentials.refresh_token,
   });
   await fs.writeFile(TOKEN_PATH, payload);
@@ -51,12 +49,12 @@ async function getSheetData(auth) {
     const sheets = google.sheets({ version: "v4", auth });
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-      range: "Productos!A2:I", // Actualiza el rango para incluir la nueva columna URL
+      range: "Productos!A2:I",
     });
-    const rows = res.data.values || []; // Asegurarse de que rows sea un array
+    const rows = res.data.values || [];
     let lastId = 0;
     if (rows.length > 0) {
-      lastId = parseInt(rows[rows.length - 1][0]); // Asumiendo que la primera columna es el ID
+      lastId = parseInt(rows[rows.length - 1][0]);
     }
     return { rows, lastId };
   } catch (error) {
@@ -74,34 +72,15 @@ function generateSKU(category, name, color, count) {
 
 async function appendRow(auth, rowData) {
   const sheets = google.sheets({ version: "v4", auth });
-
-  console.log(rowData)
-  // Obtener el último ID y filas existentes
   const { rows, lastId } = await getSheetData(auth);
   const newId = lastId + 1;
-
-  // Generar el SKU
   const { categoria, nombre, color, tamaño, cantidad, precio, url } = rowData;
   const sku = generateSKU(categoria, nombre, color, newId);
-
-  // Convertir el array de URLs a una cadena de texto
   const urlString = Array.isArray(url) ? url.join(', ') : url;
-
-  // Insertar la nueva fila con el ID incrementado y el SKU generado
-  const newRow = [
-    newId,
-    categoria,
-    nombre,
-    color,
-    tamaño,
-    cantidad,
-    precio,
-    urlString, // Asegúrate de que la URL esté en formato de cadena de texto
-    sku,
-  ];
+  const newRow = [newId, categoria, nombre, color, tamaño, cantidad, precio, urlString, sku];
   const res = await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-    range: "Productos!A2:I", // Rango actualizado para incluir la columna URL
+    range: "Productos!A2:I",
     valueInputOption: "RAW",
     resource: {
       values: [newRow],
@@ -112,21 +91,12 @@ async function appendRow(auth, rowData) {
 
 async function updateRow(auth, rowData) {
   const sheets = google.sheets({ version: "v4", auth });
-
-  // Obtener todas las filas existentes
   const { rows } = await getSheetData(auth);
-
-  // Encontrar el índice de la fila con el ID correspondiente
   const rowIndex = rows.findIndex((row) => row[0] === rowData.id);
-
   if (rowIndex === -1) {
     throw new Error("ID no encontrado");
   }
-
-  // Convertir el array de URLs a una cadena de texto
   const urlString = Array.isArray(rowData.url) ? rowData.url.join(', ') : rowData.url;
-
-  // Actualizar los datos en la fila específica
   const updatedRow = [
     rowData.id,
     rowData.categoria,
@@ -135,36 +105,28 @@ async function updateRow(auth, rowData) {
     rowData.tamaño,
     rowData.cantidad,
     rowData.precio,
-    urlString, 
-    rowData.sku, // Si tienes el SKU en los datos del objeto
+    urlString,
+    rowData.sku,
   ];
-
-  // Actualizar los datos en la fila específica
   rows[rowIndex] = updatedRow;
-
-  // Escribir los datos actualizados de vuelta en la hoja
   const res = await sheets.spreadsheets.values.update({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-    range: `Productos!A${rowIndex + 2}:I${rowIndex + 2}`, // Rango actualizado para incluir la columna URL
+    range: `Productos!A${rowIndex + 2}:I${rowIndex + 2}`,
     valueInputOption: "RAW",
     resource: {
       values: [updatedRow],
     },
   });
-
   return res.data;
 }
 
-
-
 async function deleteRow(auth, rowIndex) {
   const sheets = google.sheets({ version: "v4", auth });
-
   const requests = [
     {
       deleteDimension: {
         range: {
-          sheetId: 0, // ID de la hoja, generalmente 0 para la primera hoja
+          sheetId: 0,
           dimension: "ROWS",
           startIndex: rowIndex,
           endIndex: rowIndex + 1,
@@ -172,14 +134,12 @@ async function deleteRow(auth, rowIndex) {
       },
     },
   ];
-
   const res = await sheets.spreadsheets.batchUpdate({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
     resource: {
       requests,
     },
   });
-
   return res.data;
 }
 

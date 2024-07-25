@@ -11,8 +11,6 @@ loginRoutes.post("/third", async (req, res) => {
 
     const userData = await authThird(decodedToken);
 
-    console.log(userData)
-
     if (await isAdmin(email)) {
       res
         .status(200)

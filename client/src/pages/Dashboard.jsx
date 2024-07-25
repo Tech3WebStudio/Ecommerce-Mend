@@ -22,7 +22,7 @@ const Dashboard = () => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="size-12"
+            className="size-6"
           >
             <path
               strokeLinecap="round"
@@ -32,7 +32,7 @@ const Dashboard = () => {
           </svg>
         </button>
       </div>
-      <div className="mt-8 lg:mt-0 lg:px-2 border p-4 w-full">
+      <div className="mt-8 lg:px-2 border p-4 w-full">
         <DisplayProductDashboard products={products} />
       </div>
     </Layout>
