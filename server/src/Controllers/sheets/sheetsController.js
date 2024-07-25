@@ -75,6 +75,7 @@ function generateSKU(category, name, color, count) {
 async function appendRow(auth, rowData) {
   const sheets = google.sheets({ version: "v4", auth });
 
+  console.log(rowData)
   // Obtener el último ID y filas existentes
   const { rows, lastId } = await getSheetData(auth);
   const newId = lastId + 1;
@@ -98,8 +99,6 @@ async function appendRow(auth, rowData) {
     urlString, // Asegúrate de que la URL esté en formato de cadena de texto
     sku,
   ];
-
-  console.log(newRow);
   const res = await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
     range: "Productos!A2:I", // Rango actualizado para incluir la columna URL

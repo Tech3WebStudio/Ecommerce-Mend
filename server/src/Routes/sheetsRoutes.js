@@ -22,9 +22,7 @@ sheetsRouter.get("/data", async (req, res) => {
 sheetsRouter.post("/data", async (req, res) => {
   try {
     const auth = await authorize();
-    console.log(req.body);
-    const rowData = req.body;
-    const updates = await appendRow(auth, rowData);
+    const updates = await appendRow(auth, req.body);
     res.json(updates);
   } catch (error) {
     console.log(error);
