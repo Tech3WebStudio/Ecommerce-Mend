@@ -23,4 +23,13 @@ server.use(
 server.use(router); // Aquí se monta el router
 server.use(invalidRoute);
 
+const path = require('path');
+const publicPath = path.join(__dirname, '..', 'client', 'build');
+server.use(express.static(publicPath));
+
+// Maneja todas las rutas para SPA
+server.get('/*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
+
 module.exports = server;
