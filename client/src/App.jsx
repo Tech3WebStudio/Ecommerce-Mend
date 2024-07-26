@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { authenticateUserFromSession } from "./redux/actions/actions";
 import Error from "./pages/Error";
+import { isatty } from "tty";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,8 +17,10 @@ function App() {
     dispatch(authenticateUserFromSession());
   }, [dispatch]);
 
+  console.log(isAuth);
+
   return (
-    <>
+    <div>
       <Toaster />
       <Routes>
         <Route path="/" element={<Login />}></Route>
@@ -30,7 +33,7 @@ function App() {
           <Route path="/error" element={<Error />}></Route>
         )}
       </Routes>
-    </>
+    </div>
   );
 }
 
