@@ -26,14 +26,6 @@ server.use(
 // Rutas API y middleware
 server.use(router); // Montar el router
 
-// Archivos estáticos
-server.use(express.static(path.join(__dirname, 'build'))); // Asegúrate de que el directorio 'build' es el correcto
-
-// Servir index.html para todas las demás rutas
-server.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html')); // Asegúrate de que 'index.html' está en 'build'
-});
-
 // Middleware para rutas no válidas
 server.use(invalidRoute);
 
