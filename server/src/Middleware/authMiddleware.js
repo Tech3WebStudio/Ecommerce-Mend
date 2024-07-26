@@ -18,6 +18,30 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
+async function authenticateToken(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).send("Authorization header missing");
+  }
+
+  const token = authHeader.split(" ")[1];
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    req.user = decodedToken;
+
+    // Verifica si el usuario tiene permisos para acceder a los datos de Google Sheets
+    // Aquí puedes añadir lógica específica basada en tu aplicación. Ejemplo:
+    const allowedUsers = ["niveyrojulian5@gmail.com"]; // Lista de correos permitidos
+    if (!allowedUsers.includes(decodedToken.email)) {
+      return res.status(403).send("Forbidden: User does not have access");
+    }
+
+    next();
+  } catch (error) {
+    res.status(401).send("Unauthorized");
+  }
+}
+
 async function verifyToken(token) {
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
@@ -62,4 +86,5 @@ module.exports = {
   authMiddleware,
   verifyToken,
   isAdmin,
+  authenticateToken
 };

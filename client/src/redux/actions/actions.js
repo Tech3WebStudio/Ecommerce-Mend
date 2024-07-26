@@ -61,8 +61,13 @@ export const uploadImages = (formData) => async (dispatch) => {
 };
 
 export const fetchSheets = () => async (dispatch) => {
+  const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.get(`${rutaBack}/api/sheets/data`);
+    const res = await axios.get(`${rutaBack}/api/sheets/data`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data,
@@ -73,8 +78,13 @@ export const fetchSheets = () => async (dispatch) => {
 };
 
 export const addSheetRow = (rowData) => async (dispatch) => {
+  const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.post(`${rutaBack}/api/sheets/data`, rowData);
+    const res = await axios.post(`${rutaBack}/api/sheets/data`, rowData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
     if (res.status === 200) {
       toast.success("Creado exitosamente");
       dispatch({
@@ -88,12 +98,16 @@ export const addSheetRow = (rowData) => async (dispatch) => {
 };
 
 export const updateRow = (rowData) => async (dispatch) => {
+  const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.put(`${rutaBack}/api/sheets/update`, rowData);
+    const res = await axios.put(`${rutaBack}/api/sheets/update`, rowData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
 
     if (res.status === 200) {
       toast.success("Editado exitosamente");
-
       dispatch({
         type: UPDATE_SHEET_ROW,
         payload: res.data,
@@ -105,8 +119,13 @@ export const updateRow = (rowData) => async (dispatch) => {
 };
 
 export const deleteSheetRow = (rowIndex) => async (dispatch) => {
+  const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.delete(`${rutaBack}/api/sheets/delete/${rowIndex}`);
+    const res = await axios.delete(`${rutaBack}/api/sheets/delete/${rowIndex}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
 
     if (res.status === 200) {
       toast.success("Eliminado exitosamente");

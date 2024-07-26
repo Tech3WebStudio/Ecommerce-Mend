@@ -1,47 +1,28 @@
 require('dotenv').config();
-const fs = require("fs").promises;
-const path = require("path");
 const { google } = require("googleapis");
-const { authenticate } = require("@google-cloud/local-auth");
 
-const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
-const TOKEN_PATH = path.join(process.cwd(), "token.json");
-const CREDENTIALS_PATH = path.join(process.cwd(), "credentials.json");
-
-async function loadSavedCredentialsIfExist() {
-  try {
-    const content = await fs.readFile(TOKEN_PATH);
-    const credentials = JSON.parse(content);
-    return google.auth.fromJSON(credentials);
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-}
-
-async function saveCredentials(client) {
-  const payload = JSON.stringify({
-    type: "authorized_user",
-    client_id: process.env.GOOGLE_CLIENT_ID,
-    client_secret: process.env.GOOGLE_CLIENT_SECRET,
-    refresh_token: client.credentials.refresh_token,
-  });
-  await fs.writeFile(TOKEN_PATH, payload);
-}
 
 async function authorize() {
-  let client = await loadSavedCredentialsIfExist();
-  if (client) {
-    return client;
+  try {
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_REDIRECT_URIS // Agrega esta variable a tu .env
+    );
+
+    oauth2Client.setCredentials({
+      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+    });
+
+    // Obtener un nuevo token de acceso
+    const { token } = await oauth2Client.getAccessToken();
+    oauth2Client.setCredentials({ access_token: token });
+
+    return oauth2Client;
+  } catch (err) {
+    console.error('Error en la autorización:', err);
+    throw err;
   }
-  client = await authenticate({
-    scopes: SCOPES,
-    keyfilePath: CREDENTIALS_PATH,
-  });
-  if (client.credentials) {
-    await saveCredentials(client);
-  }
-  return client;
 }
 
 async function getSheetData(auth) {

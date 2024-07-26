@@ -7,21 +7,21 @@ const {
   updateRow,
   deleteRow,
 } = require("../Controllers/sheets/sheetsController.js");
-const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
+const uploadToS3 = require("../Controllers/sheets/uploadImages.js");// Importa el middleware
+const { authenticateToken } = require("../Middleware/authMiddleware.js");
 
-sheetsRouter.get("/data", async (req, res) => {
+// Rutas protegidas con authenticateToken
+sheetsRouter.get("/data", authenticateToken, async (req, res) => {
   try {
     const auth = await authorize();
-    console.log(auth)
     const data = await getSheetData(auth);
-    console.log(data)
     res.json(data.rows);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-sheetsRouter.post("/data", async (req, res) => {
+sheetsRouter.post("/data", authenticateToken, async (req, res) => {
   try {
     const auth = await authorize();
     const updates = await appendRow(auth, req.body);
@@ -32,7 +32,7 @@ sheetsRouter.post("/data", async (req, res) => {
   }
 });
 
-sheetsRouter.put("/update", async (req, res) => {
+sheetsRouter.put("/update", authenticateToken, async (req, res) => {
   try {
     const auth = await authorize();
     const rowData = req.body; // Asegúrate de que los datos de la fila están en el cuerpo de la solicitud
@@ -44,8 +44,7 @@ sheetsRouter.put("/update", async (req, res) => {
   }
 });
 
-
-sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
+sheetsRouter.delete("/delete/:rowIndex", authenticateToken, async (req, res) => {
   try {
     const auth = await authorize();
     const rowIndex = parseInt(req.params.rowIndex, 10);
@@ -56,6 +55,7 @@ sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
   }
 });
 
+// Ruta para subir imágenes sin protección (ajusta según sea necesario)
 sheetsRouter.post("/images", (req, res) => {
   uploadToS3(req, res);
 });
