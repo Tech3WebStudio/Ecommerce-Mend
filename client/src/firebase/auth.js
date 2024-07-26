@@ -44,8 +44,9 @@ export const doSignInWithGoogle = async () => {
       store.dispatch(loginWithGoogle(userInfo));
 
       setTimeout(() => {
-        window.location.href = "/dashboard";
+        window.location.replace("/dashboard");
       }, 2000);
+      
     } else {
       toast.error("Error al ingresar");
       throw new Error("Error al enviar el token al backend");
