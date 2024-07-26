@@ -16,6 +16,7 @@ server.use(
   cors({
     origin: [
         "http://localhost:5173",
+        "https://ecommerce-mend.onrender.com"
     ],
     credentials: true,
   })
