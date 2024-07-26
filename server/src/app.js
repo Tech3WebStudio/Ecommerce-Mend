@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const path = require('path');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const router = require("./Routes/indexRoutes");
@@ -23,5 +24,11 @@ server.use(
 );
 server.use(router); // Aquí se monta el router
 server.use(invalidRoute);
+
+server.use(express.static(path.join(__dirname, 'dist')));
+
+server.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 module.exports = server;
