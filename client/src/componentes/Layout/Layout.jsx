@@ -44,7 +44,7 @@ export function Layout({ children, isAuth }) {
       </div>
       <div
         id="sidebar"
-        className="bg-white max-h-full flex shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
+        className="bg-white max-h-full md:h-screen flex shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
       >
         <Nav user={user} />
       </div>
