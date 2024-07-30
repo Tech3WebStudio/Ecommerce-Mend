@@ -74,8 +74,6 @@ export const fetchSheets = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log(res);
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data,

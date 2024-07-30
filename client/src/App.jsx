@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
     dispatch(authenticateUserFromSession());
   }, [dispatch]);
-
   return (
     <div>
       <Toaster />
