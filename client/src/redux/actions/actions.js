@@ -1,6 +1,5 @@
 import CryptoJS from "crypto-js";
-import axios from "axios";
-import rutaBack from "./rutaBack";
+import intance from "../../api/axiosConfig";
 import toast from "react-hot-toast";
 
 export const LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
@@ -46,8 +45,8 @@ export const authenticateUserFromSession = () => {
 
 export const uploadImages = (formData) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      `${rutaBack}/api/sheets/images`,
+    const response = await intance.post(
+      `/api/sheets/images`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -69,7 +68,7 @@ export const uploadImages = (formData) => async (dispatch) => {
 export const fetchSheets = () => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.get(`${rutaBack}/api/sheets/data`, {
+    const res = await intance.get(`/api/sheets/data`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -86,7 +85,7 @@ export const fetchSheets = () => async (dispatch) => {
 export const addSheetRow = (rowData) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.post(`${rutaBack}/api/sheets/data`, rowData, {
+    const res = await intance.post(`/api/sheets/data`, rowData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -106,7 +105,7 @@ export const addSheetRow = (rowData) => async (dispatch) => {
 export const updateRow = (rowData) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.put(`${rutaBack}/api/sheets/update`, rowData, {
+    const res = await intance.put(`/api/sheets/update`, rowData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -127,8 +126,8 @@ export const updateRow = (rowData) => async (dispatch) => {
 export const deleteSheetRow = (rowIndex) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.delete(
-      `${rutaBack}/api/sheets/delete/${rowIndex}`,
+    const res = await intance.delete(
+      `/api/sheets/delete/${rowIndex}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
