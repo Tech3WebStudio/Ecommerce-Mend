@@ -1,6 +1,5 @@
 const express = require("express");
 const morgan = require("morgan");
-const path = require('path');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const router = require("./Routes/indexRoutes");
@@ -26,15 +25,7 @@ server.use(
 // Rutas API y middleware
 server.use('/api', router); // Montar el router
 
-// Servir archivos estáticos del frontend
-server.use(express.static(path.join(__dirname, 'build')));
-
-// Middleware para rutas no válidas
-server.use(invalidRoute);
-
-// Manejo de todas las demás rutas para el frontend
-server.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// Middleware para rutas no válidas de la API
+server.use('/api/*', invalidRoute);
 
 module.exports = server;
