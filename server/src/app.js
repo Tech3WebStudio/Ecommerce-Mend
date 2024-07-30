@@ -24,9 +24,22 @@ server.use(
 );
 
 // Rutas API y middleware
-server.use(router); // Montar el router
+server.use('/api', router); // Montar el router
+
+// Servir archivos estáticos del frontend
+server.use(express.static(path.join(__dirname, 'build')));
 
 // Middleware para rutas no válidas
 server.use(invalidRoute);
+
+// Manejo de todas las demás rutas para el frontend
+server.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 module.exports = server;
