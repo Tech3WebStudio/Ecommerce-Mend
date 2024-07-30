@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
+   "scripts": {
     "start": "node index.js",
-    "build": "cd ../client && npm run build",
-    "postinstall": "npm run build"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
