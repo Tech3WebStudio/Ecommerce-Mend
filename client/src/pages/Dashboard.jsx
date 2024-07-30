@@ -3,10 +3,12 @@ import { Layout } from "../componentes/Layout/Layout";
 import DisplayProductDashboard from "../componentes/Products/DisplayProductDashboard";
 import { useEffect } from "react";
 import { fetchSheets } from "../redux/actions/actions";
+
 const Dashboard = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const products = useSelector((state) => state.sheets.sheetsData);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchSheets());
   }, [dispatch]);

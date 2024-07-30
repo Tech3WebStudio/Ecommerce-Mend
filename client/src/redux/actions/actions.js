@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 import axios from "axios";
 import rutaBack from "./rutaBack";
 import toast from "react-hot-toast";
@@ -13,7 +13,6 @@ export const DELETE_SHEET_ROW = "DELETE_SHEET_ROW";
 
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
-
 
 export const loginWithGoogle = (userInfo) => ({
   type: LOGIN_WITH_GOOGLE,
@@ -35,7 +34,10 @@ export const authenticateUserFromSession = () => {
           payload: userInfo,
         });
       } catch (error) {
-        console.error("Error desencriptando la información del usuario:", error);
+        console.error(
+          "Error desencriptando la información del usuario:",
+          error
+        );
         toast.error("Error autenticando usuario");
       }
     }
@@ -44,9 +46,13 @@ export const authenticateUserFromSession = () => {
 
 export const uploadImages = (formData) => async (dispatch) => {
   try {
-    const response = await axios.post(`${rutaBack}/api/sheets/images`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const response = await axios.post(
+      `${rutaBack}/api/sheets/images`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
     if (response.data) {
       toast.success("Imagen cargada");
       dispatch({ type: UPLOAD_IMAGES_SUCCESS, payload: response.data.links });
@@ -65,9 +71,11 @@ export const fetchSheets = () => async (dispatch) => {
   try {
     const res = await axios.get(`${rutaBack}/api/sheets/data`, {
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
+
+    console.log(res);
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data,
@@ -82,7 +90,7 @@ export const addSheetRow = (rowData) => async (dispatch) => {
   try {
     const res = await axios.post(`${rutaBack}/api/sheets/data`, rowData, {
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (res.status === 200) {
@@ -102,7 +110,7 @@ export const updateRow = (rowData) => async (dispatch) => {
   try {
     const res = await axios.put(`${rutaBack}/api/sheets/update`, rowData, {
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -121,11 +129,14 @@ export const updateRow = (rowData) => async (dispatch) => {
 export const deleteSheetRow = (rowIndex) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
-    const res = await axios.delete(`${rutaBack}/api/sheets/delete/${rowIndex}`, {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
-    });
+    const res = await axios.delete(
+      `${rutaBack}/api/sheets/delete/${rowIndex}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       toast.success("Eliminado exitosamente");

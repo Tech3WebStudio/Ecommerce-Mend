@@ -28,6 +28,8 @@ const Products = () => {
     setDeleteRowIndex(index);
   };
 
+  console.log(data);
+
   return (
     <Layout isAuth={isAuth}>
       {activeForm && (
