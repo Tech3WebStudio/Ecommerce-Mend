@@ -1,28 +1,27 @@
-require('dotenv').config();
+require("dotenv").config();
 const { google } = require("googleapis");
-
+// const path = require("path");
 
 async function authorize() {
-  try {
-    const oauth2Client = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URIS // Agrega esta variable a tu .env
-    );
-
-    oauth2Client.setCredentials({
-      refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-    });
-
-    // Obtener un nuevo token de acceso
-    const { token } = await oauth2Client.getAccessToken();
-    oauth2Client.setCredentials({ access_token: token });
-
-    return oauth2Client;
-  } catch (err) {
-    console.error('Error en la autorización:', err);
-    throw err;
-  }
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      type: "service_account",
+      project_id: process.env.GOOGLE_PROJECT_ID,
+      private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      auth_uri: process.env.GOOGLE_AUTH_URI,
+      token_uri: process.env.GOOGLE_TOKEN_URI,
+      auth_provider_x509_cert_url:
+        process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
+      client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
+      universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN,
+    },
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+  });
+  const authClient = await auth.getClient();
+  return authClient;
 }
 
 async function getSheetData(auth) {
@@ -39,16 +38,8 @@ async function getSheetData(auth) {
     }
     return { rows, lastId };
   } catch (error) {
-    console.log(error);
+    console.log({ error: error.message });
   }
-}
-
-function generateSKU(category, name, color, count) {
-  const categoryInitial = category.charAt(0).toLowerCase();
-  const nameInitial = name.charAt(0).toLowerCase();
-  const colorInitial = color.charAt(0).toLowerCase();
-  const skuNumber = String(count).padStart(4, "0");
-  return `${categoryInitial}-${nameInitial}-${colorInitial}-${skuNumber}`;
 }
 
 async function appendRow(auth, rowData) {
@@ -57,8 +48,18 @@ async function appendRow(auth, rowData) {
   const newId = lastId + 1;
   const { categoria, nombre, color, tamaño, cantidad, precio, url } = rowData;
   const sku = generateSKU(categoria, nombre, color, newId);
-  const urlString = Array.isArray(url) ? url.join(', ') : url;
-  const newRow = [newId, categoria, nombre, color, tamaño, cantidad, precio, urlString, sku];
+  const urlString = Array.isArray(url) ? url.join(", ") : url;
+  const newRow = [
+    newId,
+    categoria,
+    nombre,
+    color,
+    tamaño,
+    cantidad,
+    precio,
+    urlString,
+    sku,
+  ];
   const res = await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
     range: "Productos!A2:I",
@@ -77,7 +78,9 @@ async function updateRow(auth, rowData) {
   if (rowIndex === -1) {
     throw new Error("ID no encontrado");
   }
-  const urlString = Array.isArray(rowData.url) ? rowData.url.join(', ') : rowData.url;
+  const urlString = Array.isArray(rowData.url)
+    ? rowData.url.join(", ")
+    : rowData.url;
   const updatedRow = [
     rowData.id,
     rowData.categoria,

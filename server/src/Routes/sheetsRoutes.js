@@ -7,44 +7,42 @@ const {
   updateRow,
   deleteRow,
 } = require("../Controllers/sheets/sheetsController.js");
-const uploadToS3 = require("../Controllers/sheets/uploadImages.js");// Importa el middleware
-const { authenticateToken } = require("../Middleware/authMiddleware.js");
+const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
-// Rutas protegidas con authenticateToken
-sheetsRouter.get("/data", authenticateToken, async (req, res) => {
+sheetsRouter.get("/data", async (req, res) => {
   try {
     const auth = await authorize();
+    // console.log(auth);
     const data = await getSheetData(auth);
     res.json(data.rows);
   } catch (error) {
+    console.log({ error: error.message });
     res.status(500).send(error.message);
   }
 });
 
-sheetsRouter.post("/data", authenticateToken, async (req, res) => {
+sheetsRouter.post("/data", async (req, res) => {
   try {
     const auth = await authorize();
     const updates = await appendRow(auth, req.body);
     res.json(updates);
   } catch (error) {
-    console.log(error);
     res.status(500).send(error.message);
   }
 });
 
-sheetsRouter.put("/update", authenticateToken, async (req, res) => {
+sheetsRouter.put("/update", async (req, res) => {
   try {
     const auth = await authorize();
-    const rowData = req.body; // Asegúrate de que los datos de la fila están en el cuerpo de la solicitud
+    const rowData = req.body;
     const result = await updateRow(auth, rowData);
-    console.log(rowData);
     res.json(result);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-sheetsRouter.delete("/delete/:rowIndex", authenticateToken, async (req, res) => {
+sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
   try {
     const auth = await authorize();
     const rowIndex = parseInt(req.params.rowIndex, 10);
@@ -55,7 +53,6 @@ sheetsRouter.delete("/delete/:rowIndex", authenticateToken, async (req, res) => 
   }
 });
 
-// Ruta para subir imágenes sin protección (ajusta según sea necesario)
 sheetsRouter.post("/images", (req, res) => {
   uploadToS3(req, res);
 });

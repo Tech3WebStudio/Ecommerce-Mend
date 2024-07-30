@@ -10,8 +10,9 @@ const authThird = async (decodedToken) => {
       isAuth: true,
     };
   } catch (error) {
+    console.log("error: ", error, "decodedToken: ", decodedToken);
     throw new Error(error.message);
   }
 };
 
-module.exports = authThird;
+module.exports = { authThird };
