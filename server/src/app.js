@@ -16,8 +16,8 @@ server.use(cookieParser());
 server.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "https://ecommerce-mend.onrender.com"
+      "https://ecommerce-mend.onrender.com",
+      "http://localhost:5173"
     ],
     credentials: true,
   })
