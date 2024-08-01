@@ -27,9 +27,6 @@ const Products = () => {
   const toggleDeleteModal = (index = null) => {
     setDeleteRowIndex(index);
   };
-
-  console.log(data);
-
   return (
     <Layout isAuth={isAuth}>
       {activeForm && (

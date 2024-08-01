@@ -1,6 +1,34 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/actions/actions";
+import toast from "react-hot-toast";
 
 const DisplayProductDashboard = ({ products }) => {
+  const dispatch = useDispatch();
+
+  // console.log(products[5]);
+  const handleAddToCart = (product) => {
+    const available = product[5];
+
+    const data = {
+      id: product[0],
+      categoria: product[1],
+      nombre: product[2],
+      color: product[3],
+      talle: product[4],
+      cantidad: product[5],
+      precio: product[6],
+      imagen: product[7],
+      sku: product[8]
+    }
+
+    if (available > 0) {
+      toast.success("Se agregó al carrito");
+      dispatch(addToCart(data));
+    } else {
+      toast.error("Producto sin stock");
+    }
+  };
   return (
     <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products &&
@@ -8,9 +36,10 @@ const DisplayProductDashboard = ({ products }) => {
           const imageUrls = product[7]?.split(", ");
 
           return (
-            <div
+            <button
               key={i}
-              className="flex cursor-pointer shadow-md rounded-md p-2 flex-col items-center justify-center w-full max-w-lg mx-auto"
+              onClick={() => handleAddToCart(product)}
+              className="flex cursor-pointer shadow-md rounded-md p-2 flex-col items-center justify-center w-full max-w-lg mx-auto hover:shadow-xl active:shadow-lg active:translate-y-[2px]"
             >
               {imageUrls?.length > 3 ? (
                 <div className="flex">
@@ -34,7 +63,7 @@ const DisplayProductDashboard = ({ products }) => {
                 {product[2]}
               </h4>
               <p className="text-blue-500">${product[6]}</p>
-            </div>
+            </button>
           );
         })}
     </div>
