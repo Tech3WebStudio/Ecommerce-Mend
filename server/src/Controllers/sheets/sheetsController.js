@@ -42,7 +42,7 @@ async function getSheetData(auth) {
   }
 }
 
-async function appendRow(auth, rowData) {
+async function appendRow(rowData) {
   const sheets = google.sheets({ version: "v4", auth });
   const { rows, lastId } = await getSheetData(auth);
   const newId = lastId + 1;
@@ -71,7 +71,7 @@ async function appendRow(auth, rowData) {
   return res.data.updates;
 }
 
-async function updateRow(auth, rowData) {
+async function updateRow(rowData) {
   const sheets = google.sheets({ version: "v4", auth });
   const { rows } = await getSheetData(auth);
   const rowIndex = rows.findIndex((row) => row[0] === rowData.id);
@@ -104,7 +104,7 @@ async function updateRow(auth, rowData) {
   return res.data;
 }
 
-async function deleteRow(auth, rowIndex) {
+async function deleteRow(rowIndex) {
   const sheets = google.sheets({ version: "v4", auth });
   const requests = [
     {
