@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { doSignInWithGoogle } from "../firebase/auth";
+// import { Link } from "react-router-dom";
+import { DoSignInWithGoogle } from "../firebase/auth";
 
 export const Login = () => {
   const dispatch = useDispatch();
   const onGoogleSignIn = async (e) => {
     e.preventDefault();
-    dispatch(doSignInWithGoogle());
+    dispatch(DoSignInWithGoogle());
   };
   return (
     <div className="bg-gray-100 flex justify-center items-center h-screen">
