@@ -1,8 +1,5 @@
-const server = require("./src/app"); // Requiere el archivo de configuración
-// const express = require("express");
-// const path = require("path");
+const server = require("./src/app"); 
 const PORT = process.env.PORT || 3000;
-
 
 
 server.listen(PORT, () => {

@@ -27,7 +27,7 @@ server.use("/api", router); // Montar el router
 server.use(express.static(path.join(__dirname, "../../client/dist")));
 
 server.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../../client/dist", "/"));
+  res.sendFile(path.join(__dirname, "../../client/dist", "/dashboard"));
 });
 // Middleware para rutas no válidas de la API
 server.use("/api/*", invalidRoute);
