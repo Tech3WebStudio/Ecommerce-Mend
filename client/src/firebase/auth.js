@@ -5,10 +5,8 @@ import store from "../redux/store";
 import { loginWithGoogle } from "../redux/actions/actions";
 import CryptoJS from "crypto-js";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
-export const DoSignInWithGoogle = async () => {
-  const navigate = useNavigate();
+export const doSignInWithGoogle = async () => {
   try {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -45,7 +43,9 @@ export const DoSignInWithGoogle = async () => {
 
       store.dispatch(loginWithGoogle(userInfo));
 
-      navigate("/dashboard");
+      setTimeout(() => {
+        window.location.replace("/dashboard");
+      }, 2000);
     } else {
       toast.error("Error al ingresar");
       throw new Error("Error al enviar el token al backend");
@@ -55,7 +55,8 @@ export const DoSignInWithGoogle = async () => {
   }
 };
 
-export const AuthenticateWithGooglePopup = async () => {
+
+export const authenticateWithGooglePopup = async () => {
   try {
     const response = await fetch(`${rutaBack}/api/login/auth`);
     const { url } = await response.json();
@@ -96,6 +97,6 @@ export const AuthenticateWithGooglePopup = async () => {
   }
 };
 
-export const DoSignOut = () => {
+export const doSignOut = () => {
   return auth.signOut();
 };
