@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export const DoSignInWithGoogle = async () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   try {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
@@ -45,7 +45,7 @@ export const DoSignInWithGoogle = async () => {
 
       store.dispatch(loginWithGoogle(userInfo));
 
-      navigate("/dashboard")
+      navigate("/dashboard");
     } else {
       toast.error("Error al ingresar");
       throw new Error("Error al enviar el token al backend");
@@ -55,8 +55,7 @@ export const DoSignInWithGoogle = async () => {
   }
 };
 
-
-export const authenticateWithGooglePopup = async () => {
+export const AuthenticateWithGooglePopup = async () => {
   try {
     const response = await fetch(`${rutaBack}/api/login/auth`);
     const { url } = await response.json();
@@ -97,6 +96,6 @@ export const authenticateWithGooglePopup = async () => {
   }
 };
 
-export const doSignOut = () => {
+export const DoSignOut = () => {
   return auth.signOut();
 };
