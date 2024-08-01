@@ -1,10 +1,11 @@
 const express = require("express");
+const path = require("path");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const router = require("./Routes/indexRoutes");
 const invalidRoute = require("./Middleware/invalidRoute");
-require('dotenv').config(); // Configuración de entorno
+require("dotenv").config(); // Configuración de entorno
 
 const server = express();
 
@@ -14,18 +15,21 @@ server.use(express.json());
 server.use(cookieParser());
 server.use(
   cors({
-    origin: [
-      "https://ecommerce-mend.onrender.com",
-      "http://localhost:5173"
-    ],
+    origin: ["https://ecommerce-mend.onrender.com", "http://localhost:5173"],
     credentials: true,
   })
 );
 
 // Rutas API y middleware
-server.use('/api', router); // Montar el router
+server.use("/api", router); // Montar el router
 
+// Sirve los archivos estáticos de la carpeta client/build
+server.use(express.static(path.join(__dirname, "../../client/dist")));
+
+server.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../client/dist", "/"));
+});
 // Middleware para rutas no válidas de la API
-server.use('/api/*', invalidRoute);
+server.use("/api/*", invalidRoute);
 
 module.exports = server;

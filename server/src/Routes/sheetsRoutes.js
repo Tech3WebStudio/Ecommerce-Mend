@@ -12,8 +12,8 @@ const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 sheetsRouter.get("/data", async (req, res) => {
   try {
     const auth = await authorize();
-    // console.log(auth);
     const data = await getSheetData(auth);
+    // console.log();
     res.json(data.rows);
   } catch (error) {
     console.log({ error: error.message });
