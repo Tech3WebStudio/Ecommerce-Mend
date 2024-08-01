@@ -1,6 +1,6 @@
 // import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { doSignOut } from "../../firebase/auth";
+import { DoSignOut } from "../../firebase/auth";
 // import { logout } from "../../redux/actions/actions";
 
 export const Nav = ({ user }) => {
@@ -60,7 +60,7 @@ export const Nav = ({ user }) => {
           <span className="">Products</span>
         </Link>
         <button
-          onClick={() => doSignOut()}
+          onClick={() => DoSignOut()}
           className="flex text-center justify-center gap-2 items-center text-sm border border-gray-200 shadow-sm mb-2 font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
