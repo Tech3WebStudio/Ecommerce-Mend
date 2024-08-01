@@ -16,6 +16,7 @@ server.use(
   cors({
     origin: [
       "https://ecommerce-mend.onrender.com",
+      "https://nina-ecommerce-roan.vercel.app",
       "http://localhost:5173"
     ],
     credentials: true,
