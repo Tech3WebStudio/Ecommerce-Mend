@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { authenticateUserFromSession } from "./redux/actions/actions";
 import Error from "./pages/Error";
+import Sales from "./pages/Sales";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function App() {
           <>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/sales" element={<Sales />} />
           </>
         ) : (
           <Route path="/error" element={<Error />} />

@@ -10,10 +10,14 @@ import {
     DELETE_CART_ITEM_SUCCESS,
     DELETE_CART_ITEM_FAILURE,
     UPDATE_CART,
+    GET_SALES,
+    GET_SALE_BY_ID
   } from "../actions/actions";
   
   const initialState = {
     cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
+    sales: [],
+    saleInfo: [],
     cartSent: false,
     cartError: null,
   };
@@ -120,6 +124,17 @@ import {
           ...state,
           cartItems: action.payload.cartProducts,
         };
+      
+      case GET_SALES:
+        return {
+          ...state,
+          sales: payload
+        }
+      case GET_SALE_BY_ID:
+        return {
+          ...state,
+          saleInfo: payload
+        }
       default:
         return state;
     }

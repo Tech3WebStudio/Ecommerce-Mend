@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { removeFromCart } from "../../redux/actions/actions";
+import { createSale, removeFromCart } from "../../redux/actions/actions";
 
 const Cart = ({ product, calcularTotal, onClose }) => {
   const dispatch = useDispatch();
   const [formaPago, setFormaPago] = useState("");
+  const [nombreCliente, setNombreCliente] = useState("");
 
   const handleFormaPagoChange = (forma) => {
     setFormaPago(forma);
+  };
+
+  const handleNombreClienteChange = (e) => {
+    setNombreCliente(e.target.value);
   };
 
   const handleCreateVenta = () => {
@@ -20,20 +25,22 @@ const Cart = ({ product, calcularTotal, onClose }) => {
         talle: prod.talle,
         color: prod.color,
         precio: prod.precio,
-        cantidad: prod.cantidad, // Aquí puedes añadir la lógica para la cantidad si la tienes.
+        cantidad: prod.cantidad,
       })),
       total: calcularTotal(),
       formaPago,
+      nombreCliente,
     };
     if (venta.formaPago === "") {
       toast.error("Falta forma de pago");
     } else if (venta.productos.length === 0) {
-      toast.error("El carrito está vacio");
+      toast.error("El carrito está vacío");
+    } else if (venta.nombreCliente.trim() === "") {
+      toast.error("Falta nombre del cliente");
     } else {
       toast.success("Venta creada exitosamente...");
-      console.log(venta);
+      dispatch(createSale(venta));
     }
-    // Aquí puedes enviar el objeto 'venta' a tu backend o hacer lo que necesites con él.
   };
 
   const handleRemove = (id) => {
@@ -79,19 +86,23 @@ const Cart = ({ product, calcularTotal, onClose }) => {
                     )}
                   </div>
                   <div className="md:pl-3 md:w-8/12 2xl:w-3/4 flex flex-col justify-center">
-                    <p className="text-xs leading-3 text-gray-800 md:pt-0 pt-4">
-                      SKU {prod.sku}
+                    <p className="text-base leading-3 text-gray-800 md:pt-0 pt-4">
+                      <span className="font-black">SKU:</span> {prod.sku}
                     </p>
                     <div className="flex items-center justify-between w-full">
                       <p className="text-base font-black leading-none text-gray-800">
                         {prod.nombre}
                       </p>
                     </div>
-                    <p className="text-xs leading-3 text-gray-600 pt-2">
-                      Talle: {prod.talle}
+                    <p className="text-base leading-3 text-gray-600 pt-2">
+                      <span className="font-black">Talle:</span> {prod.talle}
                     </p>
-                    <p className="text-xs leading-3 text-gray-600 py-4">
-                      Color: {prod.color}
+                    <p className="text-base leading-3 text-gray-600 py-4">
+                      <span className="font-black">Color:</span> {prod.color}
+                    </p>
+                    <p className="text-base leading-3 text-gray-800 py-4">
+                      <span className="font-black">Cantidad:</span>{" "}
+                      {prod.cantidad}
                     </p>
                     <div className="flex items-center justify-between pt-5">
                       <div className="flex items-center">
@@ -116,7 +127,7 @@ const Cart = ({ product, calcularTotal, onClose }) => {
                         </button>
                       </div>
                       <p className="text-base font-black leading-none text-gray-800">
-                        ${prod.precio},000
+                        Subtotal: ${prod.precio * prod.cantidad},000
                       </p>
                     </div>
                   </div>
@@ -125,20 +136,30 @@ const Cart = ({ product, calcularTotal, onClose }) => {
             })
           ) : (
             <p className="text-gray-500 text-center">
-              Carrito vacio llenalo y podras concretar una venta
+              Carrito vacío, llénalo y podrás concretar una venta
             </p>
           )}
         </div>
       </div>
 
-      <div className="bg-white opacity-80 h-full text-center shadow-md p-6 rounded-xl w-1/3 m-2 flex flex-col justify-between">
+      <div className="bg-white opacity-95 h-full text-center shadow-md p-6 rounded-xl w-1/3 m-2 flex flex-col justify-between">
         <button
           onClick={onClose}
           className="text-gray-800 flex text-3xl hover:text-gray-500"
         >
           &times;
         </button>
-        Resumen
+        <h1 className="text-xl text-black">Resumen</h1>
+        <div className="p-2 mt-4">
+          Nombre del cliente
+          <input
+            type="text"
+            value={nombreCliente}
+            onChange={handleNombreClienteChange}
+            className="border p-2 w-full mt-2"
+            placeholder="Nombre del cliente"
+          />
+        </div>
         <div className="p-2 mt-4">
           Forma de pago
           <div className="flex gap-2 mt-2 justify-center items-center">
@@ -173,22 +194,15 @@ const Cart = ({ product, calcularTotal, onClose }) => {
           </div>
         </div>
         <div className="p-2 mt-4">
-          Total
-          <p className="text-2xl font-black leading-none text-gray-800">
-            ${calcularTotal()}
-          </p>
+          Total: ${calcularTotal()},000
         </div>
-        <div className="flex justify-center mt-auto">
-          {product.length > 0 ? (
-            <button
-              onClick={handleCreateVenta}
-              className="bg-teal-500 p-2 rounded-md border border-gray-100 text-gray-50 shadow-lg active:translate-y-[2px] hover:bg-teal-300 w-60"
-            >
-              Crear venta
-            </button>
-          ) : (
-            ""
-          )}
+        <div className="p-2 mt-4">
+          <button
+            onClick={handleCreateVenta}
+            className="border p-2 text-white bg-gray-800 w-full hover:bg-gray-700"
+          >
+            Crear Venta
+          </button>
         </div>
       </div>
     </div>
