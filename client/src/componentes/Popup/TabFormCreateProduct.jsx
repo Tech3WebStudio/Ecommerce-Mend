@@ -5,6 +5,7 @@ import {
   updateRow,
   uploadImages,
 } from "../../redux/actions/actions";
+import Spinner from "../Spinner/Spinner";
 
 const TabFormCreateProduct = ({ isOpen, onClose, product }) => {
   const dispatch = useDispatch();
@@ -79,14 +80,8 @@ const TabFormCreateProduct = ({ isOpen, onClose, product }) => {
       };
 
       dispatch(updateRow(updatedRow));
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
     } else {
       dispatch(addSheetRow(newRow));
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
     }
     onClose();
   };
@@ -126,16 +121,20 @@ const TabFormCreateProduct = ({ isOpen, onClose, product }) => {
         <div className="flex justify-center items-center">
           <div className="rounded-sm w-full py-2 px-4">
             <div className="mb-2 flex justify-center items-center gap-1">
-              {isUploading && <p>Cargando...</p>}
-              {formData.url.length > 0 && formData.url.map((url, index) => (
-                <div key={index} className="mt-4 cursor-pointer" onClick={handleImageClick}>
-                  <img
-                    src={url}
-                    alt="Product"
-                    className="w-24 h-24 rounded-full mx-auto"
-                  />
-                </div>
-              ))}
+              <div className="mt-4 cursor-pointer">
+                {formData.url.length > 0 &&
+                  formData.url.map((url, index) => (
+                    <img
+                      onClick={handleImageClick}
+                      key={index}
+                      src={url}
+                      alt="Product"
+                      className="w-24 h-24 rounded-full mx-auto"
+                    />
+                  ))}
+                {isUploading && <Spinner />}
+              </div>
+
               <div
                 className="border cursor-pointer shadow-lg rounded-md p-4 flex justify-center items-center flex-col gap-2 hover:shadow-sm hover:border-blue-400 hover:text-blue-400"
                 onClick={handleImageClick}
