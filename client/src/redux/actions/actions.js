@@ -25,6 +25,8 @@ export const UPDATE_CART = "UPDATE_CART";
 export const DELETE_CART_ITEM_SUCCESS = "DELETE_CART_ITEM_SUCCESS";
 export const DELETE_CART_ITEM_FAILURE = "DELETE_CART_ITEM_FAILURE";
 
+export const GET_SALES = "GET_SALES";
+export const GET_SALE_BY_ID = "GET_SALE_BY_ID";
 export const CREATED_SALE = "CREATED_SALE";
 
 export const addToCart = (product) => ({
@@ -51,71 +53,39 @@ export const updateCart = (updatedCart) => ({
   payload: updatedCart,
 });
 
-// export const sendCart = (userId, cartItems) => async (dispatch) => {
-//   try {
-//     if (userId) {
-//       const data = {
-//         idUser: userId, // Ajusta el nombre de la propiedad a "idUser"
-//         arrayProducts: cartItems.map((product) => ({
-//           id_product: product.id_product,
-//           cartQuantity: product.cartQuantity,
-//         })),
-//       };
-//       // Realizar la petición POST
-//       const response = await axios.post(`${rutaBack}/cart/`, data);
-//       // Despachar una acción si es necesario
-//       dispatch({ type: CART_SENT_SUCCESS, payload: response });
-//     } else {
-//       console.log("No user is logged in.");
-//     }
-//   } catch (error) {
-//     // console.error("Error sending cart:", error);
-//     dispatch({ type: CART_SENT_FAILURE, error });
-//   }
-// };
+export const getSaleInfo = (id) => async (dispatch) => {
+  try {
+    const res = await intance.get(`/api/sheets/sale/${id}`);
+    console.log(res);
+    dispatch({
+      type: GET_SALE_BY_ID,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-// export const getCartByUserId = (userId) => async (dispatch) => {
-//   try {
-//     // Realizar la petición GET para obtener la información del carrito del usuario
-//     const response = await axios.get(`${rutaBack}/cart/id/${userId}`);
-//     // Despachar una acción con la información del carrito obtenida
-//     dispatch({ type: GET_CART_SUCCESS, payload: response.data.products });
-//   } catch (error) {
-//     // En caso de error, despachar una acción de error
-//     // console.error("Error al obtener el carrito:", error);
-//     dispatch({ type: GET_CART_FAILURE, error });
-//   }
-// };
-
-// export const deleteCartItem = (userId, idProduct) => async (dispatch) => {
-//   try {
-//     const response = await axios.delete(`${rutaBack}/cart/deleteItem`, {
-//       data: { idUser: userId, idProduct },
-//     });
-//     console.log(response.data)
-//     dispatch({ type: DELETE_CART_ITEM_SUCCESS, payload: response.data });
-
-//     // Verifica si el carrito está vacío después de la eliminación
-//     const cartResponse = await axios.get(`${rutaBack}/cart/id/${userId}`);
-//     if (cartResponse.data.products.length === 0) {
-//       dispatch(cleanCart());
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: DELETE_CART_ITEM_FAILURE,
-//       error: error.response?.data || error.message,
-//     });
-//   }
-// };
+export const getSales = () => async (dispatch) => {
+  try {
+    const res = await intance.get(`/api/sheets/sale`);
+    dispatch({
+      type: GET_SALES,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const createSale = (data) => async (dispatch) => {
   try {
-    const res = await intance.get(`/api/sheets/sale`, data);
+    const res = await intance.post(`/api/sheets/sale`, data);
     console.log(res);
     dispatch({
       type: CREATED_SALE,
-      payload: res
-    })
+      payload: res,
+    });
   } catch (error) {
     console.log({ error: error.message });
   }
@@ -156,9 +126,12 @@ export const uploadImages = (formData) => async (dispatch) => {
     const response = await intance.post(`/api/sheets/images`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    if (response.data) {
+    toast.loading("Subiendo imagen...");
+    if (response.status === 200) {
       toast.success("Imagen cargada");
       dispatch({ type: UPLOAD_IMAGES_SUCCESS, payload: response.data.links });
+    }else{
+      toast.error("No se pudo cargar la imagen")
     }
   } catch (error) {
     console.error("Error uploading images:", error);
@@ -194,6 +167,7 @@ export const addSheetRow = (rowData) => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    toast.loading("Creando producto");
     if (res.status === 200) {
       toast.success("Creado exitosamente");
       dispatch({

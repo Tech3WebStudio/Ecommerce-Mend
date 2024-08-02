@@ -20,7 +20,7 @@ const Dashboard = () => {
   const calculateTotal = () => {
     const total = cartItems.reduce((acc, product) => {
       const precio = parseInt(product.precio);
-      const quantity = product.cartQuantity || 1;
+      const quantity = product.cantidad || 1;
       return acc + (isNaN(precio) ? 0 : precio * quantity);
     }, 0);
 
