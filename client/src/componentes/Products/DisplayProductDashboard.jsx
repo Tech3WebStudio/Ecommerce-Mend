@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 const DisplayProductDashboard = ({ products }) => {
   const dispatch = useDispatch();
 
+  console.log(products);
   // console.log(products[5]);
   const handleAddToCart = (product) => {
     const available = product[5];
@@ -33,7 +34,7 @@ const DisplayProductDashboard = ({ products }) => {
     <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products &&
         products?.map((product, i) => {
-          const imageUrls = product[7]?.split(", ");
+          const imageUrls = product?.url?.split(", ");
 
           return (
             <button
@@ -48,21 +49,21 @@ const DisplayProductDashboard = ({ products }) => {
                       key={ind}
                       className="object-cover w-full rounded-md h-24 xl:h-32"
                       src={img}
-                      alt={`${product[2]}-${ind}`}
+                      alt={`${product.nombre}-${ind}`}
                     />
                   ))}
                 </div>
               ) : (
                 <img
                   className="object-cover w-full rounded-md h-24 xl:h-32"
-                  src={imageUrls[0]}
-                  alt={`${product[2]}-1`}
+                  src={product.url}
+                  alt={`${product.nombre}-1`}
                 />
               )}
-              <h4 className="mt-2 text-lg font-medium text-black dark:text-gray-200">
-                {product[2]}
+              <h4 className="mt-2 text-lg font-medium text-black">
+                {product.nombre}
               </h4>
-              <p className="text-blue-500">${product[6]}</p>
+              <p className="text-blue-500">${product.precio}</p>
             </button>
           );
         })}

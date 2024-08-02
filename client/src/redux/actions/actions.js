@@ -130,9 +130,12 @@ export const uploadImages = (formData) => async (dispatch) => {
     if (response.status === 200) {
       toast.success("Imagen cargada");
       dispatch({ type: UPLOAD_IMAGES_SUCCESS, payload: response.data.links });
-    }else{
-      toast.error("No se pudo cargar la imagen")
+    } else {
+      toast.error("No se pudo cargar la imagen");
     }
+    setTimeout(() => {
+      toast.dismiss();
+    }, 2000);
   } catch (error) {
     console.error("Error uploading images:", error);
     dispatch({
@@ -152,7 +155,7 @@ export const fetchSheets = () => async (dispatch) => {
     });
     dispatch({
       type: FETCH_SHEETS,
-      payload: res.data,
+      payload: res.data.products,
     });
   } catch (error) {
     console.log(error);
@@ -174,7 +177,11 @@ export const addSheetRow = (rowData) => async (dispatch) => {
         type: ADD_SHEET_ROW,
         payload: res.data,
       });
+      dispatch(fetchSheets());
     }
+    setTimeout(() => {
+      toast.dismiss();
+    }, 2000);
   } catch (error) {
     console.log(error);
   }
