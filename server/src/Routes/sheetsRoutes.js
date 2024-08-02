@@ -6,6 +6,8 @@ const {
   appendRow,
   updateRow,
   deleteRow,
+  increaseStock,
+  decreaseStock
 } = require("../Controllers/sheets/sheetsController.js");
 const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
@@ -55,6 +57,30 @@ sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
 
 sheetsRouter.post("/images", (req, res) => {
   uploadToS3(req, res);
+});
+
+
+sheetsRouter.put("/increase-stock", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const { productId, amount } = req.body;
+    const result = await increaseStock(auth, productId, amount);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
+sheetsRouter.put("/decrease-stock", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const { productId, amount } = req.body;
+    const result = await decreaseStock(auth, productId, amount);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
 module.exports = sheetsRouter;
