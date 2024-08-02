@@ -16,8 +16,7 @@ sheetsRouter.get("/data", async (req, res) => {
   try {
     const auth = await authorize();
     const data = await getSheetData(auth);
-    // console.log();
-    res.json(data.rows);
+    res.json(data);
   } catch (error) {
     console.log({ error: error.message });
     res.status(500).send(error.message);
@@ -27,7 +26,7 @@ sheetsRouter.get("/data", async (req, res) => {
 sheetsRouter.post("/data", async (req, res) => {
   try {
     const auth = await authorize();
-    const data = req.body
+    const data = req.body;
     const updates = await appendRow(auth, data);
     res.json(updates);
   } catch (error) {
@@ -66,18 +65,17 @@ sheetsRouter.get("/sale/:id", async (req, res) => {
     const auth = await authorize();
     const saleId = req.params.id;
     const sales = await getSaleDataUnitiInfo(auth, saleId);
-    
+
     if (sales.length === 0) {
       return res.status(404).json({ message: "Ventas no encontradas" });
     }
-    
+
     res.json(sales);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send(error.message);
   }
 });
-
 
 sheetsRouter.get("/sale", async (req, res) => {
   try {
