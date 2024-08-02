@@ -8,7 +8,7 @@ export const Nav = ({ user }) => {
     <div className="space-y-6 md:space-y-10 w-full mt-10">
       <h1 className="font-bold text-4xl text-center md:hidden">
         D<span className="text-teal-600">.</span>
-      </h1>
+      </h1>cd
       <h1 className="hidden md:block font-bold text-sm md:text-xl text-center">
         Dashwind<span className="text-teal-600">.</span>
       </h1>
