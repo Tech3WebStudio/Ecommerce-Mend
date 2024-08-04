@@ -11,6 +11,7 @@ export const UPDATE_SHEET_ROW = "UPDATE_SHEET_ROW";
 export const DELETE_SHEET_ROW = "DELETE_SHEET_ROW";
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
+export const CLEAR_IMAGES = "CLEAR_IMAGES";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
@@ -19,19 +20,32 @@ export const CART_SENT_SUCCESS = "CART_SENT_SUCCESS";
 export const CART_SENT_FAILURE = "CART_SENT_FAILURE";
 export const GET_CART_SUCCESS = "GET_CART_SUCCESS";
 export const GET_CART_FAILURE = "GET_CART_FAILURE";
+
 export const CLEAN_CART = "CLEAN_CART";
 export const UPDATE_CART = "UPDATE_CART";
-
 export const DELETE_CART_ITEM_SUCCESS = "DELETE_CART_ITEM_SUCCESS";
 export const DELETE_CART_ITEM_FAILURE = "DELETE_CART_ITEM_FAILURE";
+export const INCREMENT_QUANTITY = "INCREMENT_QUANTITY";
+export const DECREMENT_QUANTITY = "DECREMENT_QUANTITY";
 
 export const GET_SALES = "GET_SALES";
 export const GET_SALE_BY_ID = "GET_SALE_BY_ID";
 export const CREATED_SALE = "CREATED_SALE";
 
+//CARRITO
 export const addToCart = (product) => ({
   type: ADD_TO_CART,
   payload: product,
+});
+
+export const incrementQuantity = (productId) => ({
+  type: INCREMENT_QUANTITY,
+  payload: productId,
+});
+
+export const decrementQuantity = (productId) => ({
+  type: DECREMENT_QUANTITY,
+  payload: productId,
 });
 
 export const removeFromCart = (productId) => ({
@@ -53,6 +67,7 @@ export const updateCart = (updatedCart) => ({
   payload: updatedCart,
 });
 
+//VENTAS
 export const getSaleInfo = (id) => async (dispatch) => {
   try {
     const res = await intance.get(`/api/sheets/sale/${id}`);
@@ -86,11 +101,13 @@ export const createSale = (data) => async (dispatch) => {
       type: CREATED_SALE,
       payload: res,
     });
+    dispatch(cleanCart());
   } catch (error) {
     console.log({ error: error.message });
   }
 };
 
+//LOGIN
 export const loginWithGoogle = (userInfo) => ({
   type: LOGIN_WITH_GOOGLE,
   payload: userInfo,
@@ -121,12 +138,12 @@ export const authenticateUserFromSession = () => {
   };
 };
 
+//UPLOAD IMAGE
 export const uploadImages = (formData) => async (dispatch) => {
   try {
     const response = await intance.post(`/api/sheets/images`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    toast.loading("Subiendo imagen...");
     if (response.status === 200) {
       toast.success("Imagen cargada");
       dispatch({ type: UPLOAD_IMAGES_SUCCESS, payload: response.data.links });
@@ -145,6 +162,11 @@ export const uploadImages = (formData) => async (dispatch) => {
   }
 };
 
+export const clearImages = () => ({
+  type: CLEAR_IMAGES,
+});
+
+//PRODUCTOS
 export const fetchSheets = () => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
@@ -188,20 +210,16 @@ export const addSheetRow = (rowData) => async (dispatch) => {
 };
 
 export const updateRow = (rowData) => async (dispatch) => {
-  const token = localStorage.getItem("authToken");
   try {
-    const res = await intance.put(`/api/sheets/update`, rowData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+    const res = await intance.put(`/api/sheets/update`, rowData);
+    console.log(res);
     if (res.status === 200) {
       toast.success("Editado exitosamente");
       dispatch({
         type: UPDATE_SHEET_ROW,
         payload: res.data,
       });
+      dispatch(fetchSheets());
     }
   } catch (error) {
     console.log(error);

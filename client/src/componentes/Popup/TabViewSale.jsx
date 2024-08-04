@@ -46,7 +46,7 @@ const TabViewSale = ({ isOpen, onClose, sale, infoVentas }) => {
             </div>
             <button
               onClick={onClose}
-              className="inline-flex items-center shrink-0 justify-center w-8 h-8 rounded-full textWhite bg-gray-900 focus:outline-none"
+              className="inline-flex items-center shrink-0 justify-center w-8 h-8 rounded-full text-white bg-gray-900 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@ const TabViewSale = ({ isOpen, onClose, sale, infoVentas }) => {
                 <div key={i}>
                   <button onClick={() => toggleExpand(i)} className="w-full">
                     <div className="flex items-center space-x-4 p-3.5 rounded-full bg-gray-100">
-                      <span className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full bgWhite text-gray-900">
+                      <span className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full bg-gray-100 text-gray-900">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
