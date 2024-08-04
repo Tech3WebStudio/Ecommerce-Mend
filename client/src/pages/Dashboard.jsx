@@ -20,7 +20,7 @@ const Dashboard = () => {
     <Layout isAuth={isAuth}>
       {/* {showCart && <Cart product={cartItems} calcularTotal={calculateTotal} onClose={toggleCart} />} */}
       <div className="flex justify-between items-center">
-        <h1 className="text-xl text-pink-100">Dashboard</h1>
+        <h1 className="text-xl text-white">Dashboard</h1>
       </div>
       <div className="mt-8 w-full">
         <DisplayProductDashboard products={products} />
