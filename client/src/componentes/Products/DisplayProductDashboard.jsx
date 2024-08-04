@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const DisplayProductDashboard = ({ products }) => {
   const dispatch = useDispatch();
-
+ console.log (products);
   // console.log(products[5]);
   const handleAddToCart = (product) => {
     const available = product[5];

@@ -18,8 +18,8 @@ sheetsRouter.get("/data", async (req, res) => {
   try {
     const auth = await authorize();
     const data = await getSheetData(auth);
-    // console.log();
-    res.json(data.rows);
+    console.log(data);
+    res.json(data);
   } catch (error) {
     console.log({ error: error.message });
     res.status(500).send(error.message);

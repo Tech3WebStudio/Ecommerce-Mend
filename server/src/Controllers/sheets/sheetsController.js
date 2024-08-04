@@ -36,7 +36,20 @@ async function getSheetData(auth) {
     if (rows.length > 0) {
       lastId = parseInt(rows[rows.length - 1][0]);
     }
-    return { rows, lastId };
+
+    const products = rows.map(row => ({
+      id: row[0],
+      categoria: row[1],
+      nombre: row[2],
+      color: row[3],
+      talle: row[4],
+      cantidad: row[5],
+      precio: row[6],
+      url: row[7],
+      sku: row[8],
+    }));
+
+    return { products, lastId };
   } catch (error) {
     console.log({ error: error.message });
   }
