@@ -102,7 +102,7 @@ const DisplayProductDashboard = ({ products }) => {
   };
 
   return (
-    <div className="container mx-auto  bg-white">
+    <div className="container mx-auto w-full bg-white">
       <div className="flex lg:flex-row flex-col-reverse shadow-lg">
         {/* Productos */}
         <div className="w-full lg:w-3/5 h-screen overflow-y-scroll shadow-lg">

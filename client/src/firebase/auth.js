@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import rutaBack from "../redux/actions/rutaBack";
 import { auth } from "./firebase.config";
 import store from "../redux/store";
@@ -55,7 +55,6 @@ export const doSignInWithGoogle = async () => {
   }
 };
 
-
 export const authenticateWithGooglePopup = async () => {
   try {
     const response = await fetch(`${rutaBack}/api/login/auth`);
@@ -97,6 +96,29 @@ export const authenticateWithGooglePopup = async () => {
   }
 };
 
-export const doSignOut = () => {
-  return auth.signOut();
+export const doSignOut = async () => {
+  try {
+    // Eliminar datos de sessionStorage y localStorage
+    sessionStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+
+    // Cerrar la sesión con Firebase Auth
+    const res = signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        toast.success("LogOut");
+      })
+      .catch((error) => {
+        // An error happened.
+        toast.error("Error");
+        console.log(error);
+      });
+
+      console.log(res);
+
+    // Redireccionar a la página de inicio de sesión u otra página
+    window.location.replace("/");
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+  }
 };
