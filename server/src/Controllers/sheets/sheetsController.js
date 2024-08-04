@@ -63,7 +63,6 @@ function generateSKU(category, name, color, count) {
   return `${categoryInitial}-${nameInitial}-${colorInitial}-${skuNumber}`;
 }
 
-
 async function appendRow(auth, rowData) {
   const sheets = google.sheets({ version: "v4", auth });
   const { rows, lastId } = await getSheetData(auth);
@@ -95,14 +94,22 @@ async function appendRow(auth, rowData) {
 
 async function updateRow(auth, rowData) {
   const sheets = google.sheets({ version: "v4", auth });
-  const { rows } = await getSheetData(auth);
-  const rowIndex = rows.findIndex((row) => row[0] === rowData.id);
+  
+  // Obtener los datos actuales de la hoja
+  const { products } = await getSheetData(auth);
+
+  // Buscar el índice de la fila correspondiente usando el ID
+  const rowIndex = products.findIndex((product) => product.id === rowData.id);
+
+  // Lanzar un error si el ID no se encuentra
   if (rowIndex === -1) {
     throw new Error("ID no encontrado");
   }
-  const urlString = Array.isArray(rowData.url)
-    ? rowData.url.join(", ")
-    : rowData.url;
+
+  // Convertir el array de URLs en una cadena, si es necesario
+  const urlString = Array.isArray(rowData.url) ? rowData.url.join(", ") : rowData.url;
+
+  // Construir la fila actualizada con los datos de rowData
   const updatedRow = [
     rowData.id,
     rowData.categoria,
@@ -114,7 +121,8 @@ async function updateRow(auth, rowData) {
     urlString,
     rowData.sku,
   ];
-  rows[rowIndex] = updatedRow;
+
+  // Actualizar la fila en la hoja de cálculo
   const res = await sheets.spreadsheets.values.update({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
     range: `Productos!A${rowIndex + 2}:I${rowIndex + 2}`,
@@ -123,6 +131,7 @@ async function updateRow(auth, rowData) {
       values: [updatedRow],
     },
   });
+
   return res.data;
 }
 
