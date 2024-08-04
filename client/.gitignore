@@ -25,4 +25,5 @@ dist-ssr
 .env
 
 /src/api/axiosConfig.js
+/src/redux/actions/rutaBack.js
 rutaBack.js
