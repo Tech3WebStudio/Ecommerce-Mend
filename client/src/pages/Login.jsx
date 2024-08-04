@@ -36,17 +36,6 @@ export const Login = () => {
             </div>
           </button>
         </div>
-        <div className="mt-6 ml-10 mr-10 w-full">
-          <button
-            className="group h-12 w-full px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
-          >
-            <div className="relative flex items-center space-x-4 justify-center">
-              <span className="flex w-max ml-1 font-semibold tracking-wide text-gray-700 text-sm transition duration-300 group-hover:text-primary sm:text-base">
-                Google
-              </span>
-            </div>
-          </button>
-        </div>
       </div>
     </div>
   );
