@@ -1,3 +1,5 @@
+// sheetsReducer.js
+
 import {
   FETCH_SHEETS,
   ADD_SHEET_ROW,
@@ -5,6 +7,7 @@ import {
   DELETE_SHEET_ROW,
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
+  CLEAR_IMAGES,
 } from "../actions/actions";
 
 const initialState = {
@@ -51,6 +54,11 @@ const sheetsReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case CLEAR_IMAGES: // Caso para limpiar imágenes
+      return {
+        ...state,
+        images: [],
       };
     default:
       return state;

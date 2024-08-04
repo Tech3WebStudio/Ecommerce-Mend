@@ -7,10 +7,10 @@ export const Nav = ({ user }) => {
   return (
     <div className="space-y-6 md:space-y-10 w-full mt-10">
       <h1 className="font-bold text-4xl text-center md:hidden">
-        D<span className="text-teal-600">.</span>
-      </h1>cd
+        N<span className="text-primary">.</span>
+      </h1>
       <h1 className="hidden md:block font-bold text-sm md:text-xl text-center">
-        Dashwind<span className="text-teal-600">.</span>
+        Nina<span className="text-primary">.</span>
       </h1>
       <div id="profile" className="space-y-3">
         <img
@@ -19,7 +19,7 @@ export const Nav = ({ user }) => {
           className="w-10 md:w-16 rounded-full mx-auto"
         />
         <div>
-          <h2 className="font-medium text-xs md:text-sm text-center text-teal-500">
+          <h2 className="font-medium text-xs md:text-sm text-center text-primary">
             {user.name}
           </h2>
           <p className="text-xs text-gray-500 text-center">Administrator</p>
@@ -28,7 +28,7 @@ export const Nav = ({ user }) => {
       <div id="menu" className="flex flex-col w-full space-y-2">
         <Link
           to={"/dashboard"}
-          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
+          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
             className="w-6 h-6 fill-current inline-block"
@@ -42,7 +42,7 @@ export const Nav = ({ user }) => {
         </Link>
         <Link
           to={"/products"}
-          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
+          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@ export const Nav = ({ user }) => {
         </Link>
         <Link
           to={"/sales"}
-          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
+          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ export const Nav = ({ user }) => {
         </Link>
         <button
           onClick={() => doSignOut()}
-          className="flex text-center justify-center gap-2 items-center text-sm border border-gray-200 shadow-sm mb-2 font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
+          className="flex text-center justify-center gap-2 items-center text-sm border border-gray-200 shadow-sm mb-2 font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

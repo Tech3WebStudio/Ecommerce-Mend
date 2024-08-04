@@ -29,7 +29,12 @@ async function authenticateToken(req, res, next) {
     req.user = decodedToken;
 
     // Verifica si el usuario tiene permisos para acceder a los datos de Google Sheets
-    const allowedUsers = ["matiassjv@gmail.com"];
+    const allowedUsers = [
+      "niveyrojulian5@gmail.com",
+      "claudioarganaraz86@gmail.com",
+      "matiassjv@gmail.com",
+      "ryc.general@gmail.com",
+    ];
     if (!allowedUsers.includes(decodedToken.email)) {
       return res.status(403).send("Forbidden: User does not have access");
     }
@@ -52,7 +57,12 @@ async function verifyToken(token) {
 }
 
 async function isAdmin(email) {
-  const adminEmails = ["matiassjv@gmail.com"];
+  const adminEmails = [
+    "niveyrojulian5@gmail.com",
+    "claudioarganaraz86@gmail.com",
+    "matiassjv@gmail.com",
+    "ryc.general@gmail.com",
+  ];
   return adminEmails.includes(email);
 }
 
