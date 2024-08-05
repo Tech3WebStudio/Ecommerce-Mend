@@ -137,7 +137,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <form
-        className="bg-white h-auto text-center shadow-md p-6 rounded-xl w-1/3 md:w-1/2 lg:w-auto m-2 flex flex-col"
+        className="bg-white h-auto text-center shadow-md p-6 rounded-xl md:w-1/2 lg:w-auto m-2 flex flex-col"
         onSubmit={handleSubmit}
       >
         <button

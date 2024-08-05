@@ -2,7 +2,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const SheetsData = ({ data, toggleModal, toggleDeleteModal }) => {
   return (
-    <div>
+    <div className="overflow-x-auto custom-scroll">
       <table className="basic mt-2">
         <thead>
           <tr className="border border-gray-500">
@@ -23,8 +23,8 @@ const SheetsData = ({ data, toggleModal, toggleDeleteModal }) => {
             data.map((row, index) => {
               const imgUrl = row?.url?.split(", ");
 
-              // Determina si la fila debe tener borde rojo
               const rowClass = row.cantidad === "0" ? "bg-red-300" : "";
+              
 
               return (
                 <tr
@@ -79,7 +79,7 @@ const SheetsData = ({ data, toggleModal, toggleDeleteModal }) => {
                     </button>
                     <button
                       className="hover:text-red-500"
-                      onClick={() => toggleDeleteModal(index + 1)}
+                      onClick={() => toggleDeleteModal(row.id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

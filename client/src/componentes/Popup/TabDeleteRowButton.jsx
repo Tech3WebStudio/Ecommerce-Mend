@@ -6,9 +6,7 @@ const DeleteButton = ({ rowIndex, onClose }) => {
   const dispatch = useDispatch();
   const handleDelete = () => {
     dispatch(deleteSheetRow(rowIndex));
-    setTimeout(() => {
-      window.location.reload()
-    }, 2000);
+    onClose();
   };
 
   return (

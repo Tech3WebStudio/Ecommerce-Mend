@@ -11,8 +11,8 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deleteRowIndex, setDeleteRowIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // Número máximo de productos por página
-
+  const [itemsPerPage] = useState(5); 
+  
   const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.sheets.sheetsData);

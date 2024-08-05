@@ -177,6 +177,7 @@ export const fetchSheets = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(res);
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data.products,
@@ -194,6 +195,7 @@ export const addSheetRow = (rowData) => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(rowData);
     toast.loading("Creando producto");
     if (res.status === 200) {
       toast.success("Creado exitosamente");
@@ -231,18 +233,20 @@ export const updateRow = (rowData) => async (dispatch) => {
 export const deleteSheetRow = (rowIndex) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
+    console.log(rowIndex);
     const res = await intance.delete(`/api/sheets/delete/${rowIndex}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    console.log(res);
     if (res.status === 200) {
       toast.success("Eliminado exitosamente");
       dispatch({
         type: DELETE_SHEET_ROW,
         payload: rowIndex,
       });
+      dispatch(fetchSheets())
     }
   } catch (error) {
     console.log(error);

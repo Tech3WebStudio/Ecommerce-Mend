@@ -135,26 +135,51 @@ async function updateRow(auth, rowData) {
   return res.data;
 }
 
-async function deleteRow(auth, rowIndex) {
+async function deleteRowById(auth, id) {
   const sheets = google.sheets({ version: "v4", auth });
+
+  // Obtener todos los datos de la hoja
+  const getRows = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: 'Productos!A:I', // Ajusta el rango según sea necesario
+  });
+
+  const rows = getRows.data.values;
+  let rowIndexToDelete = null;
+
+  // Encontrar la fila con el ID proporcionado
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i][0] == id) { // Asumiendo que la columna ID es la primera (A)
+      rowIndexToDelete = i;
+      break;
+    }
+  }
+
+  if (rowIndexToDelete === null) {
+    throw new Error('ID not found');
+  }
+
+  // Eliminar la fila encontrada
   const requests = [
     {
       deleteDimension: {
         range: {
-          sheetId: 0,
+          sheetId: 0, // Asegúrate de que este sea el ID correcto de la hoja
           dimension: "ROWS",
-          startIndex: rowIndex,
-          endIndex: rowIndex + 1,
+          startIndex: rowIndexToDelete,
+          endIndex: rowIndexToDelete + 1,
         },
       },
     },
   ];
+
   const res = await sheets.spreadsheets.batchUpdate({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
     resource: {
       requests,
     },
   });
+
   return res.data;
 }
 
@@ -357,7 +382,7 @@ module.exports = {
   getSheetData,
   appendRow,
   updateRow,
-  deleteRow,
+  deleteRowById,
   registerSale,
   getSaleData,
   getSaleDataUnitiInfo,
