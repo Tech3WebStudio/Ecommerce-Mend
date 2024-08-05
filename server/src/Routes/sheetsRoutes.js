@@ -10,7 +10,9 @@ const {
   getSaleData,
   getSaleDataUnitiInfo,
   increaseStock,
-  decreaseStock
+  decreaseStock,
+  getProductsByCategory,
+  getAllCategories
 } = require("../Controllers/sheets/sheetsController.js");
 const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
@@ -120,5 +122,28 @@ sheetsRouter.put("/decrease-stock", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+sheetsRouter.get("/data/:category", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const category = req.params.category;
+    const data = await getProductsByCategory(auth, category);
+    res.json(data);
+  } catch (error) {
+    console.log({ error: error.message });
+    res.status(500).send(error.message);
+  }
+});
+
+sheetsRouter.get("/categories", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const categories = await getAllCategories(auth);
+    res.json(categories);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 
 module.exports = sheetsRouter;

@@ -330,6 +330,28 @@ async function decreaseStock(auth, productId, amount) {
   return res.data;
 }
 
+async function getProductsByCategory(auth, category) {
+  try {
+    const { products } = await getSheetData(auth);
+    const filteredProducts = products.filter(product => product.categoria === category);
+    return { products: filteredProducts };
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
+async function getAllCategories(auth) {
+  try {
+    const { products } = await getSheetData(auth);
+    const categories = [...new Set(products.map(product => product.categoria))];
+    return categories;
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
 module.exports = {
   authorize,
   getSheetData,
@@ -340,5 +362,7 @@ module.exports = {
   getSaleData,
   getSaleDataUnitiInfo,
   increaseStock,
-  decreaseStock
+  decreaseStock,
+  getProductsByCategory,
+  getAllCategories
 };
