@@ -1,6 +1,6 @@
 const SheetsSales = ({ data, onViewSale }) => {
     return (
-      <div className="w-screen overflow-x-auto custom-scroll">
+      <div className="overflow-x-auto custom-scroll">
         <table className="basic mt-2">
           <thead>
             <tr>
