@@ -1,16 +1,16 @@
-// import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { doSignOut } from "../../firebase/auth";
-// import { logout } from "../../redux/actions/actions";
 
-export const Nav = ({ user }) => {
+export const Nav = ({ user, showNav }) => {
   return (
-    <div className="space-y-6 md:space-y-10 w-full mt-10">
+    <div className={`space-y-6 md:space-y-10 w-full mt-10 ${
+      showNav ? "left-0 " : "-left-full "
+    }md:left-0 transition-all duration-300 ease-in-out md:relative fixed top-0 left-0 h-full md:h-auto bg-pink-100 z-30`}>
       <h1 className="font-bold text-4xl text-center md:hidden">
-        D<span className="text-teal-600">.</span>
+        N<span className="text-primary">.</span>
       </h1>
       <h1 className="hidden md:block font-bold text-sm md:text-xl text-center">
-        Dashwind<span className="text-teal-600">.</span>
+        Nina<span className="text-primary">.</span>
       </h1>
       <div id="profile" className="space-y-3">
         <img
@@ -19,7 +19,7 @@ export const Nav = ({ user }) => {
           className="w-10 md:w-16 rounded-full mx-auto"
         />
         <div>
-          <h2 className="font-medium text-xs md:text-sm text-center text-teal-500">
+          <h2 className="font-medium text-xs md:text-sm text-center text-primary">
             {user.name}
           </h2>
           <p className="text-xs text-gray-500 text-center">Administrator</p>
@@ -28,7 +28,7 @@ export const Nav = ({ user }) => {
       <div id="menu" className="flex flex-col w-full space-y-2">
         <Link
           to={"/dashboard"}
-          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
+          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
             className="w-6 h-6 fill-current inline-block"
@@ -42,7 +42,7 @@ export const Nav = ({ user }) => {
         </Link>
         <Link
           to={"/products"}
-          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
+          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,23 +59,65 @@ export const Nav = ({ user }) => {
 
           <span className="">Products</span>
         </Link>
-        <button
-          onClick={() => doSignOut()}
-          className="flex text-center justify-center gap-2 items-center text-sm border border-gray-200 shadow-sm mb-2 font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white rounded-md transition duration-150 ease-in-out"
+        <Link
+          to={"/sales"}
+          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="w-4 h-4 fill-current inline-block"
+            className="w-6 h-6 fill-current inline-block"
           >
             <path
               fillRule="evenodd"
-              d="M12 2.25a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM6.166 5.106a.75.75 0 0 1 0 1.06 8.25 8.25 0 1 0 11.668 0 .75.75 0 1 1 1.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 0 1 1.06 0Z"
+              d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm4.5 7.5a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5H8.25a.75.75 0 0 1-.75-.75Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5h-3.75a.75.75 0 0 1-.75-.75Zm6-1.5a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75ZM4.5 9a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5H5.25A.75.75 0 0 1 4.5 9Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H7.5A.75.75 0 0 1 6.75 9Zm6 1.5a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75Zm4.5 0a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0v-3.75a.75.75 0 0 1 .75-.75Zm4.5 0a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0v-3.75a.75.75 0 0 1 .75-.75Zm5.25.75a.75.75 0 0 0-1.5 0v2.25a.75.75 0 0 0 1.5 0v-2.25ZM7.5 9a.75.75 0 0 0-.75.75v.75a.75.75 0 0 0 1.5 0v-.75A.75.75 0 0 0 7.5 9Zm3 0a.75.75 0 0 0-.75.75v.75a.75.75 0 0 0 1.5 0v-.75A.75.75 0 0 0 10.5 9Zm3 .75a.75.75 0 0 1 .75-.75h.75a.75.75 0 0 1 0 1.5h-.75a.75.75 0 0 1-.75-.75Zm3-.75a.75.75 0 0 0-.75.75v.75a.75.75 0 0 0 1.5 0v-.75a.75.75 0 0 0-.75-.75Z"
               clipRule="evenodd"
             />
           </svg>
-          Salir
+
+          <span className="">Sales</span>
+        </Link>
+        <Link
+          to={"/support"}
+          className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-6 h-6 fill-current inline-block"
+          >
+            <path
+              fillRule="evenodd"
+              d="M6.25 4.5A2.25 2.25 0 0 0 4 6.75v2.5h1.55a5.47 5.47 0 0 1 3.68-2.977 3.25 3.25 0 1 1 5.54 0 5.47 5.47 0 0 1 3.68 2.977H20v-2.5a2.25 2.25 0 0 0-2.25-2.25H6.25ZM22 11.25a.75.75 0 0 0-.75-.75h-1.235a5.485 5.485 0 0 0-1.275-1.528v-.222a.75.75 0 0 0-.75-.75h-1.5a.75.75 0 0 0-.75.75v.176a5.499 5.499 0 0 0-10.19 0v-.176a.75.75 0 0 0-.75-.75h-1.5a.75.75 0 0 0-.75.75v.222a5.486 5.486 0 0 0-1.275 1.528H2.75a.75.75 0 0 0-.75.75v4.5a.75.75 0 0 0 .75.75h2.027a5.48 5.48 0 0 0 1.273 1.532l-.88 1.467a.75.75 0 1 0 1.292.75l.87-1.451a5.497 5.497 0 0 0 7.194 0l.87 1.451a.75.75 0 1 0 1.292-.75l-.88-1.467a5.479 5.479 0 0 0 1.272-1.532H21.25a.75.75 0 0 0 .75-.75v-4.5Zm-5.5 4.5a4 4 0 1 1-8 0v-4a4 4 0 1 1 8 0v4Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span className="">Support</span>
+        </Link>
+        <button
+          className="w-full text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
+          onClick={() => doSignOut()}
+        >
+          <svg
+            className="w-6 h-6 fill-current inline-block"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 4a1 1 0 0 1 1-1h7a1 1 0 1 1 0 2H5v10h6a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1V4z"
+              clipRule="evenodd"
+            />
+            <path
+              fillRule="evenodd"
+              d="M12.293 9.293a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L13.586 14H8a1 1 0 1 1 0-2h5.586l-1.293-1.293a1 1 0 0 1 0-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span className="">Sign Out</span>
         </button>
       </div>
     </div>

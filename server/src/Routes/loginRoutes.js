@@ -1,7 +1,8 @@
+require("dotenv").config();
 const { Router } = require("express");
 const loginRoutes = Router();
 const { verifyToken, isAdmin } = require("../Middleware/authMiddleware");
-const authThird = require("../Controllers/login/login");
+const { authThird } = require("../Controllers/login/login");
 
 loginRoutes.post("/third", async (req, res) => {
   try {

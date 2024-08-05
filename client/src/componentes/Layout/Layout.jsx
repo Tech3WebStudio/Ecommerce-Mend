@@ -1,10 +1,12 @@
 import toast from "react-hot-toast";
 import { Nav } from "../Nav/Nav";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export function Layout({ children, isAuth }) {
+  const [showNav, setShowNav] = useState(false);
   const user = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (!isAuth) {
       toast.loading("Redirigiendo...");
@@ -25,9 +27,12 @@ export function Layout({ children, isAuth }) {
   }
 
   return (
-    <div id="view" className="h-full w-full flex flex-row">
-      <div className="md:hidden flex items-center justify-center p-4">
-        <button className="p-2 border-2 bg-white rounded-md border-gray-200 shadow-lg text-gray-500 focus:bg-teal-500 focus:outline-none focus:text-white absolute top-0 left-0 sm:hidden">
+    <div className="h-full w-full flex flex-col md:flex-row bg-pink-50 relative">
+      <div className="md:hidden flex items-center justify-between p-4 bg-pink-50 w-full">
+        <button
+          onClick={() => setShowNav(!showNav)}
+          className="p-2 border-2 border-gray-200 shadow-lg text-black focus:bg-primary focus:outline-none focus:text-pink-300 z-50 rounded-full"
+        >
           <svg
             className="w-5 h-5 fill-current"
             fill="currentColor"
@@ -44,11 +49,15 @@ export function Layout({ children, isAuth }) {
       </div>
       <div
         id="sidebar"
-        className="bg-white max-h-full md:h-screen flex shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
+        className={`bg-pink-100 h-full md:h-auto flex px-3 w-full md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out transform ${
+          showNav ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 fixed md:static z-40 top-0 left-0 md:w-auto max-w-full md:max-w-none`}
       >
-        <Nav user={user} />
+        <Nav showNav={showNav} user={user} />
       </div>
-      <div className="flex-grow p-4 w-screen m-2">{children}</div>
+      <div className="flex-grow p-4 w-full md:w-auto m-2 bg-pink-50">
+        {children}
+      </div>
     </div>
   );
 }
