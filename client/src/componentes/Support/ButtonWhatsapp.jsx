@@ -1,17 +1,12 @@
-import React from "react";
-import imgWhatsapp from "../../assets/icons8-whatsapp.svg";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+// /src/componentes/Support/ButtonWhatsapp.jsx
 
-const ButtonWhatsapp = ({ childen, celular }) => {
+import React from 'react';
+
+const ButtonWhatsapp = ({ whatsappLink, logo, name }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <div>
-        <h2>Quieres hablar con {childen}?</h2>
-        <a href={`https://wa.me/${celular}`} target="_blank">
-          <LazyLoadImage src={imgWhatsapp} />
-        </a>
-      </div>
-    </div>
+    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+      <img src={logo} alt={`${name} WhatsApp`} style={{ width: 50, height: 50, borderRadius: '50%', margin: 10 }} />
+    </a>
   );
 };
 
