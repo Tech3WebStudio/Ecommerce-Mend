@@ -16,9 +16,6 @@ const DisplayProductDashboard = ({ products }) => {
   const [formaPago, setFormaPago] = useState("");
   const [nombreCliente, setNombreCliente] = useState("");
   const dispatch = useDispatch();
-
-  console.log(cartItems);
-
   const calculateTotal = () => {
     const total = cartItems.reduce((acc, product) => {
       const precio = parseInt(product.precio);

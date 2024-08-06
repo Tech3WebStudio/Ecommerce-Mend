@@ -32,6 +32,61 @@ export const GET_SALES = "GET_SALES";
 export const GET_SALE_BY_ID = "GET_SALE_BY_ID";
 export const CREATED_SALE = "CREATED_SALE";
 
+export const CREATED_SELLER = "CREATED_SELLER";
+export const AUTH_SELLER = "AUTH_SELLER";
+export const FETCH_USERS = "FETCH_USERS";
+
+//USER
+export const authenticationUser = (email) => async (dispatch) => {
+  try {
+    const response = await intance.post(`/api/user/auth/${email}`);
+    console.log(response);
+    if (response.status === 200) {
+      dispatch({
+        type: AUTH_SELLER,
+        payload: response.data,
+      });
+      toast.success("Usuario creado y guardado");
+    }
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    toast.error("Error al crear usuario");
+  }
+};
+
+export const createUser = (email, name, uid, role) => async (dispatch) => {
+  try {
+    const data = { email, name, uid, role };
+    const response = await intance.post(`/api/user/create`, data);
+    if (response.ok) {
+      dispatch({
+        type: CREATED_SELLER,
+      });
+      dispatch(fetchUsers());
+      toast.success("Usuario creado y guardado");
+    }
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    toast.error("Error al crear usuario");
+  }
+};
+
+export const fetchUsers = () => async (dispatch) => {
+  try {
+    const response = await intance.get(`/api/user/users`);
+    console.log(response);
+    if (response.status === 200) {
+      dispatch({
+        type: FETCH_USERS,
+        payload: response.data,
+      });
+    }
+  } catch (error) {
+    console.error("Error al mostrar usuario:", error);
+    toast.error("Error al mostrar usuario");
+  }
+};
+
 //CARRITO
 export const addToCart = (product) => ({
   type: ADD_TO_CART,
@@ -175,7 +230,7 @@ export const fetchSheets = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res);
+    // console.log(res);
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data.products,
@@ -244,7 +299,7 @@ export const deleteSheetRow = (rowIndex) => async (dispatch) => {
         type: DELETE_SHEET_ROW,
         payload: rowIndex,
       });
-      dispatch(fetchSheets())
+      dispatch(fetchSheets());
     }
   } catch (error) {
     console.log(error);

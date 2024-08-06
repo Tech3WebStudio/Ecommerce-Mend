@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { doSignInWithGoogle } from "../firebase/auth";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { FormLogin } from "../componentes/Users/FormLogin";
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,10 @@ export const Login = () => {
       </div>
       <div className="lg:p-36 md:p-52 sm:20 p-8 w-full h-full lg:w-1/2 flex justify-center gap-2 items-center flex-col">
         <h1 className="text-2xl font-semibold mb-4 text-center">Login</h1>
+        <div className="mt-6 ml-10 mr-10 w-full">
+          <FormLogin />
+        </div>
+        <div className="border p-0 border-gray-300 w-full mt-6"></div>
         <div className="mt-6 ml-10 mr-10 w-full">
           <button
             onClick={onGoogleSignIn}
