@@ -38,7 +38,6 @@ userRoutes.post("/create", async (req, res) => {
 userRoutes.post("/auth/:email", async (req, res) => {
   try {
     const { email } = req.params;
-    console.log(email);
     const authClient = await authorize();
     const sellerExists = await getUserByEmail(authClient, email);
 
