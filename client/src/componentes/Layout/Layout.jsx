@@ -9,10 +9,10 @@ export function Layout({ children, isAuth }) {
 
   useEffect(() => {
     if (!isAuth) {
-      toast.loading("Redirigiendo...");
+      toast.loading("No autorizado, redirigiendo...");
       setTimeout(() => {
         window.location.href = "/";
-      }, 3000);
+      }, 1000);
     }
   }, [isAuth]);
 

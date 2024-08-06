@@ -135,26 +135,51 @@ async function updateRow(auth, rowData) {
   return res.data;
 }
 
-async function deleteRow(auth, rowIndex) {
+async function deleteRowById(auth, id) {
   const sheets = google.sheets({ version: "v4", auth });
+
+  // Obtener todos los datos de la hoja
+  const getRows = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: 'Productos!A:I', // Ajusta el rango según sea necesario
+  });
+
+  const rows = getRows.data.values;
+  let rowIndexToDelete = null;
+
+  // Encontrar la fila con el ID proporcionado
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i][0] == id) { // Asumiendo que la columna ID es la primera (A)
+      rowIndexToDelete = i;
+      break;
+    }
+  }
+
+  if (rowIndexToDelete === null) {
+    throw new Error('ID not found');
+  }
+
+  // Eliminar la fila encontrada
   const requests = [
     {
       deleteDimension: {
         range: {
-          sheetId: 0,
+          sheetId: 0, // Asegúrate de que este sea el ID correcto de la hoja
           dimension: "ROWS",
-          startIndex: rowIndex,
-          endIndex: rowIndex + 1,
+          startIndex: rowIndexToDelete,
+          endIndex: rowIndexToDelete + 1,
         },
       },
     },
   ];
+
   const res = await sheets.spreadsheets.batchUpdate({
     spreadsheetId: process.env.GOOGLE_SHEETS_ID,
     resource: {
       requests,
     },
   });
+
   return res.data;
 }
 
@@ -292,13 +317,77 @@ async function getSaleData(auth) {
   }
 }
 
+async function increaseStock(auth, productId, amount) {
+  const sheets = google.sheets({ version: "v4", auth });
+  const { rows } = await getSheetData(auth);
+  const rowIndex = rows.findIndex((row) => row[0] === productId);
+  if (rowIndex === -1) {
+    throw new Error("ID no encontrado");
+  }
+  rows[rowIndex][5] = parseInt(rows[rowIndex][5]) + amount; // Suponiendo que la columna 5 es la cantidad en stock
+  const res = await sheets.spreadsheets.values.update({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: `Productos!A${rowIndex + 2}:I${rowIndex + 2}`,
+    valueInputOption: "RAW",
+    resource: {
+      values: [rows[rowIndex]],
+    },
+  });
+  return res.data;
+}
+
+async function decreaseStock(auth, productId, amount) {
+  const sheets = google.sheets({ version: "v4", auth });
+  const { rows } = await getSheetData(auth);
+  const rowIndex = rows.findIndex((row) => row[0] === productId);
+  if (rowIndex === -1) {
+    throw new Error("ID no encontrado");
+  }
+  rows[rowIndex][5] = parseInt(rows[rowIndex][5]) - amount; // Suponiendo que la columna 5 es la cantidad en stock
+  const res = await sheets.spreadsheets.values.update({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: `Productos!A${rowIndex + 2}:I${rowIndex + 2}`,
+    valueInputOption: "RAW",
+    resource: {
+      values: [rows[rowIndex]],
+    },
+  });
+  return res.data;
+}
+
+async function getProductsByCategory(auth, category) {
+  try {
+    const { products } = await getSheetData(auth);
+    const filteredProducts = products.filter(product => product.categoria === category);
+    return { products: filteredProducts };
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
+async function getAllCategories(auth) {
+  try {
+    const { products } = await getSheetData(auth);
+    const categories = [...new Set(products.map(product => product.categoria))];
+    return categories;
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
 module.exports = {
   authorize,
   getSheetData,
   appendRow,
   updateRow,
-  deleteRow,
+  deleteRowById,
   registerSale,
   getSaleData,
-  getSaleDataUnitiInfo
+  getSaleDataUnitiInfo,
+  increaseStock,
+  decreaseStock,
+  getProductsByCategory,
+  getAllCategories
 };

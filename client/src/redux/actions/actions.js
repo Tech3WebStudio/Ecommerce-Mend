@@ -12,6 +12,8 @@ export const DELETE_SHEET_ROW = "DELETE_SHEET_ROW";
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
 export const CLEAR_IMAGES = "CLEAR_IMAGES";
+export const GET_CATEGORIES = "GET_CATEGORIES";
+export const FILTER_CATEGORY = "FILTER_CATEGOTY";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
@@ -31,6 +33,61 @@ export const DECREMENT_QUANTITY = "DECREMENT_QUANTITY";
 export const GET_SALES = "GET_SALES";
 export const GET_SALE_BY_ID = "GET_SALE_BY_ID";
 export const CREATED_SALE = "CREATED_SALE";
+
+export const CREATED_SELLER = "CREATED_SELLER";
+export const AUTH_SELLER = "AUTH_SELLER";
+export const FETCH_USERS = "FETCH_USERS";
+
+//USER
+export const authenticationUser = (email) => async (dispatch) => {
+  try {
+    const response = await intance.post(`/api/user/auth/${email}`);
+    console.log(response);
+    if (response.status === 200) {
+      dispatch({
+        type: AUTH_SELLER,
+        payload: response.data,
+      });
+      toast.success("Usuario creado y guardado");
+    }
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    toast.error("Error al crear usuario");
+  }
+};
+
+export const createUser = (email, name, uid, role) => async (dispatch) => {
+  try {
+    const data = { email, name, uid, role };
+    const response = await intance.post(`/api/user/create`, data);
+    if (response.ok) {
+      dispatch({
+        type: CREATED_SELLER,
+      });
+      dispatch(fetchUsers());
+      toast.success("Usuario creado y guardado");
+    }
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    toast.error("Error al crear usuario");
+  }
+};
+
+export const fetchUsers = () => async (dispatch) => {
+  try {
+    const response = await intance.get(`/api/user/users`);
+    console.log(response);
+    if (response.status === 200) {
+      dispatch({
+        type: FETCH_USERS,
+        payload: response.data,
+      });
+    }
+  } catch (error) {
+    console.error("Error al mostrar usuario:", error);
+    toast.error("Error al mostrar usuario");
+  }
+};
 
 //CARRITO
 export const addToCart = (product) => ({
@@ -175,6 +232,7 @@ export const fetchSheets = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    // console.log(res);
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data.products,
@@ -192,6 +250,7 @@ export const addSheetRow = (rowData) => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(rowData);
     toast.loading("Creando producto");
     if (res.status === 200) {
       toast.success("Creado exitosamente");
@@ -229,20 +288,49 @@ export const updateRow = (rowData) => async (dispatch) => {
 export const deleteSheetRow = (rowIndex) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
+    console.log(rowIndex);
     const res = await intance.delete(`/api/sheets/delete/${rowIndex}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    console.log(res);
     if (res.status === 200) {
       toast.success("Eliminado exitosamente");
       dispatch({
         type: DELETE_SHEET_ROW,
         payload: rowIndex,
       });
+      dispatch(fetchSheets());
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const filterByCategory = (category) => async (dispatch) => {
+  const token = localStorage.getItem("authToken");
+  try {
+    const res = await axios.get(`/api/sheets/data/${category}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch({
+      type: FILTER_CATEGORY,
+      payload: res.data.products,
+    });
+  } catch (error) {
+    console.error("Error fetching sheets by category:", error);
+  }
+};
+
+export const getCategories = () => async dispatch => {
+  try {
+    const response = await fetch('/api/categories');
+    const categories = await response.json();
+    dispatch({ type: GET_CATEGORIES, payload: categories });
+  } catch (error) {
+    console.error('Error fetching categories:', error);
   }
 };

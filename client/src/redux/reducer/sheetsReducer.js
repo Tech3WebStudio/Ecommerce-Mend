@@ -8,6 +8,8 @@ import {
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
   CLEAR_IMAGES,
+  FILTER_CATEGORY,
+  GET_CATEGORIES,
 } from "../actions/actions";
 
 const initialState = {
@@ -15,6 +17,8 @@ const initialState = {
   images: [],
   loading: false,
   error: null,
+  filterProducts: [],
+  categories: []
 };
 
 const sheetsReducer = (state = initialState, action) => {
@@ -60,6 +64,18 @@ const sheetsReducer = (state = initialState, action) => {
         ...state,
         images: [],
       };
+
+    case FILTER_CATEGORY: // Productos filtrados por categoria  
+      return {
+        ...state,
+        filterProducts: action.payload,
+      }
+
+    case GET_CATEGORIES: // Obtener todas las categorias
+      return {
+        ...state,
+        categories: action.payload,
+      };  
     default:
       return state;
   }

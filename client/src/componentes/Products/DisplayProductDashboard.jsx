@@ -15,9 +15,8 @@ const DisplayProductDashboard = ({ products }) => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [formaPago, setFormaPago] = useState("");
   const [nombreCliente, setNombreCliente] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
-
-  console.log(cartItems);
 
   const calculateTotal = () => {
     const total = cartItems.reduce((acc, product) => {
@@ -28,6 +27,7 @@ const DisplayProductDashboard = ({ products }) => {
 
     return total.toFixed(2);
   };
+
   const handleFormaPagoChange = (forma) => {
     setFormaPago(forma);
   };
@@ -101,12 +101,25 @@ const DisplayProductDashboard = ({ products }) => {
     dispatch(removeFromCart(productId));
   };
 
+  // Función para manejar el cambio en el campo de búsqueda
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Filtrar los productos según el término de búsqueda
+  const filteredProducts = products.filter((product) => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return (
+      product.nombre.toLowerCase().includes(lowerCaseSearchTerm) ||
+      product.sku.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+  });
+
   return (
     <div className="container mx-auto w-full bg-white">
       <div className="flex lg:flex-row flex-col-reverse shadow-lg">
         {/* Productos */}
         <div className="w-full lg:w-3/5 h-screen overflow-y-scroll shadow-lg">
-          {/* ... */}
           <div className="flex flex-row justify-between items-center px-5 mt-5">
             <div className="text-gray-800">
               <div className="font-bold text-xl flex gap-2 justify-center items-center">
@@ -132,14 +145,23 @@ const DisplayProductDashboard = ({ products }) => {
             </div>
           </div>
           <div className="mt-5 flex flex-row px-5">
-            <span className="px-5 py-1 bg-primary rounded-2xl text-white text-sm mr-4">
-              All items
-            </span>
+            <button className="px-5 py-1 bg-primary rounded-2xl text-white text-sm mr-4">
+              Todos
+            </button>
+          </div>
+          <div className="mt-5 px-5">
+            <input
+              type="text"
+              placeholder="Buscar por nombre o SKU"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+              className="border p-2 rounded-md w-full border-gray-400"
+            />
           </div>
           <div className="grid grid-cols-3 px-3 py-3 gap-4 mt-5 overflow-y-auto h-auto">
-            {products &&
-              products?.map((product, i) => {
-                const imageUrls = product?.url?.split(", ");
+            {filteredProducts &&
+              filteredProducts.map((product, i) => {
+                const imageUrls = product.url?.split(", ");
                 return (
                   <button
                     key={i}
@@ -216,7 +238,7 @@ const DisplayProductDashboard = ({ products }) => {
                           -
                         </button>
                         <span className="font-semibold mx-4">
-                          {item?.cantidad}
+                          {item?.cantidad || 1}
                         </span>
                         <button
                           onClick={() => handleQuantityChange(i, "increase")}
@@ -225,80 +247,54 @@ const DisplayProductDashboard = ({ products }) => {
                           +
                         </button>
                       </div>
-                      <div className="font-semibold text-lg w-16 text-center">
-                        ${item?.precio * item?.cantidad}
-                      </div>
+                      <span className="w-16 text-center text-sm">
+                        ${item?.precio}
+                      </span>
                       <button
                         onClick={() => handleRemoveFromCart(i)}
-                        className="text-red-500 font-semibold"
+                        className="text-sm font-semibold text-red-500"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="size-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
+                        Remove
                       </button>
                     </div>
                   );
                 })
-              : "Carrito vacío"}
+              : (
+                <p className="text-gray-500">Your cart is empty.</p>
+              )}
           </div>
-          <div className="px-5 mt-5">
-            <div className="py-4 border border-gray-300 rounded-md shadow-lg">
-              <div className="px-4 flex justify-between">
-                <span className="font-semibold text-sm">Subtotal</span>
-                <span className="font-bold">${calculateTotal()}</span>
-              </div>
-              <div className="py-4 px-4 flex flex-col">
-                <input
-                  type="text"
-                  placeholder="Nombre del cliente"
-                  value={nombreCliente}
-                  onChange={handleNombreClienteChange}
-                  className="border p-2 rounded-md mb-2"
-                />
-                <div className="flex flex-row justify-between mb-2">
-                  <span className="font-semibold">Forma de Pago</span>
-                  <div className="flex flex-row gap-2">
-                    <button
-                      onClick={() => handleFormaPagoChange("Efectivo")}
-                      className={`px-4 py-2 rounded-md ${
-                        formaPago === "Efectivo"
-                          ? "bg-secondary text-white"
-                          : "bg-pink-200 text-white"
-                      }`}
-                    >
-                      Efectivo
-                    </button>
-                    <button
-                      onClick={() => handleFormaPagoChange("Tarjeta")}
-                      className={`px-4 py-2 rounded-md ${
-                        formaPago === "Tarjeta"
-                          ? "bg-secondary text-white"
-                          : "bg-pink-200 text-white"
-                      }`}
-                    >
-                      Tarjeta
-                    </button>
-                  </div>
-                </div>
-                <button
-                  onClick={handleCreateVenta}
-                  className="px-4 py-2 bg-primary hover:bg-secondary text-white rounded-md w-full"
-                >
-                  Confirmar Venta
-                </button>
-              </div>
+          <div className="px-5 py-4 border-t mt-5">
+            <div className="flex justify-between mb-2">
+              <span className="font-semibold">Total</span>
+              <span className="font-semibold">${calculateTotal()}</span>
             </div>
+            <div className="mb-2">
+              <label className="block mb-1 font-semibold">Forma de Pago</label>
+              <select
+                value={formaPago}
+                onChange={(e) => handleFormaPagoChange(e.target.value)}
+                className="w-full border p-2 rounded-md"
+              >
+                <option value="">Seleccionar Forma de Pago</option>
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta</option>
+              </select>
+            </div>
+            <div className="mb-2">
+              <label className="block mb-1 font-semibold">Nombre del Cliente</label>
+              <input
+                type="text"
+                value={nombreCliente}
+                onChange={handleNombreClienteChange}
+                className="w-full border p-2 rounded-md"
+              />
+            </div>
+            <button
+              onClick={handleCreateVenta}
+              className="w-full bg-primary text-white py-2 rounded-md"
+            >
+              Crear Venta
+            </button>
           </div>
         </div>
       </div>

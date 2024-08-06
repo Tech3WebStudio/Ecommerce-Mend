@@ -24,6 +24,7 @@ const SheetsData = ({ data, toggleModal, toggleDeleteModal }) => {
               const imgUrl = row?.url?.split(", ");
 
               const rowClass = row.cantidad === "0" ? "bg-red-300" : "";
+              
 
               return (
                 <tr
@@ -78,7 +79,7 @@ const SheetsData = ({ data, toggleModal, toggleDeleteModal }) => {
                     </button>
                     <button
                       className="hover:text-red-500"
-                      onClick={() => toggleDeleteModal(index + 1)}
+                      onClick={() => toggleDeleteModal(row.id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

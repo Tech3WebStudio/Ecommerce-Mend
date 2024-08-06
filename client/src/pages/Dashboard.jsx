@@ -7,10 +7,9 @@ import { fetchSheets } from "../redux/actions/actions";
 const Dashboard = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const products = useSelector((state) => state.sheets.sheetsData);
+  const filterProducts = useSelector((state) => state.sheets.filterProducts);
 
   const dispatch = useDispatch();
-
-  
 
   useEffect(() => {
     dispatch(fetchSheets());
