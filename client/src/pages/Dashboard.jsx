@@ -10,9 +10,6 @@ const Dashboard = () => {
   const filterProducts = useSelector((state) => state.sheets.filterProducts);
 
   const dispatch = useDispatch();
- 
-
-  
 
   useEffect(() => {
     dispatch(fetchSheets());

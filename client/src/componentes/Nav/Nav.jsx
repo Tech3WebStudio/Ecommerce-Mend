@@ -47,7 +47,7 @@ export const Nav = ({ user, showNav }) => {
           </svg>
           <span className="">Dashboard</span>
         </Link>
-        {user.rol && user.rol !== "seller" ? (
+        {user.rol !== "seller" ? (
           <>
             <Link
               to={"/products"}
