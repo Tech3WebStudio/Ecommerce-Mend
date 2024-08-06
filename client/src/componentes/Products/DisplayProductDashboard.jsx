@@ -129,9 +129,9 @@ const DisplayProductDashboard = ({ products }) => {
             </div>
           </div>
           <div className="mt-5 flex flex-row px-5">
-            <span className="px-5 py-1 bg-primary rounded-2xl text-white text-sm mr-4">
-              All items
-            </span>
+            <button className="px-5 py-1 bg-primary rounded-2xl text-white text-sm mr-4">
+              Todos
+            </button>
           </div>
           <div className="grid grid-cols-3 px-3 py-3 gap-4 mt-5 overflow-y-auto h-auto">
             {products &&

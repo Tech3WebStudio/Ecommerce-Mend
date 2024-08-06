@@ -317,6 +317,66 @@ async function getSaleData(auth) {
   }
 }
 
+async function increaseStock(auth, productId, amount) {
+  const sheets = google.sheets({ version: "v4", auth });
+  const { rows } = await getSheetData(auth);
+  const rowIndex = rows.findIndex((row) => row[0] === productId);
+  if (rowIndex === -1) {
+    throw new Error("ID no encontrado");
+  }
+  rows[rowIndex][5] = parseInt(rows[rowIndex][5]) + amount; // Suponiendo que la columna 5 es la cantidad en stock
+  const res = await sheets.spreadsheets.values.update({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: `Productos!A${rowIndex + 2}:I${rowIndex + 2}`,
+    valueInputOption: "RAW",
+    resource: {
+      values: [rows[rowIndex]],
+    },
+  });
+  return res.data;
+}
+
+async function decreaseStock(auth, productId, amount) {
+  const sheets = google.sheets({ version: "v4", auth });
+  const { rows } = await getSheetData(auth);
+  const rowIndex = rows.findIndex((row) => row[0] === productId);
+  if (rowIndex === -1) {
+    throw new Error("ID no encontrado");
+  }
+  rows[rowIndex][5] = parseInt(rows[rowIndex][5]) - amount; // Suponiendo que la columna 5 es la cantidad en stock
+  const res = await sheets.spreadsheets.values.update({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: `Productos!A${rowIndex + 2}:I${rowIndex + 2}`,
+    valueInputOption: "RAW",
+    resource: {
+      values: [rows[rowIndex]],
+    },
+  });
+  return res.data;
+}
+
+async function getProductsByCategory(auth, category) {
+  try {
+    const { products } = await getSheetData(auth);
+    const filteredProducts = products.filter(product => product.categoria === category);
+    return { products: filteredProducts };
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
+async function getAllCategories(auth) {
+  try {
+    const { products } = await getSheetData(auth);
+    const categories = [...new Set(products.map(product => product.categoria))];
+    return categories;
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
 module.exports = {
   authorize,
   getSheetData,
@@ -325,5 +385,9 @@ module.exports = {
   deleteRowById,
   registerSale,
   getSaleData,
-  getSaleDataUnitiInfo
+  getSaleDataUnitiInfo,
+  increaseStock,
+  decreaseStock,
+  getProductsByCategory,
+  getAllCategories
 };

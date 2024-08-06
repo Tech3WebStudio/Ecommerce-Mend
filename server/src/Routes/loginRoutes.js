@@ -9,8 +9,11 @@ const { authorize } = require("../Controllers/sheets/sheetsController");
 loginRoutes.post("/third", async (req, res) => {
   try {
     const { token } = req.body;
+    console.log(token);
     const decodedToken = await verifyToken(token);
+    console.log(decodedToken);
     const email = decodedToken.email;
+    console.log(email);
 
     const userData = await authThird(decodedToken);
     if (await isAdmin(email)) {

@@ -12,6 +12,8 @@ export const DELETE_SHEET_ROW = "DELETE_SHEET_ROW";
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
 export const CLEAR_IMAGES = "CLEAR_IMAGES";
+export const GET_CATEGORIES = "GET_CATEGORIES";
+export const FILTER_CATEGORY = "FILTER_CATEGOTY";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
@@ -303,5 +305,32 @@ export const deleteSheetRow = (rowIndex) => async (dispatch) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const filterByCategory = (category) => async (dispatch) => {
+  const token = localStorage.getItem("authToken");
+  try {
+    const res = await axios.get(`/api/sheets/data/${category}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch({
+      type: FILTER_CATEGORY,
+      payload: res.data.products,
+    });
+  } catch (error) {
+    console.error("Error fetching sheets by category:", error);
+  }
+};
+
+export const getCategories = () => async dispatch => {
+  try {
+    const response = await fetch('/api/categories');
+    const categories = await response.json();
+    dispatch({ type: GET_CATEGORIES, payload: categories });
+  } catch (error) {
+    console.error('Error fetching categories:', error);
   }
 };
