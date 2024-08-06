@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Layout } from "../componentes/Layout/Layout";
 import SheetsData from "../componentes/Sheets/SheetsData";
 import TabFormCreateProduct from "../componentes/Popup/TabFormCreateProduct";
-import TabDeleteRowButton from "../componentes/Popup/TabDeleteRowButton"; // Importar TabDeleteRowButton
+import TabDeleteRowButton from "../componentes/Popup/TabDeleteRowButton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSheets } from "../redux/actions/actions";
 
@@ -13,6 +13,8 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [visiblePages, setVisiblePages] = useState([1, 2, 3, 4]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
@@ -21,6 +23,10 @@ const Products = () => {
   useEffect(() => {
     dispatch(fetchSheets());
   }, [dispatch]);
+
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
 
   const toggleModal = (product) => {
     setSelectedProduct(product);
@@ -31,11 +37,26 @@ const Products = () => {
     setDeleteRowIndex(index);
   };
 
+  const handleSearch = (event) => {
+    const value = event.target.value.toLowerCase();
+    setSearchTerm(value);
+
+    const filtered = data.filter((item) =>
+      item.nombre.toLowerCase().includes(value) ||
+      item.categoria.toLowerCase().includes(value) ||
+      item.sku.toLowerCase().includes(value)
+    );
+
+    setFilteredData(filtered);
+    setCurrentPage(1);
+    updateVisiblePages(1);
+  };
+
   // Lógica de paginación
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil((data?.length || 0) / itemsPerPage);
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -89,6 +110,15 @@ const Products = () => {
         >
           Crear nuevo producto
         </button>
+      </div>
+      <div className="mt-4">
+        <input
+          type="text"
+          placeholder="Buscar por nombre, categoría o SKU"
+          value={searchTerm}
+          onChange={handleSearch}
+          className="p-2 border border-gray-400 rounded-md w-full"
+        />
       </div>
       <div className="mt-8 h-screen">
         <SheetsData
