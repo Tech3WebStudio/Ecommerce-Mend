@@ -68,8 +68,11 @@ export default function CreateUser({ isOpen, onClose, user }) {
 
           // dispatch(updateUser(updatedUser));
         } else {
-          const response = await createNewSeller(newUser);
-          console.log(response);
+          await createNewSeller(newUser);
+  
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000);
         }
         setFormData({});
         onClose();

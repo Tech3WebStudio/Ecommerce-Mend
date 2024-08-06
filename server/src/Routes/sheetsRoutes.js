@@ -31,7 +31,6 @@ sheetsRouter.post("/data", async (req, res) => {
   try {
     const auth = await authorize();
     const data = req.body;
-    console.log(data);
     const updates = await appendRow(auth, data);
     res.json(updates);
   } catch (error) {
@@ -54,10 +53,7 @@ sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
   try {
     const auth = await authorize();
     const rowIndex = parseInt(req.params.rowIndex, 10);
-    console.log(`Buscando ID: ${rowIndex}`);
-
     const result = await deleteRowById(auth, rowIndex);
-    console.log(result);
     res.status(200).json(result);
   } catch (error) {
     console.log({ error: error.message });
