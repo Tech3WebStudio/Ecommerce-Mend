@@ -1,6 +1,6 @@
 {
     "rewrites": [
-      { "source": "/ninashowroom/(.*)", "destination": "/ninashowroom/" }
+      { "source": "/(.*)", "destination": "/" }
     ]
   }
   
