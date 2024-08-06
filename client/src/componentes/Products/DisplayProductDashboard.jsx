@@ -25,11 +25,26 @@ const DisplayProductDashboard = ({ products }) => {
       return acc + (isNaN(precio) ? 0 : precio * quantity);
     }, 0);
 
-    return total.toFixed(2);
+    let recargo = 0;
+    switch (formaPago) {
+      case "qr":
+        recargo = total * 0.07;
+        break;
+      case "tarjetaDebito":
+        recargo = total * 0.07;
+        break;
+      case "tarjetaCredito":
+        recargo = total * 0.12;
+        break;
+      default:
+        recargo = 0;
+    }
+
+    return (total + recargo).toFixed(2);
   };
 
-  const handleFormaPagoChange = (forma) => {
-    setFormaPago(forma);
+  const handleFormaPagoChange = (e) => {
+    setFormaPago(e.target.value);
   };
 
   const handleNombreClienteChange = (e) => {
@@ -101,12 +116,10 @@ const DisplayProductDashboard = ({ products }) => {
     dispatch(removeFromCart(productId));
   };
 
-  // Función para manejar el cambio en el campo de búsqueda
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Filtrar los productos según el término de búsqueda
   const filteredProducts = products.filter((product) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
@@ -247,53 +260,55 @@ const DisplayProductDashboard = ({ products }) => {
                           +
                         </button>
                       </div>
-                      <span className="w-16 text-center text-sm">
-                        ${item?.precio}
-                      </span>
-                      <button
-                        onClick={() => handleRemoveFromCart(i)}
-                        className="text-sm font-semibold text-red-500"
-                      >
-                        Remove
-                      </button>
+                      <div className="w-1/5 flex flex-col justify-between items-center">
+                        <span className="font-semibold text-primary text-center">
+                          ${parseInt(item.precio) * item.cantidad || 1}
+                        </span>
+                        <button
+                          onClick={() => handleRemoveFromCart(i)}
+                          className="mt-2 font-semibold text-xs text-red-500 hover:text-pink-600"
+                        >
+                          Borrar
+                        </button>
+                      </div>
                     </div>
                   );
                 })
-              : (
-                <p className="text-gray-500">Your cart is empty.</p>
-              )}
+              : null}
           </div>
-          <div className="px-5 py-4 border-t mt-5">
-            <div className="flex justify-between mb-2">
-              <span className="font-semibold">Total</span>
-              <span className="font-semibold">${calculateTotal()}</span>
-            </div>
-            <div className="mb-2">
-              <label className="block mb-1 font-semibold">Forma de Pago</label>
-              <select
-                value={formaPago}
-                onChange={(e) => handleFormaPagoChange(e.target.value)}
-                className="w-full border p-2 rounded-md"
-              >
-                <option value="">Seleccionar Forma de Pago</option>
-                <option value="efectivo">Efectivo</option>
-                <option value="tarjeta">Tarjeta</option>
-              </select>
-            </div>
-            <div className="mb-2">
-              <label className="block mb-1 font-semibold">Nombre del Cliente</label>
-              <input
-                type="text"
-                value={nombreCliente}
-                onChange={handleNombreClienteChange}
-                className="w-full border p-2 rounded-md"
-              />
+          {/* Formulario */}
+          <div className="px-5">
+            <input
+              type="text"
+              value={nombreCliente}
+              onChange={handleNombreClienteChange}
+              placeholder="Nombre del cliente"
+              className="border p-2 rounded-md w-full border-gray-400 mb-4"
+            />
+            <select
+              value={formaPago}
+              onChange={handleFormaPagoChange}
+              className="border p-2 rounded-md w-full border-gray-400"
+            >
+              <option value="">Seleccione forma de pago</option>
+              <option value="efectivo">Efectivo</option>
+              <option value="qr">QR (7% recargo)</option>
+              <option value="tarjetaDebito">Tarjeta de Débito (7% recargo)</option>
+              <option value="tarjetaCredito">Tarjeta de Crédito (12% recargo)</option>
+            </select>
+          </div>
+          <div className="flex flex-row justify-between items-center px-5 mt-10">
+            <div>
+              <div className="text-sm text-gray-500">Total</div>
+              <div className="text-xl font-bold text-primary">
+                ${calculateTotal()}
+              </div>
             </div>
             <button
               onClick={handleCreateVenta}
-              className="w-full bg-primary text-white py-2 rounded-md"
+              className="px-5 py-2 bg-secondary text-white rounded-md"
             >
-              Crear Venta
+              Create Sale
             </button>
           </div>
         </div>
