@@ -11,8 +11,9 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deleteRowIndex, setDeleteRowIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); 
-  
+  const [itemsPerPage] = useState(5);
+  const [visiblePages, setVisiblePages] = useState([1, 2, 3, 4]);
+
   const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.sheets.sheetsData);
@@ -38,7 +39,32 @@ const Products = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    updateVisiblePages(pageNumber);
   };
+
+  const updateVisiblePages = (pageNumber) => {
+    let startPage, endPage;
+    if (totalPages <= 4) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      if (pageNumber <= 2) {
+        startPage = 1;
+        endPage = 4;
+      } else if (pageNumber >= totalPages - 1) {
+        startPage = totalPages - 3;
+        endPage = totalPages;
+      } else {
+        startPage = pageNumber - 1;
+        endPage = pageNumber + 2;
+      }
+    }
+    setVisiblePages([...Array(endPage - startPage + 1).keys()].map(i => startPage + i));
+  };
+
+  useEffect(() => {
+    updateVisiblePages(currentPage);
+  }, [totalPages]);
 
   return (
     <Layout isAuth={isAuth}>
@@ -78,13 +104,13 @@ const Products = () => {
           >
             Anterior
           </button>
-          {[...Array(totalPages).keys()].map((number) => (
+          {visiblePages.map((number) => (
             <button
               key={number}
-              onClick={() => handlePageChange(number + 1)}
-              className={`px-4 py-2 mx-1 border border-gray-400 rounded-md ${currentPage === number + 1 ? 'bg-primary text-white' : 'bg-white'}`}
+              onClick={() => handlePageChange(number)}
+              className={`px-4 py-2 mx-1 border border-gray-400 rounded-md ${currentPage === number ? 'bg-primary text-white' : 'bg-white'}`}
             >
-              {number + 1}
+              {number}
             </button>
           ))}
           <button
