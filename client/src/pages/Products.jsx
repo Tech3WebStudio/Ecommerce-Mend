@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Layout } from "../componentes/Layout/Layout";
 import SheetsData from "../componentes/Sheets/SheetsData";
 import TabFormCreateProduct from "../componentes/Popup/TabFormCreateProduct";
-import TabDeleteRowButton from "../componentes/Popup/TabDeleteRowButton";
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSheets } from "../redux/actions/actions";
+import TabDeleteRowButton from "../componentes/Popup/TabDeleteRowButton";
 
 const Products = () => {
   const [activeForm, setActiveForm] = useState(false);
@@ -41,10 +42,11 @@ const Products = () => {
     const value = event.target.value.toLowerCase();
     setSearchTerm(value);
 
-    const filtered = data.filter((item) =>
-      item.nombre.toLowerCase().includes(value) ||
-      item.categoria.toLowerCase().includes(value) ||
-      item.sku.toLowerCase().includes(value)
+    const filtered = data.filter(
+      (item) =>
+        item.nombre.toLowerCase().includes(value) ||
+        item.categoria.toLowerCase().includes(value) ||
+        item.sku.toLowerCase().includes(value)
     );
 
     setFilteredData(filtered);
@@ -80,7 +82,9 @@ const Products = () => {
         endPage = pageNumber + 2;
       }
     }
-    setVisiblePages([...Array(endPage - startPage + 1).keys()].map(i => startPage + i));
+    setVisiblePages(
+      [...Array(endPage - startPage + 1).keys()].map((i) => startPage + i)
+    );
   };
 
   useEffect(() => {
@@ -103,7 +107,7 @@ const Products = () => {
         />
       )}
       <div className="flex justify-between">
-        <h1 className="text-xl text-gray-500">Products</h1>
+        <h1 className="text-xl text-gray-500">Productos</h1>
         <button
           onClick={() => toggleModal()}
           className="p-2 border border-secondary bg-secondary text-white rounded-md hover:bg-primary hover:text-white active:translate-y-[2px] shadow-sm hover:shadow-md"
@@ -138,7 +142,9 @@ const Products = () => {
             <button
               key={number}
               onClick={() => handlePageChange(number)}
-              className={`px-4 py-2 mx-1 border border-gray-400 rounded-md ${currentPage === number ? 'bg-primary text-white' : 'bg-white'}`}
+              className={`px-4 py-2 mx-1 border border-gray-400 rounded-md ${
+                currentPage === number ? "bg-primary text-white" : "bg-white"
+              }`}
             >
               {number}
             </button>

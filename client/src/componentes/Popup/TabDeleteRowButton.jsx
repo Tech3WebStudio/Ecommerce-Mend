@@ -2,8 +2,9 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteSheetRow } from "../../redux/actions/actions";
 
-const DeleteButton = ({ rowIndex, onClose }) => {
+const TabDeleteRowButton = ({ rowIndex, onClose }) => {
   const dispatch = useDispatch();
+  console.log(rowIndex);
   const handleDelete = () => {
     dispatch(deleteSheetRow(rowIndex));
     onClose();
@@ -34,4 +35,4 @@ const DeleteButton = ({ rowIndex, onClose }) => {
   );
 };
 
-export default DeleteButton;
+export default TabDeleteRowButton;

@@ -1,5 +1,6 @@
 const SheetsSales = ({ data, onViewSale }) => {
-    return (
+  return (
+    <div className="border border-gray-400 p-4">
       <div className="overflow-x-auto custom-scroll">
         <table className="basic mt-2">
           <thead>
@@ -71,8 +72,8 @@ const SheetsSales = ({ data, onViewSale }) => {
           </tbody>
         </table>
       </div>
-    );
-  };
-  
-  export default SheetsSales;
-  
+    </div>
+  );
+};
+
+export default SheetsSales;

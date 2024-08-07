@@ -64,22 +64,22 @@ const UsersData = () => {
           <div className="bgWhite p-4 rounded-md">
             <div>
               <h2 className="mb-4 text-xl font-bold text-gray-700">
-                Admin & User
+                Administrar usuarios
               </h2>
               <div>
                 <div>
                   <div className="flex justify-between bg-gradient-to-tr from-primary to-secondary rounded-md py-2 px-4 text-white font-bold text-md">
                     <div>
-                      <span>Name</span>
+                      <span>Nombre</span>
                     </div>
                     <div>
                       <span>Email</span>
                     </div>
                     <div>
-                      <span>Role</span>
+                      <span>Rol</span>
                     </div>
                     <div>
-                      <span>Time</span>
+                      <span>Fecha</span>
                     </div>
                     {/* <div>
                       <span>Edit</span>

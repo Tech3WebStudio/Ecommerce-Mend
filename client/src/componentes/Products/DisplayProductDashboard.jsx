@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -129,8 +130,8 @@ const DisplayProductDashboard = ({ products }) => {
   });
 
   return (
-    <div className="container mx-auto w-full bg-white">
-      <div className="flex lg:flex-row flex-col-reverse shadow-lg">
+    <div className="container mx-auto w-full bg-white border border-gray-300 p-2 shadow-lg">
+      <div className="flex lg:flex-row flex-col shadow-lg">
         {/* Productos */}
         <div className="w-full lg:w-3/5 h-screen overflow-y-scroll shadow-lg">
           <div className="flex flex-row justify-between items-center px-5 mt-5">
@@ -147,13 +148,13 @@ const DisplayProductDashboard = ({ products }) => {
             </div>
             <div className="flex items-center">
               <div className="text-sm text-center mr-4">
-                <div className="font-light text-gray-500">last synced</div>
-                <span className="font-semibold">3 mins ago</span>
+                <div className="font-light text-gray-500"></div>
+                <span className="font-semibold"></span>
               </div>
               <div>
-                <span className="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded">
-                  Help
-                </span>
+                <Link to={"/support"} className="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded">
+                  Ayuda
+                </Link>
               </div>
             </div>
           </div>
@@ -210,13 +211,13 @@ const DisplayProductDashboard = ({ products }) => {
         {/* Carrito */}
         <div className="w-full lg:w-2/5 h-screen">
           <div className="flex flex-row items-center justify-between px-5 mt-5">
-            <div className="font-bold text-xl">Current Order</div>
+            <div className="font-bold text-xl">Orden Actual</div>
             <div className="font-semibold flex gap-2">
               <span
                 onClick={() => dispatch(cleanCart())}
                 className="px-4 py-2 hover:text-pink-200 rounded-md bg-secondary text-white cursor-pointer"
               >
-                Clear All
+                Borrar todo
               </span>
               {/* <span className="px-4 py-2 rounded-md bg-gray-100 text-gray-800">
                 Setting
@@ -226,7 +227,7 @@ const DisplayProductDashboard = ({ products }) => {
           <div className="px-5 py-4 mt-5 overflow-y-auto h-64">
             {cartItems?.length > 0
               ? cartItems?.map((item, i) => {
-                  const imgUrl = item?.imagen?.split(",")
+                  const imgUrl = item?.imagen?.split(",");
                   console.log(imgUrl);
                   return (
                     <div
@@ -293,8 +294,12 @@ const DisplayProductDashboard = ({ products }) => {
               <option value="">Seleccione forma de pago</option>
               <option value="efectivo">Efectivo</option>
               <option value="qr">QR (7% recargo)</option>
-              <option value="tarjetaDebito">Tarjeta de Débito (7% recargo)</option>
-              <option value="tarjetaCredito">Tarjeta de Crédito (12% recargo)</option>
+              <option value="tarjetaDebito">
+                Tarjeta de Débito (7% recargo)
+              </option>
+              <option value="tarjetaCredito">
+                Tarjeta de Crédito (12% recargo)
+              </option>
             </select>
           </div>
           <div className="flex flex-row justify-between items-center px-5 mt-10">
@@ -308,7 +313,7 @@ const DisplayProductDashboard = ({ products }) => {
               onClick={handleCreateVenta}
               className="px-5 py-2 bg-secondary text-white rounded-md"
             >
-              Create Sale
+              Crear Venta
             </button>
           </div>
         </div>

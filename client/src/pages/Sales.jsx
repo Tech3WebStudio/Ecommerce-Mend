@@ -7,6 +7,10 @@ import TabViewSale from "../componentes/Popup/TabViewSale";
 
 const Sales = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [visiblePages, setVisiblePages] = useState([1, 2, 3]);
+
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuth);
   const sales = useSelector((state) => state.cart.sales);
@@ -20,6 +24,40 @@ const Sales = () => {
   useEffect(() => {
     dispatch(getSales());
   }, [dispatch]);
+
+  useEffect(() => {
+    updateVisiblePages(currentPage);
+  }, [currentPage, sales]);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    updateVisiblePages(pageNumber);
+  };
+
+  const updateVisiblePages = (pageNumber) => {
+    let startPage, endPage;
+    if (totalPages <= 3) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      if (pageNumber === 1) {
+        startPage = 1;
+        endPage = 3;
+      } else if (pageNumber === totalPages) {
+        startPage = totalPages - 2;
+        endPage = totalPages;
+      } else {
+        startPage = pageNumber - 1;
+        endPage = pageNumber + 1;
+      }
+    }
+    setVisiblePages([...Array(endPage - startPage + 1).keys()].map(i => startPage + i));
+  };
+
+  const totalPages = Math.ceil(sales.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sales.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <Layout isAuth={isAuth}>
@@ -35,7 +73,32 @@ const Sales = () => {
         <h1 className="text-xl text-gray-500">Ventas</h1>
       </div>
       <div className="mt-8 h-screen">
-        <SheetsSales data={sales} onViewSale={toggleModal} />
+        <SheetsSales data={currentItems} onViewSale={toggleModal} />
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 mx-1 bg-pink-400 text-white border border-gray-400 rounded-md disabled:opacity-50"
+          >
+            Anterior
+          </button>
+          {visiblePages.map((number) => (
+            <button
+              key={number}
+              onClick={() => handlePageChange(number)}
+              className={`px-4 py-2 mx-1 border border-gray-400 rounded-md ${currentPage === number ? 'bg-primary text-white' : 'bg-white'}`}
+            >
+              {number}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 mx-1 bg-pink-400 text-white border border-gray-400 rounded-md disabled:opacity-50"
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
     </Layout>
   );
