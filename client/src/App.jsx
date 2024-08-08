@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
 import { Login } from "./pages/Login";
+import  SupportDevelopers from './componentes/Support/SupportDevelopers'
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { authenticateUserFromSession } from "./redux/actions/actions";

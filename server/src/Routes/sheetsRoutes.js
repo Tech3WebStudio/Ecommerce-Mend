@@ -12,7 +12,8 @@ const {
   increaseStock,
   decreaseStock,
   getProductsByCategory,
-  getAllCategories
+  getAllCategories,
+  deleteSalesById,
 } = require("../Controllers/sheets/sheetsController.js");
 const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
@@ -102,6 +103,20 @@ sheetsRouter.post("/sale", async (req, res) => {
   }
 });
 
+sheetsRouter.delete("/delete/sale/:id", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const id = req.params.id;
+    console.log("ID: ", id);
+    const result = await deleteSalesById(auth, id);
+    console.log("result: ", result);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log({ error: error.message });
+    res.status(500).json({ error: error.message });
+  }
+});
+
 sheetsRouter.put("/increase-stock", async (req, res) => {
   try {
     const auth = await authorize();
@@ -145,6 +160,5 @@ sheetsRouter.get("/categories", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
 
 module.exports = sheetsRouter;

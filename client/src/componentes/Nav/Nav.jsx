@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { doSignOut } from "../../firebase/auth";
 
 export const Nav = ({ user, showNav }) => {
-  console.log(user);
   return (
     <div
       className={`space-y-6 md:space-y-10 w-full mt-10 ${
@@ -45,7 +44,7 @@ export const Nav = ({ user, showNav }) => {
           >
             <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
           </svg>
-          <span className="">Dashboard</span>
+          <span className="">Control</span>
         </Link>
         {user.rol !== "seller" ? (
           <>
@@ -66,7 +65,7 @@ export const Nav = ({ user, showNav }) => {
                 />
               </svg>
 
-              <span className="">Products</span>
+              <span className="">Productos</span>
             </Link>
             <Link
               to={"/sales"}
@@ -127,7 +126,7 @@ export const Nav = ({ user, showNav }) => {
               clipRule="evenodd"
             />
           </svg>
-          <span className="">Support</span>
+          <span className="">Soporte</span>
         </Link>
         <button
           className="w-full text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"

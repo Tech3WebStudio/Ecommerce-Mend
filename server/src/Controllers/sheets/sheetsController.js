@@ -37,7 +37,7 @@ async function getSheetData(auth) {
       lastId = parseInt(rows[rows.length - 1][0]);
     }
 
-    const products = rows.map(row => ({
+    const products = rows.map((row) => ({
       id: row[0],
       categoria: row[1],
       nombre: row[2],
@@ -94,7 +94,7 @@ async function appendRow(auth, rowData) {
 
 async function updateRow(auth, rowData) {
   const sheets = google.sheets({ version: "v4", auth });
-  
+
   // Obtener los datos actuales de la hoja
   const { products } = await getSheetData(auth);
 
@@ -107,7 +107,9 @@ async function updateRow(auth, rowData) {
   }
 
   // Convertir el array de URLs en una cadena, si es necesario
-  const urlString = Array.isArray(rowData.url) ? rowData.url.join(", ") : rowData.url;
+  const urlString = Array.isArray(rowData.url)
+    ? rowData.url.join(", ")
+    : rowData.url;
 
   // Construir la fila actualizada con los datos de rowData
   const updatedRow = [
@@ -135,54 +137,6 @@ async function updateRow(auth, rowData) {
   return res.data;
 }
 
-async function deleteRowById(auth, id) {
-  const sheets = google.sheets({ version: "v4", auth });
-
-  // Obtener todos los datos de la hoja
-  const getRows = await sheets.spreadsheets.values.get({
-    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-    range: 'Productos!A:I', // Ajusta el rango según sea necesario
-  });
-
-  const rows = getRows.data.values;
-  let rowIndexToDelete = null;
-
-  // Encontrar la fila con el ID proporcionado
-  for (let i = 0; i < rows.length; i++) {
-    if (rows[i][0] == id) { // Asumiendo que la columna ID es la primera (A)
-      rowIndexToDelete = i;
-      break;
-    }
-  }
-
-  if (rowIndexToDelete === null) {
-    throw new Error('ID not found');
-  }
-
-  // Eliminar la fila encontrada
-  const requests = [
-    {
-      deleteDimension: {
-        range: {
-          sheetId: 0, // Asegúrate de que este sea el ID correcto de la hoja
-          dimension: "ROWS",
-          startIndex: rowIndexToDelete,
-          endIndex: rowIndexToDelete + 1,
-        },
-      },
-    },
-  ];
-
-  const res = await sheets.spreadsheets.batchUpdate({
-    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-    resource: {
-      requests,
-    },
-  });
-
-  return res.data;
-}
-
 async function registerSale(auth, data) {
   try {
     const { productos, nombreCliente, formaPago } = data;
@@ -199,11 +153,10 @@ async function registerSale(auth, data) {
     let lastId = 0;
 
     if (rows && rows.length > 1) {
-      lastId = rows.length - 1; 
+      lastId = rows.length - 1;
     }
 
     const newId = lastId + 1;
-
 
     const currentDate = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
@@ -218,13 +171,13 @@ async function registerSale(auth, data) {
       prod.precio,
       formaPago,
       prod.cantidad * prod.precio,
-      currentDate
+      currentDate,
     ]);
 
     // Append the data to the spreadsheet
     const res = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEETS_ID,
-      range: "Ventas!A2:I", 
+      range: "Ventas!A2:I",
       valueInputOption: "RAW",
       resource: {
         values: ventaData,
@@ -233,8 +186,8 @@ async function registerSale(auth, data) {
 
     return { message: "Venta registrada exitosamente", data: res.data };
   } catch (error) {
-    console.error('Error registrando la venta:', error);
-    throw new Error('Error registrando la venta');
+    console.error("Error registrando la venta:", error);
+    throw new Error("Error registrando la venta");
   }
 }
 
@@ -246,11 +199,11 @@ async function getSaleDataUnitiInfo(auth, id) {
       range: "Ventas!A2:K",
     });
     const rows = res.data.values || [];
-    
+
     // Filtrar las ventas con el id correspondiente y mapear a objetos
     const sales = rows
-      .filter(row => row[0] === id.toString())
-      .map(row => ({
+      .filter((row) => row[0] === id.toString())
+      .map((row) => ({
         id: row[0],
         idProducto: row[1],
         cliente: row[2],
@@ -261,7 +214,7 @@ async function getSaleDataUnitiInfo(auth, id) {
         subtotal: row[7],
         pago: row[8],
         total: row[9],
-        fecha: row[10]
+        fecha: row[10],
       }));
 
     return sales;
@@ -286,7 +239,7 @@ async function getSaleData(auth) {
 
     const salesMap = {};
 
-    rows.forEach(row => {
+    rows.forEach((row) => {
       const id = row[0];
       if (!salesMap[id]) {
         salesMap[id] = {
@@ -300,7 +253,7 @@ async function getSaleData(auth) {
           subtotal: parseFloat(row[7]),
           pago: row[8],
           total: parseFloat(row[9]),
-          fecha: row[10]
+          fecha: row[10],
         };
       } else {
         salesMap[id].cantidad += parseInt(row[4]);
@@ -358,7 +311,9 @@ async function decreaseStock(auth, productId, amount) {
 async function getProductsByCategory(auth, category) {
   try {
     const { products } = await getSheetData(auth);
-    const filteredProducts = products.filter(product => product.categoria === category);
+    const filteredProducts = products.filter(
+      (product) => product.categoria === category
+    );
     return { products: filteredProducts };
   } catch (error) {
     console.log({ error: error.message });
@@ -369,12 +324,114 @@ async function getProductsByCategory(auth, category) {
 async function getAllCategories(auth) {
   try {
     const { products } = await getSheetData(auth);
-    const categories = [...new Set(products.map(product => product.categoria))];
+    const categories = [
+      ...new Set(products.map((product) => product.categoria)),
+    ];
     return categories;
   } catch (error) {
     console.log({ error: error.message });
     throw new Error(error.message);
   }
+}
+
+async function deleteRowById(auth, id) {
+  const sheets = google.sheets({ version: "v4", auth });
+
+  // Obtener todos los datos de la hoja
+  const getRows = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: "Productos!A:I", // Ajusta el rango según sea necesario
+  });
+
+  const rows = getRows.data.values;
+  let rowIndexToDelete = null;
+
+  // Encontrar la fila con el ID proporcionado
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i][0] == id) {
+      // Asumiendo que la columna ID es la primera (A)
+      rowIndexToDelete = i;
+      break;
+    }
+  }
+
+  if (rowIndexToDelete === null) {
+    throw new Error("ID not found");
+  }
+
+  // Eliminar la fila encontrada
+  const requests = [
+    {
+      deleteDimension: {
+        range: {
+          sheetId: 0, // Asegúrate de que este sea el ID correcto de la hoja
+          dimension: "ROWS",
+          startIndex: rowIndexToDelete,
+          endIndex: rowIndexToDelete + 1,
+        },
+      },
+    },
+  ];
+
+  const res = await sheets.spreadsheets.batchUpdate({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    resource: {
+      requests,
+    },
+  });
+
+  return res.data;
+}
+
+async function deleteSalesById(auth, id) {
+  const sheets = google.sheets({ version: "v4", auth });
+
+  // Obtener todos los datos de la hoja
+  const getRows = await sheets.spreadsheets.values.get({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    range: "Ventas!A:K", // Ajusta el rango según sea necesario
+  });
+
+  const rows = getRows.data.values;
+  let rowsToDelete = [];
+
+  // Encontrar las filas con el ID proporcionado
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i][0] == id) {
+      // Asumiendo que la columna ID es la primera (A)
+      rowsToDelete.push(i);
+    }
+  }
+
+  if (rowsToDelete.length === 0) {
+    throw new Error("ID not found");
+  }
+
+  console.log("rowsToDelete: ",rowsToDelete);
+
+  // Crear solicitudes de eliminación para cada fila encontrada
+  const requests = rowsToDelete.map((rowIndex) => ({
+    deleteDimension: {
+      range: {
+        sheetId: 0, // Asegúrate de que este sea el ID correcto de la hoja
+        dimension: "ROWS",
+        startIndex: rowIndex,
+        endIndex: rowIndex + 1,
+      },
+    },
+  }));
+
+  // Las solicitudes deben ser enviadas en orden inverso para evitar conflictos de índice
+  requests.reverse();
+
+  const res = await sheets.spreadsheets.batchUpdate({
+    spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+    resource: {
+      requests,
+    },
+  });
+
+  return res.data;
 }
 
 module.exports = {
@@ -389,5 +446,6 @@ module.exports = {
   increaseStock,
   decreaseStock,
   getProductsByCategory,
-  getAllCategories
+  getAllCategories,
+  deleteSalesById,
 };

@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteSheetRow } from "../../redux/actions/actions";
+import { deleteSaleRow } from "../../redux/actions/actions";
 
-const TabDeleteRowButton = ({ rowIndex, onClose }) => {
+const TabDeleteSaleButton = ({ rowIndex, onClose }) => {
   const dispatch = useDispatch();
-  console.log(rowIndex);
   const handleDelete = () => {
-    dispatch(deleteSheetRow(rowIndex));
+    dispatch(deleteSaleRow(rowIndex));
+    console.log(rowIndex);
     onClose();
   };
 
@@ -35,4 +35,4 @@ const TabDeleteRowButton = ({ rowIndex, onClose }) => {
   );
 };
 
-export default TabDeleteRowButton;
+export default TabDeleteSaleButton;
