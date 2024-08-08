@@ -19,6 +19,8 @@ const DisplayProductDashboard = ({ products }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
 
+  console.log(formaPago);
+
   const calculateTotal = () => {
     const total = cartItems.reduce((acc, product) => {
       const precio = parseInt(product.precio);
@@ -228,7 +230,6 @@ const DisplayProductDashboard = ({ products }) => {
             {cartItems?.length > 0
               ? cartItems?.map((item, i) => {
                   const imgUrl = item?.imagen?.split(",");
-                  console.log(imgUrl);
                   return (
                     <div
                       key={i}
@@ -293,6 +294,7 @@ const DisplayProductDashboard = ({ products }) => {
             >
               <option value="">Seleccione forma de pago</option>
               <option value="efectivo">Efectivo</option>
+              <option value="transferencia">transferencia</option>
               <option value="qr">QR (7% recargo)</option>
               <option value="tarjetaDebito">
                 Tarjeta de Débito (7% recargo)

@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSaleInfo, getSales } from "../redux/actions/actions";
 import SheetsSales from "../componentes/Sheets/SheetsSales";
 import TabViewSale from "../componentes/Popup/TabViewSale";
+import TabDeleteSaleButton from "../componentes/Popup/TabDeleteSaleButton";
 
 const Sales = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [deleteRowIndex, setDeleteRowIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [visiblePages, setVisiblePages] = useState([1, 2, 3]);
@@ -20,6 +22,10 @@ const Sales = () => {
     dispatch(getSaleInfo(saleInfo.id));
     setOpenModal(!openModal);
   };
+
+  const toggleDeleteModal = (i) => {
+      setDeleteRowIndex(i)
+  }
 
   useEffect(() => {
     dispatch(getSales());
@@ -69,11 +75,17 @@ const Sales = () => {
           infoVentas={sales}
         />
       )}
+      {deleteRowIndex !== null && (
+        <TabDeleteSaleButton 
+          rowIndex={deleteRowIndex}
+          onClose={() => toggleDeleteModal(null)}
+        />
+      )}
       <div className="flex justify-between">
         <h1 className="text-xl text-gray-500">Ventas</h1>
       </div>
       <div className="mt-8 h-screen">
-        <SheetsSales data={currentItems} onViewSale={toggleModal} />
+        <SheetsSales data={currentItems} onViewSale={toggleModal} toggleDelete={toggleDeleteModal}/>
         <div className="flex justify-center mt-4">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
