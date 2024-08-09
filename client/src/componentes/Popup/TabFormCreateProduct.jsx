@@ -43,7 +43,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
         tamaño: product.talle || "",
         cantidad: product.cantidad || "",
         precio: product.precio || "",
-        url: product.url ? [product.url] : [],
+        url: product.url ? product.url.split(',').map(url => url.trim()) : [],
       });
     }
   }, [product]);
@@ -78,7 +78,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
           tamaño: formData.tamaño,
           cantidad: formData.cantidad,
           precio: formData.precio,
-          url: formData.url,
+          url: formData.url.join(', '),
         };
 
         if (product) {
@@ -90,7 +90,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
             tamaño: formData.tamaño,
             cantidad: formData.cantidad,
             precio: formData.precio,
-            url: formData.url,
+            url: formData.url.join(', '),
           };
 
           console.log("Llego a update row: ", updatedRow);
@@ -160,7 +160,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
                       >
                         <img
                           src={url}
-                          alt="Product"
+                          alt={`uploaded-${index}`}
                           className="w-16 h-16 rounded-full object-cover"
                         />
                         <button

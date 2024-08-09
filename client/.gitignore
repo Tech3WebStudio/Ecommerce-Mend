@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 .env
 
-/src/api/axiosConfig.js
-/src/redux/actions/rutaBack.js
+client/src/api/axiosConfig.js
+client/src/redux/actions/rutaBack.js
 rutaBack.js

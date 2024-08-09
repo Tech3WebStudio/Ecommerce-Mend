@@ -12,7 +12,8 @@ const {
   increaseStock,
   decreaseStock,
   getProductsByCategory,
-  getAllCategories
+  getAllCategories,
+  deleteSalesById,
 } = require("../Controllers/sheets/sheetsController.js");
 const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
@@ -31,7 +32,6 @@ sheetsRouter.post("/data", async (req, res) => {
   try {
     const auth = await authorize();
     const data = req.body;
-    console.log(data);
     const updates = await appendRow(auth, data);
     res.json(updates);
   } catch (error) {
@@ -54,10 +54,7 @@ sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
   try {
     const auth = await authorize();
     const rowIndex = parseInt(req.params.rowIndex, 10);
-    console.log(`Buscando ID: ${rowIndex}`);
-
     const result = await deleteRowById(auth, rowIndex);
-    console.log(result);
     res.status(200).json(result);
   } catch (error) {
     console.log({ error: error.message });
@@ -106,6 +103,20 @@ sheetsRouter.post("/sale", async (req, res) => {
   }
 });
 
+sheetsRouter.delete("/delete/sale/:id", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const id = req.params.id;
+    console.log("ID: ", id);
+    const result = await deleteSalesById(auth, id);
+    console.log("result: ", result);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log({ error: error.message });
+    res.status(500).json({ error: error.message });
+  }
+});
+
 sheetsRouter.put("/increase-stock", async (req, res) => {
   try {
     const auth = await authorize();
@@ -149,6 +160,5 @@ sheetsRouter.get("/categories", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
-
 
 module.exports = sheetsRouter;
