@@ -12,6 +12,7 @@ export const DELETE_SHEET_ROW = "DELETE_SHEET_ROW";
 export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
 export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
 export const CLEAR_IMAGES = "CLEAR_IMAGES";
+export const SET_CONDITION = "SET_CONDITION";
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const FILTER_CATEGORY = "FILTER_CATEGOTY";
 
@@ -252,6 +253,11 @@ export const deleteSheetRow = (rowIndex) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const renderCondition = (condition) => ({
+  type: SET_CONDITION,
+  payload: condition,
+});
 
 export const filterByCategory = (category) => async (dispatch) => {
   const token = localStorage.getItem("authToken");

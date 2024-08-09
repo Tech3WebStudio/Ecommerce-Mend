@@ -10,6 +10,7 @@ import {
   CLEAR_IMAGES,
   FILTER_CATEGORY,
   GET_CATEGORIES,
+  SET_CONDITION,
 } from "../actions/actions";
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   images: [],
   loading: false,
   error: null,
+  rCondition: "allProducts",
   filterProducts: [],
   categories: []
 };
@@ -64,6 +66,9 @@ const sheetsReducer = (state = initialState, action) => {
         ...state,
         images: [],
       };
+
+    case SET_CONDITION:
+        return { ...state, condition: action.payload };  
 
     case FILTER_CATEGORY: // Productos filtrados por categoria  
       return {

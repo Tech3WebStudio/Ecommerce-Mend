@@ -1,7 +1,11 @@
+import { useSelector } from "react-redux"
 
 const Filter = () =>{
 
-    return <div>
-        
+    const categories = useSelector((state) => state.sheets.categories )
+
+    return( 
+    <div>
+
     </div>
-}
+)}
