@@ -7,10 +7,9 @@ import { fetchSheets } from "../../redux/actions/actions";
 const Dashboard = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const products = useSelector((state) => state.sheets.sheetsData);
+  const filterProducts = useSelector((state) => state.sheets.filterProducts);
 
   const dispatch = useDispatch();
-
-  
 
   useEffect(() => {
     dispatch(fetchSheets());
@@ -20,7 +19,7 @@ const Dashboard = () => {
     <Layout isAuth={isAuth}>
       {/* {showCart && <Cart product={cartItems} calcularTotal={calculateTotal} onClose={toggleCart} />} */}
       <div className="flex justify-between items-center">
-        <h1 className="text-xl text-white">Dashboard</h1>
+        <h1 className="text-xl text-gray-300">Panel de control</h1>
       </div>
       <div className="mt-8 w-full">
         <DisplayProductDashboard products={products} />

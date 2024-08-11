@@ -10,6 +10,7 @@ import { authenticateUserFromSession } from "./redux/actions/actions";
 import Error from "./pages/Error";
 import Sales from "./pages/Sales";
 import Support from "./pages/Support";
+import Users from "./pages/Users";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,7 +29,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/products" element={<Products />} />
             <Route path="/sales" element={<Sales />} />
-            <Route path="/support" element={<SupportDevelopers/>} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/support" element={<Support />} />
           </>
         ) : (
           <Route path="/error" element={<Error />} />
