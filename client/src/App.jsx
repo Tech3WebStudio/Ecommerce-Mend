@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Products from "./pages/Products";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages//DashboardPage/Dashboard";
 import { Login } from "./pages/Login";
 import  SupportDevelopers from './componentes/Support/SupportDevelopers'
 import { useDispatch, useSelector } from "react-redux";
