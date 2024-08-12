@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Layout } from "../componentes/Layout/Layout";
-import SheetsData from "../componentes/Sheets/SheetsData";
-import TabFormCreateProduct from "../componentes/Popup/TabFormCreateProduct";
+import { Layout } from "../../componentes/Layout/Layout";
+import SheetsData from "../../componentes/Sheets/SheetsData";
+import TabFormCreateProduct from "../../componentes/Popup/TabFormCreateProduct";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSheets } from "../redux/actions/actions";
-import TabDeleteRowButton from "../componentes/Popup/TabDeleteRowButton";
+import { fetchSheets } from "../../redux/actions/actions";
+import TabDeleteRowButton from "../../componentes/Popup/TabDeleteRowButton";
 
 const Products = () => {
   const [activeForm, setActiveForm] = useState(false);

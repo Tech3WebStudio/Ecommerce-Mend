@@ -33,7 +33,7 @@ export const Nav = ({ user, showNav }) => {
       </div>
       <div id="menu" className="flex flex-col w-full space-y-2">
         <Link
-          to={"/dashboard"}
+          to={"/dashboard/dashboard"}
           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg
@@ -49,7 +49,7 @@ export const Nav = ({ user, showNav }) => {
         {user.rol !== "seller" ? (
           <>
             <Link
-              to={"/products"}
+              to={"/dashboard/products"}
               className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
             >
               <svg
@@ -68,7 +68,7 @@ export const Nav = ({ user, showNav }) => {
               <span className="">Productos</span>
             </Link>
             <Link
-              to={"/sales"}
+              to={"/dashboard/sales"}
               className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
             >
               <svg
@@ -87,7 +87,7 @@ export const Nav = ({ user, showNav }) => {
               <span className="">Ventas</span>
             </Link>
             <Link
-              to={"/users"}
+              to={"/dashboard/users"}
               className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
             >
               <svg
@@ -111,7 +111,7 @@ export const Nav = ({ user, showNav }) => {
           ""
         )}
         <Link
-          to={"/support"}
+          to={"/dashboard/support"}
           className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
         >
           <svg

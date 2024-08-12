@@ -50,7 +50,7 @@ export const doSignInWithGoogle = async () => {
       store.dispatch(loginWithGoogle(userInfo));
 
       setTimeout(() => {
-        window.location.replace("/dashboard");
+        window.location.replace("/dashboard/dashboard");
       }, 2000);
     } else {
       toast.error("Error al ingresar");
@@ -125,7 +125,7 @@ export const doSignInWithEmailAndPassword = async (email, password) => {
       store.dispatch(loginWithGoogle(userInfo));
 
       setTimeout(() => {
-        window.location.replace("/dashboard");
+        window.location.replace("/dashboard/dashboard");
       }, 2000);
     } else {
       toast.error("Error al ingresar");
@@ -144,21 +144,18 @@ export const doSignOut = async () => {
     localStorage.removeItem("authToken");
 
     // Cerrar la sesión con Firebase Auth
-    const res = signOut(auth)
+    await signOut(auth)
       .then(() => {
         // Sign-out successful.
-        toast.success("LogOut");
+        toast.success("Saliendo...");
       })
       .catch((error) => {
         // An error happened.
         toast.error("Error");
         console.log(error);
       });
-
-    console.log(res);
-
     // Redireccionar a la página de inicio de sesión u otra página
-    window.location.replace("/");
+    window.location.replace("/dashboard");
   } catch (error) {
     console.error("Error al cerrar sesión:", error);
   }
