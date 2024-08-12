@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
-import { doSignInWithGoogle } from "../firebase/auth";
+import { doSignInWithGoogle } from "../../firebase/auth";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { FormLogin } from "../componentes/Users/FormLogin";
+import { FormLogin } from "../../componentes/Users/FormLogin";
 
-export const Login = () => {
+const Login = () => {
   const dispatch = useDispatch();
   const onGoogleSignIn = async (e) => {
     e.preventDefault();
@@ -13,7 +13,7 @@ export const Login = () => {
     <div className="bg-gray-100 flex justify-center items-center h-screen">
       <div className="w-1/2 h-full hidden lg:block">
         <img
-          src={"initLogin.webp"}
+          src={"../initLogin.webp"}
           alt="Placeholder Image"
           className="object-fill w-full h-full"
         />
@@ -45,3 +45,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

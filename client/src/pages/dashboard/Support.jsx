@@ -1,7 +1,7 @@
 import React from "react";
-import { Layout } from "../componentes/Layout/Layout";
+import { Layout } from "../../componentes/Layout/Layout";
 import { useSelector } from "react-redux";
-import SupportDevelopers from "../componentes/Support/SupportDevelopers";
+import SupportDevelopers from "../../componentes/Support/SupportDevelopers";
 
 const Support = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);

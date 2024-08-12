@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Layout } from "../componentes/Layout/Layout";
-import DisplayProductDashboard from "../componentes/Products/DisplayProductDashboard";
+import { Layout } from "../../componentes/Layout/Layout";
+import DisplayProductDashboard from "../../componentes/Products/DisplayProductDashboard";
 import { useEffect } from "react";
-import { fetchSheets } from "../redux/actions/actions";
+import { fetchSheets } from "../../redux/actions/actions";
 
 const Dashboard = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);

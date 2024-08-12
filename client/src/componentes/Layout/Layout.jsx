@@ -11,7 +11,7 @@ export function Layout({ children, isAuth }) {
     if (!isAuth) {
       toast.loading("No autorizado, redirigiendo...");
       setTimeout(() => {
-        window.location.href = "/";
+        window.location.href = "/dashboard/";
       }, 1000);
     }
   }, [isAuth]);

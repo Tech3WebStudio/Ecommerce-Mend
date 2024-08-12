@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Layout } from "../componentes/Layout/Layout";
+import { Layout } from "../../componentes/Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
-import { getSaleInfo, getSales } from "../redux/actions/actions";
-import SheetsSales from "../componentes/Sheets/SheetsSales";
-import TabViewSale from "../componentes/Popup/TabViewSale";
-import TabDeleteSaleButton from "../componentes/Popup/TabDeleteSaleButton";
+import { getSaleInfo, getSales } from "../../redux/actions/actions";
+import SheetsSales from "../../componentes/Sheets/SheetsSales";
+import TabViewSale from "../../componentes/Popup/TabViewSale";
+import TabDeleteSaleButton from "../../componentes/Popup/TabDeleteSaleButton";
 
 const Sales = () => {
   const [openModal, setOpenModal] = useState(false);
