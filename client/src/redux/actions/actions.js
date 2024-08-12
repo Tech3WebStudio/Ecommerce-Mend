@@ -16,6 +16,7 @@ export const CLEAR_IMAGES = "CLEAR_IMAGES";
 export const SET_CONDITION = "SET_CONDITION";
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const FILTER_CATEGORY = "FILTER_CATEGOTY";
+export const CLEAR_FILTER = "CLEAR_FILTER";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
@@ -318,7 +319,9 @@ export const filterByCategory = (category) => async (dispatch) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      
     });
+    
     dispatch({
       type: FILTER_CATEGORY,
       payload: res.data.products,
@@ -328,10 +331,14 @@ export const filterByCategory = (category) => async (dispatch) => {
   }
 };
 
-export const getCategories = () => async dispatch => {
+export const clearFilteredProducts = () => ({
+  type: CLEAR_FILTER
+})
+
+export const getCategories = () => async (dispatch) => {
   try {
-    const response = await intance.get('/api/categories');
-    const categories = await response.json();
+    const response = await intance.get('/api/sheets/categories');
+    const categories = response.data;
     dispatch({ type: GET_CATEGORIES, payload: categories });
   } catch (error) {
     console.error('Error fetching categories:', error);

@@ -8,6 +8,7 @@ import {
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
   CLEAR_IMAGES,
+  CLEAR_FILTER,
   FILTER_CATEGORY,
   GET_CATEGORIES,
   SET_CONDITION,
@@ -68,13 +69,17 @@ const sheetsReducer = (state = initialState, action) => {
       };
 
     case SET_CONDITION:
-        return { ...state, condition: action.payload };  
+        return { ...state, rCondition: action.payload };  
 
     case FILTER_CATEGORY: // Productos filtrados por categoria  
       return {
         ...state,
         filterProducts: action.payload,
       }
+
+    case CLEAR_FILTER:
+      return {...state, 
+        filterProducts: []}  
 
     case GET_CATEGORIES: // Obtener todas las categorias
       return {

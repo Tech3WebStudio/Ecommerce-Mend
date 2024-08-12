@@ -311,8 +311,9 @@ async function decreaseStock(auth, productId, amount) {
 async function getProductsByCategory(auth, category) {
   try {
     const { products } = await getSheetData(auth);
+    const trimmedCategory = category.trim().toLowerCase(); // Elimina espacios y convierte a minúsculas
     const filteredProducts = products.filter(
-      (product) => product.categoria === category
+      (product) => product.categoria.trim().toLowerCase() === trimmedCategory
     );
     return { products: filteredProducts };
   } catch (error) {
@@ -320,6 +321,8 @@ async function getProductsByCategory(auth, category) {
     throw new Error(error.message);
   }
 }
+
+
 
 async function getAllCategories(auth) {
   try {
