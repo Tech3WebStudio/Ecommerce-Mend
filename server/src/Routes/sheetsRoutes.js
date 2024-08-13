@@ -15,7 +15,7 @@ const {
   getAllCategories,
   deleteSalesById,
 } = require("../Controllers/sheets/sheetsController.js");
-const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
+const compressAndUploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
 sheetsRouter.get("/data", async (req, res) => {
   try {
@@ -63,7 +63,7 @@ sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
 });
 
 sheetsRouter.post("/images", (req, res) => {
-  uploadToS3(req, res);
+  compressAndUploadToS3(req, res);
 });
 
 sheetsRouter.get("/sale/:id", async (req, res) => {
