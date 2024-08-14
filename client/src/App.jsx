@@ -11,6 +11,7 @@ import Support from "./pages/dashboard/Support";
 import Users from "./pages/dashboard/Users";
 import Error from "./pages/dashboard/Error";
 import Home from "./pages/ecommerce/Home";
+import CartPage from "./pages/ecommerce/CartPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         <Route path="/dashboard/" element={<Login />} />
         <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<CartPage />} />
         {isAuth ? (
           <>
             <Route path="/dashboard/dashboard" element={<Dashboard />} />
