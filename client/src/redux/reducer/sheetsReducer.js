@@ -8,8 +8,12 @@ import {
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
   CLEAR_IMAGES,
+  CLEAR_FILTER,
   FILTER_CATEGORY,
   GET_CATEGORIES,
+  SET_CONDITION,
+  GET_CASH_FLOW,
+  ADD_CASH_FLOW_ENTRY
 } from "../actions/actions";
 
 const initialState = {
@@ -17,8 +21,10 @@ const initialState = {
   images: [],
   loading: false,
   error: null,
+  rCondition: "allProducts",
   filterProducts: [],
-  categories: []
+  categories: [],
+  cashFlow: [],
 };
 
 const sheetsReducer = (state = initialState, action) => {
@@ -65,17 +71,36 @@ const sheetsReducer = (state = initialState, action) => {
         images: [],
       };
 
+    case SET_CONDITION:
+        return { ...state, rCondition: action.payload };  
+
     case FILTER_CATEGORY: // Productos filtrados por categoria  
       return {
         ...state,
         filterProducts: action.payload,
       }
 
+    case CLEAR_FILTER:
+      return {...state, 
+        filterProducts: []}  
+
     case GET_CATEGORIES: // Obtener todas las categorias
       return {
         ...state,
         categories: action.payload,
       };  
+
+    case GET_CASH_FLOW:
+        return {
+          ...state,
+          cashFlow: action.payload,
+        };
+        
+    case ADD_CASH_FLOW_ENTRY:
+      return {
+        ...state,
+        cashFlow: [...state.cashFlow, action.payload],
+      };    
     default:
       return state;
   }

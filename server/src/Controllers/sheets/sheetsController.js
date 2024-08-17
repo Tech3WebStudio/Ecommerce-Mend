@@ -270,6 +270,27 @@ async function getSaleData(auth) {
   }
 }
 
+async function getSalesByDate(auth, date) {
+  try {
+    const sheets = google.sheets({ version: "v4", auth });
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+      range: "Ventas!A2:K", // Ajusta el rango según tu hoja de ventas
+    });
+    
+    const rows = res.data.values || [];
+
+    // Filtrar las ventas que coinciden con la fecha
+    const salesForDate = rows.filter((row) => row[10] === date).map((row) => row[0]);
+
+    return salesForDate;
+  } catch (error) {
+    console.error("Error obteniendo ventas por fecha:", error);
+    throw new Error("Error obteniendo ventas por fecha");
+  }
+}
+
+
 async function increaseStock(auth, productId, amount) {
   const sheets = google.sheets({ version: "v4", auth });
   const { rows } = await getSheetData(auth);
@@ -311,8 +332,9 @@ async function decreaseStock(auth, productId, amount) {
 async function getProductsByCategory(auth, category) {
   try {
     const { products } = await getSheetData(auth);
+    const trimmedCategory = category.trim().toLowerCase(); // Elimina espacios y convierte a minúsculas
     const filteredProducts = products.filter(
-      (product) => product.categoria === category
+      (product) => product.categoria.trim().toLowerCase() === trimmedCategory
     );
     return { products: filteredProducts };
   } catch (error) {
@@ -320,6 +342,8 @@ async function getProductsByCategory(auth, category) {
     throw new Error(error.message);
   }
 }
+
+
 
 async function getAllCategories(auth) {
   try {
@@ -434,6 +458,130 @@ async function deleteSalesById(auth, id) {
   return res.data;
 }
 
+async function getCashFlow(auth) {
+  try {
+    const sheets = google.sheets({ version: "v4", auth });
+
+    // Obtener los datos del flujo de caja
+    const resCashFlow = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+      range: "FlujoDeCaja!A2:F",  // Incluye la columna F para "Caja Final"
+    });
+
+    const rowsCashFlow = resCashFlow.data.values || [];
+    let lastId = 0;
+    let saldoAcumulado = 0;  // Para llevar el registro del saldo acumulado
+
+    if (rowsCashFlow.length > 0) {
+      lastId = parseInt(rowsCashFlow[rowsCashFlow.length - 1][0]);
+    }
+
+    const cashFlowData = rowsCashFlow.map((row) => {
+      const tipo = row[1];
+      const monto = parseFloat(row[2]);
+
+      // Calcular saldo acumulado basado en el tipo de movimiento (Ingreso/Gasto)
+      if (tipo === "Ingreso") {
+        saldoAcumulado += monto;
+      } else if (tipo === "Gasto") {
+        saldoAcumulado -= monto;
+      }
+
+      return {
+        id: row[0],
+        tipo: tipo,
+        monto: monto,
+        descripcion: row[3],
+        fecha: row[4],
+        cajaFinal: saldoAcumulado,  // Caja final acumulada
+      };
+    });
+
+    // Obtener los datos de la hoja de ventas
+    const resVentas = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+      range: "Ventas!A2:K",  // Asumiendo que las columnas de interés están en A2:K
+    });
+
+    const rowsVentas = resVentas.data.values || [];
+    
+    // Añadir las ventas al flujo de caja como ingresos
+    const ventasData = rowsVentas.map((ventaRow, index) => {
+      const id = lastId + index + 1;  // Incrementar el ID para las nuevas filas
+      const subtotal = parseFloat(ventaRow[7]);  // Subtotal de la venta
+      const total = parseFloat(ventaRow[9]);  // Total de la venta
+      const descripcion = `Venta Producto: ${ventaRow[3]}, Cliente: ${ventaRow[2]}`;  // SKU y Cliente
+      const fecha = ventaRow[10];  // Fecha de la venta
+
+      // Sumar el total de la venta al saldo acumulado
+      saldoAcumulado += total;
+
+      return {
+        id: id.toString(),
+        tipo: "Ingreso",  // Todas las ventas se consideran como ingresos
+        monto: total,
+        descripcion: descripcion,
+        fecha: fecha,
+        cajaFinal: saldoAcumulado,  // Caja final actualizada
+      };
+    });
+
+    // Combinar flujo de caja existente con las ventas
+    const allCashFlowData = [...cashFlowData, ...ventasData];
+
+    return { cashFlowData: allCashFlowData, lastId: lastId + rowsVentas.length };
+  } catch (error) {
+    console.log({ error: error.message });
+  }
+}
+
+// Controlador modificado para devolver solo la nueva entrada
+async function addCashFlowEntry(auth, data) {
+  try {
+    const { tipo, monto, descripcion, fecha } = data;
+    const sheets = google.sheets({ version: "v4", auth });
+
+    // Obtener la última fila para determinar el ID más reciente
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+      range: "FlujoDeCaja!A:A", 
+    });
+
+    const rows = response.data.values || [];
+    let lastId = rows.length > 1 ? parseInt(rows[rows.length - 1][0], 10) || 0 : 0;
+
+    let saldoAcumulado = 0;
+    if (rows.length > 1) {
+      const lastRow = await sheets.spreadsheets.values.get({
+        spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+        range: `FlujoDeCaja!F${rows.length}`, 
+      });
+
+      saldoAcumulado = lastRow.data.values && lastRow.data.values[0] ? parseFloat(lastRow.data.values[0][0]) || 0 : 0;
+    }
+
+    const newSaldoAcumulado = tipo === "Ingreso" ? saldoAcumulado + parseFloat(monto) : saldoAcumulado - parseFloat(monto);
+    const newRow = [lastId + 1, tipo, parseFloat(monto), descripcion, fecha, newSaldoAcumulado];
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+      range: "FlujoDeCaja!A:F", 
+      valueInputOption: "RAW",
+      resource: { values: [newRow] },
+    });
+
+    return { id: newRow[0], tipo, monto, descripcion, fecha, cajaFinal: newSaldoAcumulado };
+  } catch (error) {
+    console.error("Error agregando el movimiento:", error);
+    throw new Error("Error agregando el movimiento al flujo de caja");
+  }
+}
+
+
+
+
+
+
 module.exports = {
   authorize,
   getSheetData,
@@ -443,9 +591,12 @@ module.exports = {
   registerSale,
   getSaleData,
   getSaleDataUnitiInfo,
+  getSalesByDate,
   increaseStock,
   decreaseStock,
   getProductsByCategory,
   getAllCategories,
   deleteSalesById,
+  getCashFlow,
+  addCashFlowEntry,
 };
