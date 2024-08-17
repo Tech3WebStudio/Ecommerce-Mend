@@ -11,6 +11,7 @@ import Support from "./pages/dashboard/Support";
 import Users from "./pages/dashboard/Users";
 import Error from "./pages/dashboard/Error";
 import Home from "./pages/ecommerce/Home";
+import Balance from "./pages/dashboard/Balance";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function App() {
             <Route path="/dashboard/products" element={<Products />} />
             <Route path="/dashboard/sales" element={<Sales />} />
             <Route path="/dashboard/users" element={<Users />} />
+            <Route path="/dashboard/balance" element={<Balance />} />
             <Route path="/dashboard/support" element={<Support />} />
           </>
         ) : (

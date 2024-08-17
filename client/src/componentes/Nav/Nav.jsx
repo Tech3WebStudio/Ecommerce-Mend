@@ -28,7 +28,7 @@ export const Nav = ({ user, showNav }) => {
           <h2 className="font-medium text-xs md:text-sm text-center text-primary">
             {user.name}
           </h2>
-          <p className="text-xs text-gray-500 text-center">Administrator</p>
+          <p className="text-xs text-gray-500 text-center">Administrador</p>
         </div>
       </div>
       <div id="menu" className="flex flex-col w-full space-y-2">
@@ -85,6 +85,24 @@ export const Nav = ({ user, showNav }) => {
               </svg>
 
               <span className="">Ventas</span>
+            </Link>
+            <Link
+              to={"/dashboard/balance"}
+              className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-primary hover:text-white rounded-md transition duration-150 ease-in-out"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-5 h-5 fill-current inline-block"
+              >
+                <path 
+                d="m24,19c0,1.654-1.346,3-3,3v1c0,.552-.447,1-1,1s-1-.448-1-1v-1h-.268c-1.067,0-2.063-.574-2.598-1.499-.277-.478-.113-1.089.364-1.366.48-.278,1.091-.113,1.366.365.179.308.511.5.867.5h2.268c.552,0,1-.448,1-1,0-.378-.271-.698-.644-.76l-3.041-.507c-1.342-.223-2.315-1.373-2.315-2.733,0-1.654,1.346-3,3-3v-1c0-.552.447-1,1-1s1,.448,1,1v1h.268c1.067,0,2.063.574,2.598,1.499.277.478.113,1.089-.364,1.366-.481.276-1.091.112-1.366-.365-.179-.308-.511-.5-.867-.5h-2.268c-.552,0-1,.448-1,1,0,.378.271.698.644.76l3.041.507c1.342.223,2.315,1.373,2.315,2.733ZM7,9c-.552,0-1,.448-1,1v13c0,.552.448,1,1,1s1-.448,1-1v-13c0-.552-.448-1-1-1Zm-5,3c-.552,0-1,.448-1,1v10c0,.552.448,1,1,1s1-.448,1-1v-10c0-.552-.448-1-1-1Zm10-6c-.552,0-1,.448-1,1v16c0,.552.448,1,1,1s1-.448,1-1V7c0-.552-.448-1-1-1Zm10,2c.553,0,1-.448,1-1V1c0-.552-.447-1-1-1s-1,.448-1,1v6c0,.552.447,1,1,1Zm-5,1c.553,0,1-.448,1-1v-4c0-.552-.447-1-1-1s-1,.448-1,1v4c0,.552.447,1,1,1Z"
+                clipRule="evenodd"
+                />
+              </svg>
+
+              <span className=""> Balance</span>
             </Link>
             <Link
               to={"/dashboard/users"}

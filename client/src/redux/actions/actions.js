@@ -38,6 +38,9 @@ export const GET_SALE_BY_ID = "GET_SALE_BY_ID";
 export const CREATED_SALE = "CREATED_SALE";
 export const DELETE_SALE_ROW = "DELETE_SALE_ROW";
 
+export const GET_CASH_FLOW = "GET_CASH_FLOW";
+export const ADD_CASH_FLOW_ENTRY = "ADD_CASH_FLOW_ENTRY";
+
 export const CREATED_SELLER = "CREATED_SELLER";
 export const AUTH_SELLER = "AUTH_SELLER";
 export const FETCH_USERS = "FETCH_USERS";
@@ -167,6 +170,46 @@ export const createSale = (data) => async (dispatch) => {
     console.log({ error: error.message });
   }
 };
+
+// FLUJO DE CAJA
+// Obtener todos los movimientos de caja
+export const getCashFlow = () => async (dispatch) => {
+  try {
+    
+    const res = await intance.get(`/api/sheets/cashflow`);
+    
+    dispatch({
+      type: GET_CASH_FLOW,
+      payload: res.data, // Asegúrate que este payload coincide con la estructura de datos que esperas en tu componente
+    });
+  } catch (error) {
+    console.error("Error obteniendo flujo de caja:", error);
+    dispatch({ error: error.message });
+  }
+};
+
+
+export const addCashFlowEntry = (entryData) => async (dispatch) => {
+  try {
+    const response = await intance.post('/api/sheets/cashflow/add', entryData);
+    toast.success('Entrada añadida exitosamente');
+
+    // Actualizar el estado local solo con la nueva entrada
+    dispatch({
+      type: ADD_CASH_FLOW_ENTRY,
+      payload: response.data, // Solo la nueva entrada
+    });
+
+    // Desencadenar un fetch para obtener todo el flujo de caja actualizado (opcional)
+    dispatch(getCashFlow());
+  } catch (error) {
+    console.error("Error añadiendo entrada:", error);
+    toast.error('Error añadiendo la entrada de flujo de caja');
+  }
+};
+
+
+
 
 //LOGIN
 export const loginWithGoogle = (userInfo) => ({
