@@ -17,7 +17,7 @@ const {
   getCashFlow,
   addCashFlowEntry,
 } = require("../Controllers/sheets/sheetsController.js");
-const compressAndUploadToS3 = require("../Controllers/sheets/uploadImages.js");
+const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
 sheetsRouter.get("/data", async (req, res) => {
   try {
@@ -65,7 +65,7 @@ sheetsRouter.delete("/delete/:rowIndex", async (req, res) => {
 });
 
 sheetsRouter.post("/images", (req, res) => {
-  compressAndUploadToS3(req, res);
+  uploadToS3(req, res);
 });
 
 sheetsRouter.get("/sale/:id", async (req, res) => {
