@@ -55,8 +55,8 @@ const cartReducer = (state = initialState, action) => {
 
     case UPDATE_CART_ITEM_QUANTITY:
       updatedCartItems = state.cartItems.map((item) =>
-        item.id_product === payload.productId
-          ? { ...item, cartQuantity: payload.quantity }
+        item.id === payload.productId
+          ? { ...item, cantidad: payload.quantity }
           : item
       );
       localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
@@ -64,7 +64,6 @@ const cartReducer = (state = initialState, action) => {
         ...state,
         cartItems: updatedCartItems,
       };
-
     case DELETE_CART_ITEM_SUCCESS:
       return {
         ...state,

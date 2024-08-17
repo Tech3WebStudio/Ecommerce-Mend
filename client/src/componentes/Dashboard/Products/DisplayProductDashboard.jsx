@@ -8,7 +8,7 @@ import {
   decrementQuantity,
   incrementQuantity,
   removeFromCart,
-} from "../../redux/actions/actions";
+} from "../../../redux/actions/actions";
 import toast from "react-hot-toast";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
@@ -18,8 +18,6 @@ const DisplayProductDashboard = ({ products }) => {
   const [nombreCliente, setNombreCliente] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
-
-  console.log(formaPago);
 
   const calculateTotal = () => {
     const total = cartItems.reduce((acc, product) => {

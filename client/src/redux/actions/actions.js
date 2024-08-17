@@ -40,12 +40,13 @@ export const CREATED_SELLER = "CREATED_SELLER";
 export const AUTH_SELLER = "AUTH_SELLER";
 export const FETCH_USERS = "FETCH_USERS";
 
-
+export const CREATED_USER = "CREATED_USER";
 
 //USER
 export const authenticationUser = (email) => async (dispatch) => {
   try {
     const response = await intance.post(`/api/user/auth/${email}`);
+    console.log(response)
     if (response.status === 200) {
       dispatch({
         type: AUTH_SELLER,
@@ -59,10 +60,27 @@ export const authenticationUser = (email) => async (dispatch) => {
   }
 };
 
-export const createUser = (email, name, uid, role) => async (dispatch) => {
+export const createUser = (data) => async (dispatch) => {
+  console.log(data);
+  try {
+    const response = await intance.post(`/api/user/create`, data);
+    console.log(response);
+    if (response.ok) {
+      dispatch({
+        type: CREATED_USER,
+      });
+      toast.success("Usuario creado y guardado");
+    }
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    toast.error("Error al crear usuario");
+  }
+};
+
+export const createSeller = (email, name, uid, role) => async (dispatch) => {
   try {
     const data = { email, name, uid, role };
-    const response = await intance.post(`/api/user/create`, data);
+    const response = await intance.post(`/api/user/seller`, data);
     if (response.ok) {
       dispatch({
         type: CREATED_SELLER,
@@ -322,13 +340,13 @@ export const filterByCategory = (category) => async (dispatch) => {
   }
 };
 
-export const getCategories = () => async dispatch => {
+export const getCategories = () => async (dispatch) => {
   try {
-    const response = await intance.get('/api/categories');
+    const response = await intance.get("/api/categories");
     const categories = await response.json();
     dispatch({ type: GET_CATEGORIES, payload: categories });
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error("Error fetching categories:", error);
   }
 };
 

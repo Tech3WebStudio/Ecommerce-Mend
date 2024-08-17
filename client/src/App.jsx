@@ -12,6 +12,7 @@ import Users from "./pages/dashboard/Users";
 import Error from "./pages/dashboard/Error";
 import Home from "./pages/ecommerce/Home";
 import CartPage from "./pages/ecommerce/CartPage";
+import Register from "./pages/dashboard/Register";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,7 +25,8 @@ function App() {
     <div>
       <Toaster />
       <Routes>
-        <Route path="/dashboard/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<CartPage />} />
         {isAuth ? (

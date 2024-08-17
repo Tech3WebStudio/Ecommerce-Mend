@@ -8,14 +8,25 @@ const Cart = ({ product, calcularTotal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formaPago, setFormaPago] = useState("");
-  const [nombreCliente, setNombreCliente] = useState("");
+  const [formCliente, setFormCliente] = useState({
+    nombre: "",
+    correo: "",
+    provincia: "",
+    direccion: "",
+    cp: "",
+    celular: "",
+  });
 
   const handleFormaPagoChange = (forma) => {
     setFormaPago(forma);
   };
 
-  const handleNombreClienteChange = (e) => {
-    setNombreCliente(e.target.value);
+  const handleFormClienteChange = (e) => {
+    const { name, value } = e.target;
+    setFormCliente({
+      ...formCliente,
+      [name]: value,
+    });
   };
 
   const handleCreateVenta = () => {
@@ -31,13 +42,14 @@ const Cart = ({ product, calcularTotal }) => {
       })),
       total: calcularTotal(),
       formaPago,
-      nombreCliente,
+      cliente: formCliente,
     };
+
     if (venta.formaPago === "") {
       toast.error("Falta forma de pago");
     } else if (venta.productos.length === 0) {
       toast.error("El carrito está vacío");
-    } else if (venta.nombreCliente.trim() === "") {
+    } else if (venta.cliente.nombre.trim() === "") {
       toast.error("Falta nombre del cliente");
     } else {
       toast.success("Venta creada exitosamente...");
@@ -83,7 +95,7 @@ const Cart = ({ product, calcularTotal }) => {
               : "h-full flex justify-center items-center"
           }`}
         >
-          {product?.length > 1 ? (
+          {product?.length > 0 ? (
             product?.map((prod, i) => {
               const imagenes = prod.url.split(",")[0];
 
@@ -124,7 +136,7 @@ const Cart = ({ product, calcularTotal }) => {
 
                     <div className="flex items-center justify-between pt-5">
                       <p className="text-xl text-gray-800">
-                         ${prod.precio * prod.cantidad},00
+                        ${prod.precio * prod.cantidad},00
                       </p>
                       <button
                         onClick={() => handleRemove(prod.id)}
@@ -170,8 +182,9 @@ const Cart = ({ product, calcularTotal }) => {
             </label>
             <input
               type="text"
-              value={nombreCliente}
-              onChange={handleNombreClienteChange}
+              name="nombre"
+              value={formCliente.nombre}
+              onChange={handleFormClienteChange}
               className="border p-2 w-full border-gray-300"
               placeholder="Nombre completo"
             />
@@ -185,8 +198,9 @@ const Cart = ({ product, calcularTotal }) => {
             </label>
             <input
               type="email"
-              // value={nombreCliente}
-              // onChange={handleNombreClienteChange}
+              name="correo"
+              value={formCliente.correo}
+              onChange={handleFormClienteChange}
               className="border p-2 w-full"
               placeholder="Email"
             />
@@ -201,57 +215,63 @@ const Cart = ({ product, calcularTotal }) => {
               </label>
               <input
                 type="text"
-                // value={nombreCliente}
-                // onChange={handleNombreClienteChange}
+                name="provincia"
+                value={formCliente.provincia}
+                onChange={handleFormClienteChange}
                 className="border p-2 w-full"
                 placeholder="Provincia"
               />
             </div>
-            <div className="flex">
+            <div className="ml-2 flex">
               <label
                 className="border border-gray-300 p-2 text-center"
-                htmlFor="codigoPostal"
+                htmlFor="cp"
               >
                 CP
               </label>
               <input
                 type="text"
-                // value={nombreCliente}
-                // onChange={handleNombreClienteChange}
+                name="cp"
+                value={formCliente.cp}
+                onChange={handleFormClienteChange}
                 className="border p-2 w-full"
-                placeholder="Codigo postal"
+                placeholder="Código Postal"
               />
             </div>
           </div>
-          <div className="mt-2 flex justify-center items-center">
-            <label
-              className="border border-gray-300 p-2 text-center"
-              htmlFor="direccion"
-            >
-              Direccion
-            </label>
-            <input
-              type="text"
-              // value={nombreCliente}
-              // onChange={handleNombreClienteChange}
-              className="border p-2 w-full"
-              placeholder="Direccion"
-            />
-          </div>
-          <div className="mt-2 flex justify-center items-center">
-            <label
-              className="border border-gray-300 p-2 text-center"
-              htmlFor="celular"
-            >
-              Celular
-            </label>
-            <input
-              type="text"
-              // value={nombreCliente}
-              // onChange={handleNombreClienteChange}
-              className="border p-2 w-full"
-              placeholder="Telefono Celular"
-            />
+          <div className="mt-2 flex flex-row justify-center items-center">
+            <div className="flex">
+              <label
+                className="border border-gray-300 p-2 text-center"
+                htmlFor="direccion"
+              >
+                Dirección
+              </label>
+              <input
+                type="text"
+                name="direccion"
+                value={formCliente.direccion}
+                onChange={handleFormClienteChange}
+                className="border p-2 w-full"
+                placeholder="Dirección"
+              />
+            </div>
+            <div className="ml-2 flex">
+              <label
+                className="border border-gray-300 p-2 text-center"
+                htmlFor="celular"
+              >
+                Celular
+              </label>
+              <input
+                type="text"
+                name="celular"
+                value={formCliente.celular}
+                onChange={handleFormClienteChange}
+                className="border p-2 w-full"
+                placeholder="Número de celular"
+              />
+            </div>
           </div>
         </div>
         <div className="p-2 mt-2">

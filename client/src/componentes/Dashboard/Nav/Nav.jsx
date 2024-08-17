@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { doSignOut } from "../../firebase/auth";
+import { doSignOut } from "../../../firebase/auth";
 
 export const Nav = ({ user, showNav }) => {
   return (

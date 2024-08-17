@@ -146,7 +146,6 @@ sheetsRouter.get("/data/:category", async (req, res) => {
     const data = await getProductsByCategory(auth, category);
     res.json(data);
   } catch (error) {
-    console.log({ error: error.message });
     res.status(500).send(error.message);
   }
 });

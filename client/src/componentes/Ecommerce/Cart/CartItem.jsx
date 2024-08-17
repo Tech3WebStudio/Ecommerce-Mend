@@ -6,16 +6,14 @@ import {
 } from "../../../redux/actions/actions";
 
 function CartItem({ product }) {
-  const [cartQuantity, setCartQuantity] = useState(product?.cartQuantity || 1);
-  //   const user = useSelector((state) => state.auth.user);
-
+  const [cartQuantity, setCartQuantity] = useState(product?.cantidad || 1);
   const dispatch = useDispatch();
 
   // Función para manejar cambios en la cantidad del carrito
   const handleChangeQuantity = (event) => {
     const newCartQuantity = parseInt(event.target.value, 10);
     setCartQuantity(newCartQuantity);
-    dispatch(updateCartItemQuantity(product?.id, newCartQuantity));
+    dispatch(updateCartItemQuantity(product.id, newCartQuantity));
   };
 
   // Función para eliminar el producto del carrito
@@ -29,7 +27,11 @@ function CartItem({ product }) {
   const imgUrl = product?.url.split(",")[0];
   return (
     <div className="flex items-center gap-2 border rounded-lg px-2 py-2">
-      <img src={imgUrl} alt={product?.nombre} className="w-16 h-16 object-cover rounded-full" />
+      <img
+        src={imgUrl}
+        alt={product?.nombre}
+        className="w-16 h-16 object-cover rounded-full"
+      />
       <div className="flex-1">
         <h3 className="text-sm font-semibold">{product?.nombre}</h3>
         <p className="text-gray-500">${product?.precio}</p>

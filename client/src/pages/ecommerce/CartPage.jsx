@@ -1,5 +1,3 @@
-import React from "react";
-import Navigation from "../../componentes/Ecommerce/Nav/Navigation";
 import { useSelector } from "react-redux";
 import Cart from "../../componentes/Ecommerce/Cart/Cart";
 
@@ -9,7 +7,7 @@ const CartPage = () => {
   const calculateTotal = () => {
     const total = products.reduce((acc, product) => {
       const price = parseFloat(product.precio);
-      const quantity = product.cartQuantity || 1;
+      const quantity = product.cantidad || 1;
       return acc + (isNaN(price) ? 0 : price * quantity);
     }, 0);
 

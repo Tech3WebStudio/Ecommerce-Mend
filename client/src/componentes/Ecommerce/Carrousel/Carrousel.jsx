@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const colors = ["bg-pink-500", "bg-black", "bg-gray-500"];
+const colors = ["bg-pink-500", "bg-secondary", "bg-tertiary"];
 
 const Carrousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,7 +13,7 @@ const Carrousel = () => {
   }, []);
 
   return (
-    <div className="w-full h-[300px]">
+    <div className="w-full h-[500px]">
       <div className={`w-full h-full ${colors[currentIndex]} flex justify-center items-center transition duration-500`}>
         <h1 className="text-7xl text-gray-50 italic text-center">Ninashowrrom</h1>
       </div>
