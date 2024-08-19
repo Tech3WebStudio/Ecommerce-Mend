@@ -234,6 +234,8 @@ export const fetchSheets = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(res.data.products);
+    
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data.products,
@@ -241,7 +243,9 @@ export const fetchSheets = () => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+  
 };
+
 
 export const addSheetRow = (rowData) => async (dispatch) => {
   const token = localStorage.getItem("authToken");

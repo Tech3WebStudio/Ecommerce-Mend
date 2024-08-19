@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Products from "./pages/Products";
-import Dashboard from "./pages//DashboardPage/Dashboard";
+import Dashboard from "../src/pages/Dashboard";
 import { Login } from "./pages/Login";
-import  SupportDevelopers from './componentes/Support/SupportDevelopers'
+import  SupportDevelopers from '../src/pages/Support'
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { authenticateUserFromSession } from "./redux/actions/actions";
@@ -11,6 +11,7 @@ import Error from "./pages/Error";
 import Sales from "./pages/Sales";
 import Support from "./pages/Support";
 import Users from "./pages/Users";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,8 @@ function App() {
             <Route path="/sales" element={<Sales />} />
             <Route path="/users" element={<Users />} />
             <Route path="/support" element={<Support />} />
+           
+
           </>
         ) : (
           <Route path="/error" element={<Error />} />
