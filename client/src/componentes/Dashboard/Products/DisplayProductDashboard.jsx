@@ -26,7 +26,9 @@ const DisplayProductDashboard = ({ products }) => {
       const quantity = product.cantidad || 1;
       return acc + (isNaN(precio) ? 0 : precio * quantity);
     }, 0);
-  
+    let recargo7;
+    let totalConRecargo7;
+    let recargo12;
     let totalFinal = total;
     switch (formaPago) {
       case "qr":
@@ -36,18 +38,18 @@ const DisplayProductDashboard = ({ products }) => {
         totalFinal += total * 0.07;
         break;
       case "tarjetaCredito":
-        const recargo7 = total * 0.07;
-        const totalConRecargo7 = total + recargo7;
-        const recargo12 = totalConRecargo7 * 0.12;
+        recargo7 = total * 0.07;
+        totalConRecargo7 = total + recargo7;
+        recargo12 = totalConRecargo7 * 0.12;
         totalFinal = totalConRecargo7 + recargo12;
         break;
       default:
         break;
     }
-  
+
     return totalFinal.toFixed(2);
   };
-  
+
   const handleFormaPagoChange = (e) => {
     setFormaPago(e.target.value);
   };
@@ -165,7 +167,7 @@ const DisplayProductDashboard = ({ products }) => {
               </div>
             </div>
           </div>
-          <div className="mt-5 px-5 w-full">
+          <div className="mt-5 px-5">
             <Filter />
           </div>
           <div className="mt-5 px-5">

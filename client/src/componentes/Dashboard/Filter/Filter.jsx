@@ -35,7 +35,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex items-center mt-5 flex-row px-1 overflow-x-hidden w-full">
+    <div className="flex items-center mt-5 flex-row px-1 overflow-x-hidden">
 
       <div
         className="flex overflow-x-scroll scrollbar-hide space-x-2 p-4 rounded-md mr-2" // Agrega espacio entre los botones y oculta el scrollbar
