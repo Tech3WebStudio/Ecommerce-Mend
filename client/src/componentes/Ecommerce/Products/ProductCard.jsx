@@ -41,7 +41,7 @@ const PrevArrow = (props) => {
 };
 
 const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
-  const img_product = url.split(",");
+  const img_product = url?.split(",");
   const settings = {
     dots: true,
     infinite: true,

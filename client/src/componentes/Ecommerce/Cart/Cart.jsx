@@ -307,12 +307,12 @@ const Cart = ({ product, calcularTotal, usuario }) => {
         </div>
         <div className="p-2 mt-4">Total: ${calcularTotal()}</div>
         <div className="p-2 mt-4">
-          <button
+          {/* <button
             onClick={handleCreateVenta}
             className="border p-2 text-white bg-gray-800 w-full hover:bg-gray-700"
           >
             Empezar el pago
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
