@@ -39,7 +39,7 @@ const Dashboard = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-xl text-gray-300">Panel de control</h1>
       </div>
-      <div className="mt-5 w-full">
+      <div className="mt-5">
         {renderProducts()}
       </div>
     </Layout>
