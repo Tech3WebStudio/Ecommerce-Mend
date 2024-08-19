@@ -55,7 +55,7 @@ export function Layout({ children, isAuth }) {
       >
         <Nav showNav={showNav} user={user} />
       </div>
-      <div className="flex-grow p-4 w-full md:w-auto m-2 bg-pink-50">
+      <div className="flex-1 p-4 overflow-auto">
         {children}
       </div>
     </div>

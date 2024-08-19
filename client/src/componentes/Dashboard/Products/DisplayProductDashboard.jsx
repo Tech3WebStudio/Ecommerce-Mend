@@ -136,11 +136,11 @@ const DisplayProductDashboard = ({ products }) => {
   });
 
   return (
-    <div className="container mx-auto w-full bg-white border border-gray-300 p-2 shadow-lg">
+    <div className="container mx-auto bg-white border border-gray-300 shadow-lg">
       <div className="flex lg:flex-row flex-col shadow-lg">
         {/* Productos */}
-        <div className="w-full lg:w-3/5 h-screen overflow-y-scroll shadow-lg">
-          <div className="flex flex-row justify-between items-center px-5 mt-5">
+        <div className="lg:w-2/3 h-screen overflow-y-scroll shadow-lg">
+          <div className="flex flex-row justify-between items-center px-4 mt-5">
             <div className="text-gray-800">
               <div className="font-bold text-xl flex gap-2 justify-center items-center">
                 <img
@@ -187,19 +187,19 @@ const DisplayProductDashboard = ({ products }) => {
                   <button
                     key={i}
                     onClick={() => handleAddToCart(product)}
-                    className="flex border cursor-pointer shadow-md rounded-md p-2 flex-col items-center justify-center w-full max-w-lg mx-auto hover:shadow-xl active:shadow-lg active:translate-y-[2px]"
+                    className="flex border cursor-pointer shadow-md rounded-md p-2 flex-col items-center justify-center w-full mx-auto hover:shadow-xl active:shadow-lg active:translate-y-[2px]"
                   >
                     {imageUrls?.length > 1 ? (
                       <div className="flex">
                         <LazyLoadImage
-                          className="object-cover w-24 rounded-md h-24 xl:h-32"
+                          className="object-cover w-full rounded-md h-16 xl:h-32"
                           src={imageUrls[0]}
                           alt={`${product.nombre}`}
                         />
                       </div>
                     ) : (
                       <LazyLoadImage
-                        className="object-cover w-full rounded-md h-24 xl:h-32"
+                        className="object-cover w-full rounded-md h-16 xl:h-32"
                         src={product.url}
                         alt={`${product.nombre}-1`}
                       />
@@ -216,7 +216,7 @@ const DisplayProductDashboard = ({ products }) => {
           </div>
         </div>
         {/* Carrito */}
-        <div className="w-full lg:w-2/5 h-screen">
+        <div className="lg:w-2/5 h-screen">
           <div className="flex flex-row items-center justify-between px-5 mt-5">
             <div className="font-bold text-xl">Orden Actual</div>
             <div className="font-semibold flex gap-2">
