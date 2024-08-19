@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSale, removeFromCart } from "../../../redux/actions/actions";
 import { useNavigate } from "react-router-dom";
 
-const Cart = ({ product, calcularTotal }) => {
+const Cart = ({ product, calcularTotal, usuario }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formaPago, setFormaPago] = useState("");
   const [formCliente, setFormCliente] = useState({
-    nombre: "",
-    correo: "",
-    provincia: "",
-    direccion: "",
-    cp: "",
+    nombre: usuario.name || "",
+    correo: usuario.email || "",
+    provincia: usuario.provincia || "",
+    direccion: usuario.direccion || "",
+    cp: usuario.cp || "",
     celular: "",
   });
-
   const handleFormaPagoChange = (forma) => {
     setFormaPago(forma);
   };
@@ -97,8 +96,7 @@ const Cart = ({ product, calcularTotal }) => {
         >
           {product?.length > 0 ? (
             product?.map((prod, i) => {
-              const imagenes = prod.url.split(",")[0];
-
+              const imagenes = prod?.url?.split(",")[0];
               return (
                 <div
                   key={i}

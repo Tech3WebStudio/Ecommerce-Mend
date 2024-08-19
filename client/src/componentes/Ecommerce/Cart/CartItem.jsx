@@ -24,14 +24,33 @@ function CartItem({ product }) {
   // Calcular el subtotal del producto
   const subtotal = (parseFloat(product?.precio) * cartQuantity).toFixed(2);
 
-  const imgUrl = product?.url.split(",")[0];
+  const imgUrl = product?.url?.split(",")[0];
   return (
     <div className="flex items-center gap-2 border rounded-lg px-2 py-2">
-      <img
-        src={imgUrl}
-        alt={product?.nombre}
-        className="w-16 h-16 object-cover rounded-full"
-      />
+      {imgUrl ? (
+        <img
+          src={imgUrl}
+          alt={product?.nombre}
+          className="w-16 h-16 object-cover rounded-full"
+        />
+      ) : (
+        <div className="p-2 border border-gray-300 rounded-full">
+          <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="w-10 h-10"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+          />
+        </svg>
+        </div>
+      )}
       <div className="flex-1">
         <h3 className="text-sm font-semibold">{product?.nombre}</h3>
         <p className="text-gray-500">${product?.precio}</p>

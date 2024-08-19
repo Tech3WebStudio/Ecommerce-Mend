@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
-// import { useDispatch } from "react-redux";
-// import { addUser, updateUser } from "../../redux/actions/actions";
 import toast from "react-hot-toast";
 import validationUserForm from "./ValidationUserForm";
-import { createNewSeller } from "../../firebase/auth";
+import { createNewSeller } from "../../../firebase/auth";
 
 export default function CreateUser({ isOpen, onClose, user }) {
   // const dispatch = useDispatch();

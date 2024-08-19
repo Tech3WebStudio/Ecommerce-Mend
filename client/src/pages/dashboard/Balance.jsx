@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Layout } from "../../componentes/Layout/Layout";
+import { Layout } from "../../componentes/Dashboard/Layout/Layout";
 import { useEffect, useState } from "react";
 import { addCashFlowEntry, getCashFlow, getSales } from "../../redux/actions/actions";
-import SheetsCashFlow from "../../componentes/Sheets/SheetsCashFlow";
+import SheetsCashFlow from "../../componentes/Dashboard/Sheets/SheetsCashFlow";
 import AddCashFlowEntry from "../../componentes/CashManagment/AddCashFlowEntry";
 
 const Balance = () => {

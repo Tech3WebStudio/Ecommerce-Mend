@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { clearFilteredProducts, filterByCategory, renderCondition } from "../../redux/actions/actions";
+import { clearFilteredProducts, filterByCategory, renderCondition } from "../../../redux/actions/actions";
 import { useState, useRef } from "react";
 
 const Filter = () => {
@@ -35,12 +35,11 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex items-center mt-5 flex-row px-1 overflow-x-hidden max-w-3xl">
+    <div className="flex items-center mt-5 flex-row px-1 overflow-x-hidden w-full">
 
       <div
-        className="flex overflow-x-scroll scrollbar-hide space-x-2 py-0.5" // Agrega espacio entre los botones y oculta el scrollbar
+        className="flex overflow-x-scroll scrollbar-hide space-x-2 p-4 rounded-md mr-2" // Agrega espacio entre los botones y oculta el scrollbar
         ref={carouselRef}
-        style={{ maxWidth: "90%" }} // Limita el ancho máximo del contenedor
       >
         <button
             value={"Todos"}

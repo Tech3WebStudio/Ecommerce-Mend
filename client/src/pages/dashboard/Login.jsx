@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
 import { doSignInWithGoogle } from "../../firebase/auth";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { FormLogin } from "../../componentes/Users/FormLogin";
+import { FormLogin } from "../../componentes/Dashboard/Users/FormLogin";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const onGoogleSignIn = async (e) => {
     e.preventDefault();
     dispatch(doSignInWithGoogle());
@@ -54,7 +54,10 @@ const Login = () => {
           <span className="border border-gray-400 w-full"></span>
         </div>
         <div className="mt-6 ml-10 mr-10 w-full">
-          <button onClick={() => navigate("/register")} className="group h-12 w-full px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-primary focus:bg-pink-50 active:bg-pink-100">
+          <button
+            onClick={() => navigate("/register")}
+            className="group h-12 w-full px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-primary focus:bg-pink-50 active:bg-pink-100"
+          >
             <div className="relative flex items-center space-x-4 justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

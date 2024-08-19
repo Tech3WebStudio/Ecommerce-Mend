@@ -1,6 +1,6 @@
 // import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { FormRegister } from "../../componentes/Users/FormRegister";
+import { FormRegister } from "../../componentes/Dashboard/Users/FormRegister";
 
 export default function Register() {
   return (

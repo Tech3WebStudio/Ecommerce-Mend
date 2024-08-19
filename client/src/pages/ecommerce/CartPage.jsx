@@ -3,6 +3,7 @@ import Cart from "../../componentes/Ecommerce/Cart/Cart";
 
 const CartPage = () => {
   const products = useSelector((state) => state.cart.cartItems);
+  const usuario = useSelector(state => state.auth.user)
 
   const calculateTotal = () => {
     const total = products.reduce((acc, product) => {
@@ -15,7 +16,7 @@ const CartPage = () => {
   };
   return (
     <div className="w-full">
-      <Cart product={products} calcularTotal={calculateTotal} />
+      <Cart product={products} calcularTotal={calculateTotal} usuario={usuario}/>
     </div>
   );
 };

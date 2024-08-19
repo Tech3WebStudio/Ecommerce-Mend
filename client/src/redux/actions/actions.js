@@ -4,9 +4,12 @@ import toast from "react-hot-toast";
 
 export const LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
 export const AUTHENTICATE_USER_FROM_SESSION = "AUTHENTICATE_USER_FROM_SESSION";
+
+
 export const FETCH_SHEETS = "FETCH_SHEETS";
 export const AUTH_SHEETS = "AUTH_SHEETS";
 export const ADD_SHEET_ROW = "ADD_SHEET_ROW";
+export const FETCH_PRODUCT_SHEET_BY_ID = "FETCH_PRODUCT_SHEET_BY_ID"
 export const UPDATE_SHEET_ROW = "UPDATE_SHEET_ROW";
 export const DELETE_SHEET_ROW = "DELETE_SHEET_ROW";
 
@@ -51,7 +54,7 @@ export const CREATED_USER = "CREATED_USER";
 export const authenticationUser = (email) => async (dispatch) => {
   try {
     const response = await intance.post(`/api/user/auth/${email}`);
-    console.log(response)
+    console.log(response);
     if (response.status === 200) {
       dispatch({
         type: AUTH_SELLER,
@@ -193,9 +196,8 @@ export const createSale = (data) => async (dispatch) => {
 // Obtener todos los movimientos de caja
 export const getCashFlow = () => async (dispatch) => {
   try {
-    
     const res = await intance.get(`/api/sheets/cashflow`);
-    
+
     dispatch({
       type: GET_CASH_FLOW,
       payload: res.data, // Asegúrate que este payload coincide con la estructura de datos que esperas en tu componente
@@ -206,11 +208,10 @@ export const getCashFlow = () => async (dispatch) => {
   }
 };
 
-
 export const addCashFlowEntry = (entryData) => async (dispatch) => {
   try {
-    const response = await intance.post('/api/sheets/cashflow/add', entryData);
-    toast.success('Entrada añadida exitosamente');
+    const response = await intance.post("/api/sheets/cashflow/add", entryData);
+    toast.success("Entrada añadida exitosamente");
 
     // Actualizar el estado local solo con la nueva entrada
     dispatch({
@@ -222,12 +223,9 @@ export const addCashFlowEntry = (entryData) => async (dispatch) => {
     dispatch(getCashFlow());
   } catch (error) {
     console.error("Error añadiendo entrada:", error);
-    toast.error('Error añadiendo la entrada de flujo de caja');
+    toast.error("Error añadiendo la entrada de flujo de caja");
   }
 };
-
-
-
 
 //LOGIN
 export const loginWithGoogle = (userInfo) => ({
@@ -306,6 +304,18 @@ export const fetchSheets = () => async (dispatch) => {
   }
 };
 
+export const getProductById = (id) => async (dispatch) => {
+  try {
+    const res = await intance.get(`/api/sheets/data/${id}`);
+    dispatch({
+      type: FETCH_PRODUCT_SHEET_BY_ID,
+      payload: res.data
+    })
+  } catch (error) {
+    console.log({ error: error.message });
+  }
+};
+
 export const addSheetRow = (rowData) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
@@ -380,9 +390,8 @@ export const filterByCategory = (category) => async (dispatch) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      
     });
-    
+
     dispatch({
       type: FILTER_CATEGORY,
       payload: res.data.products,
@@ -393,12 +402,12 @@ export const filterByCategory = (category) => async (dispatch) => {
 };
 
 export const clearFilteredProducts = () => ({
-  type: CLEAR_FILTER
-})
+  type: CLEAR_FILTER,
+});
 
 export const getCategories = () => async (dispatch) => {
   try {
-    const response = await intance.get('/api/sheets/categories');
+    const response = await intance.get("/api/sheets/categories");
     const categories = response.data;
     dispatch({ type: GET_CATEGORIES, payload: categories });
   } catch (error) {

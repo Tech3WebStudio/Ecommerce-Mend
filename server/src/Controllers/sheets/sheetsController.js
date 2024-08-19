@@ -55,6 +55,41 @@ async function getSheetData(auth) {
   }
 }
 
+async function getSheetDataById(id, auth) {
+  try {
+    const sheets = google.sheets({ version: "v4", auth });
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SHEETS_ID,
+      range: "Productos!A2:I",
+    });
+    const rows = res.data.values || [];
+    
+    const products = rows.map((row) => ({
+      id: row[0],
+      categoria: row[1],
+      nombre: row[2],
+      color: row[3],
+      talle: row[4],
+      cantidad: row[5],
+      precio: row[6],
+      url: row[7],
+      sku: row[8],
+    }));
+
+    const product = products.find(product => product.id === id);
+
+    if (!product) {
+      throw new Error('Producto no encontrado');
+    }
+
+    return product;
+  } catch (error) {
+    console.log({ error: error.message });
+    throw error;
+  }
+}
+
+
 function generateSKU(category, name, color, count) {
   const categoryInitial = category.charAt(0).toLowerCase();
   const nameInitial = name.charAt(0).toLowerCase();
@@ -585,6 +620,7 @@ async function addCashFlowEntry(auth, data) {
 module.exports = {
   authorize,
   getSheetData,
+  getSheetDataById,
   appendRow,
   updateRow,
   deleteRowById,

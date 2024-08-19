@@ -1,5 +1,5 @@
 import React, { useState } from "react";// Asegúrate de que la ruta sea correcta
-import { doSignInWithEmailAndPassword } from "../../firebase/auth";
+import { doSignInWithEmailAndPassword } from "../../../firebase/auth";
 
 export const FormLogin = () => {
   const [email, setEmail] = useState("");

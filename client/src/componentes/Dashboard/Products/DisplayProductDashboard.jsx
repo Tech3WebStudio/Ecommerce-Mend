@@ -26,25 +26,28 @@ const DisplayProductDashboard = ({ products }) => {
       const quantity = product.cantidad || 1;
       return acc + (isNaN(precio) ? 0 : precio * quantity);
     }, 0);
-
-    let recargo = 0;
+  
+    let totalFinal = total;
     switch (formaPago) {
       case "qr":
-        recargo = total * 0.07;
+        totalFinal += total * 0.07;
         break;
       case "tarjetaDebito":
-        recargo = total * 0.07;
+        totalFinal += total * 0.07;
         break;
       case "tarjetaCredito":
-        recargo = total * 0.12;
+        const recargo7 = total * 0.07;
+        const totalConRecargo7 = total + recargo7;
+        const recargo12 = totalConRecargo7 * 0.12;
+        totalFinal = totalConRecargo7 + recargo12;
         break;
       default:
-        recargo = 0;
+        break;
     }
-
-    return (total + recargo).toFixed(2);
+  
+    return totalFinal.toFixed(2);
   };
-
+  
   const handleFormaPagoChange = (e) => {
     setFormaPago(e.target.value);
   };
@@ -153,15 +156,18 @@ const DisplayProductDashboard = ({ products }) => {
                 <span className="font-semibold"></span>
               </div>
               <div>
-                <Link to={"/support"} className="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded">
+                <Link
+                  to={"/support"}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded"
+                >
                   Ayuda
                 </Link>
               </div>
             </div>
           </div>
-          <div className="overflow-hidden px-4 mt-5 ml-3">
-         <Filter />
-       </div>
+          <div className="mt-5 px-5 w-full">
+            <Filter />
+          </div>
           <div className="mt-5 px-5">
             <input
               type="text"
@@ -226,53 +232,53 @@ const DisplayProductDashboard = ({ products }) => {
           <div className="px-5 py-4 mt-5 overflow-y-auto h-64">
             {cartItems?.length > 0
               ? cartItems?.map((item, i) => {
-                const imgUrl = item?.imagen?.split(",");
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-row justify-between items-center mb-4"
-                  >
-                    <div className="flex flex-row items-center w-2/5">
-                      <LazyLoadImage
-                        src={imgUrl[0]}
-                        className="w-12 h-12 object-cover rounded-md"
-                        alt={`${item.nombre}-${i}`}
-                      />
-                      <span className="ml-4 font-semibold text-sm text-primary text-center">
-                        {item?.nombre}
-                      </span>
+                  const imgUrl = item?.imagen?.split(",");
+                  return (
+                    <div
+                      key={i}
+                      className="flex flex-row justify-between items-center mb-4"
+                    >
+                      <div className="flex flex-row items-center w-2/5">
+                        <LazyLoadImage
+                          src={imgUrl[0]}
+                          className="w-12 h-12 object-cover rounded-md"
+                          alt={`${item.nombre}-${i}`}
+                        />
+                        <span className="ml-4 font-semibold text-sm text-primary text-center">
+                          {item?.nombre}
+                        </span>
+                      </div>
+                      <div className="w-24 flex justify-between items-center">
+                        <button
+                          onClick={() => handleQuantityChange(i, "decrease")}
+                          className="px-3 py-1 rounded-md bg-gray-300"
+                        >
+                          -
+                        </button>
+                        <span className="font-semibold mx-4">
+                          {item?.cantidad || 1}
+                        </span>
+                        <button
+                          onClick={() => handleQuantityChange(i, "increase")}
+                          className="px-3 py-1 rounded-md bg-gray-300"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <div className="w-1/5 flex flex-col justify-between items-center">
+                        <span className="font-semibold text-primary text-center">
+                          ${parseInt(item.precio) * item.cantidad || 1}
+                        </span>
+                        <button
+                          onClick={() => handleRemoveFromCart(i)}
+                          className="mt-2 font-semibold text-xs text-red-500 hover:text-pink-600"
+                        >
+                          Borrar
+                        </button>
+                      </div>
                     </div>
-                    <div className="w-24 flex justify-between items-center">
-                      <button
-                        onClick={() => handleQuantityChange(i, "decrease")}
-                        className="px-3 py-1 rounded-md bg-gray-300"
-                      >
-                        -
-                      </button>
-                      <span className="font-semibold mx-4">
-                        {item?.cantidad || 1}
-                      </span>
-                      <button
-                        onClick={() => handleQuantityChange(i, "increase")}
-                        className="px-3 py-1 rounded-md bg-gray-300"
-                      >
-                        +
-                      </button>
-                    </div>
-                    <div className="w-1/5 flex flex-col justify-between items-center">
-                      <span className="font-semibold text-primary text-center">
-                        ${parseInt(item.precio) * item.cantidad || 1}
-                      </span>
-                      <button
-                        onClick={() => handleRemoveFromCart(i)}
-                        className="mt-2 font-semibold text-xs text-red-500 hover:text-pink-600"
-                      >
-                        Borrar
-                      </button>
-                    </div>
-                  </div>
-                );
-              })
+                  );
+                })
               : null}
           </div>
           {/* Formulario */}

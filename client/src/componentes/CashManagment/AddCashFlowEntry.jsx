@@ -36,7 +36,7 @@ const AddCashFlowEntry = ({ onAddCashFlowEntry, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-8 rounded-lg w-1/3">
+      <div className="bg-white p-4 rounded-lg w-1/3 md:1/2">
         <h2 className="text-lg font-semibold mb-4">Añadir entrada</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -45,7 +45,7 @@ const AddCashFlowEntry = ({ onAddCashFlowEntry, onClose }) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Descripción"
-              className="input input-bordered w-full"
+              className="input input-bordered p-2 border border-gray-300 rounded-md w-full"
               required
             />
           </div>
@@ -55,7 +55,7 @@ const AddCashFlowEntry = ({ onAddCashFlowEntry, onClose }) => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Monto"
-              className="input input-bordered w-full"
+              className="input input-bordered p-2 border border-gray-300 rounded-md w-full"
               required
             />
           </div>
@@ -64,7 +64,7 @@ const AddCashFlowEntry = ({ onAddCashFlowEntry, onClose }) => {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="input input-bordered w-full"
+              className="input input-bordered p-2 border border-gray-300 w-full"
               required
             />
           </div>
@@ -72,13 +72,13 @@ const AddCashFlowEntry = ({ onAddCashFlowEntry, onClose }) => {
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="input input-bordered w-full"
+              className="input input-bordered p-2 border border-gray-300 w-full"
             >
               <option value="Ingreso">Ingreso</option>
               <option value="Gasto">Gasto</option>
             </select>
           </div>
-          <div className="flex justify-end space-x-4">
+          <div className="flex justify-between gap-2 w-full">
             <button
               type="button"
               onClick={onClose}

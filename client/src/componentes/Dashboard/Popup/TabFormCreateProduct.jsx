@@ -5,7 +5,7 @@ import {
   updateRow,
   uploadImages,
   clearImages,
-} from "../../redux/actions/actions";
+} from "../../../redux/actions/actions";
 import Spinner from "../Spinner/Spinner";
 import validationProductForm from "./validationProductForm";
 import toast from "react-hot-toast";
@@ -253,6 +253,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
             <option value="pantalones">Pantalones</option>
             <option value="faldas">Faldas</option>
             <option value="perfumes">Perfumes</option>
+            <option value="conjuntos">Conjuntos</option>
           </select>
           {errors.categoria && (
             <p className="text-red-500 text-xs">{errors.categoria}</p>

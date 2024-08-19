@@ -2,7 +2,7 @@ import React, { useState } from "react"; // Asegúrate de que la ruta sea correc
 import {
   createNewUser,
   doSignInWithEmailAndPassword,
-} from "../../firebase/auth";
+} from "../../../firebase/auth";
 
 export const FormRegister = () => {
   const [name, setName] = useState("");

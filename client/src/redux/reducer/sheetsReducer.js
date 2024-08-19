@@ -1,5 +1,4 @@
 // sheetsReducer.js
-
 import {
   FETCH_SHEETS,
   ADD_SHEET_ROW,
@@ -13,15 +12,17 @@ import {
   GET_CATEGORIES,
   SET_CONDITION,
   GET_CASH_FLOW,
-  ADD_CASH_FLOW_ENTRY
+  ADD_CASH_FLOW_ENTRY,
+  FETCH_PRODUCT_SHEET_BY_ID
 } from "../actions/actions";
 
 const initialState = {
   sheetsData: [],
-  images: [],
+  product: {},
   loading: false,
   error: null,
   rCondition: "allProducts",
+  images: [],
   filterProducts: [],
   categories: [],
   cashFlow: [],
@@ -35,6 +36,11 @@ const sheetsReducer = (state = initialState, action) => {
         sheetsData: action.payload,
         loading: false,
       };
+    case FETCH_PRODUCT_SHEET_BY_ID:
+      return{
+        ...state,
+        product: action.payload,
+      }
     case ADD_SHEET_ROW:
       return {
         ...state,

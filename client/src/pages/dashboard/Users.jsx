@@ -1,7 +1,7 @@
 
-import { Layout } from "../../componentes/Layout/Layout";
+import { Layout } from "../../componentes/Dashboard/Layout/Layout";
 import { useSelector } from "react-redux";
-import UsersData from "../../componentes/Users/UsersData";
+import UsersData from "../../componentes/Dashboard/Users/UsersData";
 
 const Users = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
