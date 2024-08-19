@@ -14,6 +14,9 @@ const {
   getProductsByCategory,
   getAllCategories,
   deleteSalesById,
+  getCashFlow,
+  addCashFlowEntry,
+  getSheetDataById,
 } = require("../Controllers/sheets/sheetsController.js");
 const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
@@ -21,6 +24,18 @@ sheetsRouter.get("/data", async (req, res) => {
   try {
     const auth = await authorize();
     const data = await getSheetData(auth);
+    res.json(data);
+  } catch (error) {
+    console.log({ error: error.message });
+    res.status(500).send(error.message);
+  }
+});
+
+sheetsRouter.get("/data/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const auth = await authorize();
+    const data = await getSheetDataById(id, auth);
     res.json(data);
   } catch (error) {
     console.log({ error: error.message });
@@ -146,7 +161,6 @@ sheetsRouter.get("/data/:category", async (req, res) => {
     const data = await getProductsByCategory(auth, category);
     res.json(data);
   } catch (error) {
-    console.log({ error: error.message });
     res.status(500).send(error.message);
   }
 });
@@ -158,6 +172,47 @@ sheetsRouter.get("/categories", async (req, res) => {
     res.json(categories);
   } catch (error) {
     res.status(500).send(error.message);
+  }
+});
+
+// Obtener todos los movimientos de caja
+sheetsRouter.get("/cashflow", async (req, res) => {
+  try {
+    const auth = await authorize(); // Asegúrate de que authorize está correctamente implementado
+    const cashFlow = await getCashFlow(auth);
+
+    // Verificar que cashFlowData exista antes de enviarlo
+    if (cashFlow && cashFlow.cashFlowData) {
+      res.json(cashFlow.cashFlowData);
+    } else {
+      res
+        .status(404)
+        .json({ message: "No se encontraron datos de flujo de caja." });
+    }
+  } catch (error) {
+    console.error("Error al obtener el flujo de caja:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Agregar un nuevo movimiento al flujo de caja
+sheetsRouter.post("/cashflow/add", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const { tipo, monto, descripcion, fecha } = req.body; // Asegúrate de enviar estos datos desde el frontend
+    const result = await addCashFlowEntry(auth, {
+      tipo,
+      monto,
+      descripcion,
+      fecha,
+    });
+    res.json(result);
+  } catch (error) {
+    console.error(
+      "Error al agregar el movimiento al flujo de caja:",
+      error.message
+    );
+    res.status(500).json({ error: error.message });
   }
 });
 

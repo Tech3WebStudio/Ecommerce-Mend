@@ -8,7 +8,11 @@ import {
 import rutaBack from "../redux/actions/rutaBack";
 import { auth } from "./firebase.config";
 import store from "../redux/store";
-import { createUser, loginWithGoogle } from "../redux/actions/actions";
+import {
+  createSeller,
+  createUser,
+  loginWithGoogle,
+} from "../redux/actions/actions";
 import CryptoJS from "crypto-js";
 import toast from "react-hot-toast";
 
@@ -28,29 +32,34 @@ export const doSignInWithGoogle = async () => {
 
     if (response.ok) {
       toast.success("Ingreso exitoso, redirigiendo..");
-      const userInfo = {
-        uid: result.user.uid,
-        email: result.user.email,
-        name: result.user.displayName,
-        picture: result.user.photoURL,
-      };
+      const { theUser } = await response.json();
+      const { uid, email, displayName, photoURL } = result.user;
 
+      const userInfo = {
+        uid,
+        email,
+        name: displayName,
+        picture: photoURL,
+        rol: theUser.rol, // Agregamos el rol al userInfo
+      };
       const secretKey = import.meta.env.VITE_SECRET_KEY_BYCRYPT;
 
-      // Hashear la información del usuario
       const hashedUserInfo = CryptoJS.AES.encrypt(
         JSON.stringify(userInfo),
         secretKey
       ).toString();
 
-      // Guardar en sessionStorage
       sessionStorage.setItem("user", hashedUserInfo);
       localStorage.setItem("authToken", token);
 
       store.dispatch(loginWithGoogle(userInfo));
 
       setTimeout(() => {
-        window.location.replace("/dashboard");
+        if (theUser.rol === "vendedor" || theUser.rol === "admin") {
+          window.location.replace("/dashboard/dashboard");
+        } else {
+          window.location.replace("/");
+        }
       }, 2000);
     } else {
       toast.error("Error al ingresar");
@@ -58,36 +67,17 @@ export const doSignInWithGoogle = async () => {
     }
   } catch (error) {
     console.error("Error:", error);
+    toast.error("Error al ingresar");
   }
 };
 
-export const createNewSeller = async (newSeller) => {
+export const doSignInWithEmailAndPassword = async (email, password) => {
   try {
-    const { email, nombre, password, role } = newSeller;
-    const userCredential = await createUserWithEmailAndPassword(
+    const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     );
-    const user = userCredential.user;
-    console.log(user);
-
-    // Despacha la acción para crear el usuario en tu backend y guardarlo en Google Sheets
-    store.dispatch(
-      createUser(user.email, nombre, user.uid, role)
-    );
-
-    toast.success("Usuario creado exitosamente");
-  } catch (error) {
-    console.log("Error al crear nuevo vendedor:", error);
-    toast.error("Error al crear nuevo vendedor");
-  }
-};
-
-
-export const doSignInWithEmailAndPassword = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     const token = await user.getIdToken();
 
@@ -102,13 +92,26 @@ export const doSignInWithEmailAndPassword = async (email, password) => {
     if (response.ok) {
       toast.success("Ingreso exitoso, redirigiendo..");
       const sellerData = await response.json();
-      
-      const userInfo = {
-        uid: sellerData.uid,
-        email: sellerData.email,
-        name: sellerData.nombre,
-        rol: sellerData.rol,
-      };
+      console.log(sellerData);
+      let userInfo;
+      if (sellerData.rol === "user") {
+        userInfo = {
+          uid: sellerData.uid,
+          email: sellerData.email,
+          name: sellerData.nombre,
+          direccion: sellerData.direccion,
+          provincia: sellerData.provincia,
+          cp: sellerData.cp,
+          rol: sellerData.rol,
+        };
+      } else {
+        userInfo = {
+          uid: sellerData.uid,
+          email: sellerData.email,
+          name: sellerData.nombre,
+          rol: sellerData.rol,
+        };
+      }
 
       const secretKey = import.meta.env.VITE_SECRET_KEY_BYCRYPT;
 
@@ -117,15 +120,17 @@ export const doSignInWithEmailAndPassword = async (email, password) => {
         secretKey
       ).toString();
 
-      // Guardar en sessionStorage
       sessionStorage.setItem("user", hashedUserInfo);
       localStorage.setItem("authToken", token);
 
-      // Despachar la acción para el login
       store.dispatch(loginWithGoogle(userInfo));
 
       setTimeout(() => {
-        window.location.replace("/dashboard");
+        if (sellerData.rol === "seller" || sellerData.rol === "admin") {
+          window.location.replace("/dashboard/dashboard");
+        } else {
+          window.location.replace("/");
+        }
       }, 2000);
     } else {
       toast.error("Error al ingresar");
@@ -137,6 +142,56 @@ export const doSignInWithEmailAndPassword = async (email, password) => {
   }
 };
 
+export const createNewSeller = async (newSeller) => {
+  try {
+    const { email, nombre, password, role } = newSeller;
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    // Despacha la acción para crear el usuario en tu backend y guardarlo en Google Sheets
+    store.dispatch(createSeller(user.email, nombre, user.uid, role));
+
+    toast.success("Usuario creado exitosamente");
+  } catch (error) {
+    console.log("Error al crear nuevo vendedor:", error);
+    toast.error("Error al crear nuevo vendedor");
+  }
+};
+
+export const createNewUser = async (newUser) => {
+  try {
+    const { name, state, postalCode, address, email, password, role } = newUser;
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    console.log(userCredential);
+    const user = userCredential.user;
+
+    let data = {
+      uid: user.uid,
+      email: user.email,
+      name,
+      address,
+      state,
+      postalCode,
+      role,
+    };
+    // Despacha la acción para crear el usuario en tu backend y guardarlo en Google Sheets
+    store.dispatch(createUser(data));
+
+    toast.success("Usuario creado exitosamente");
+  } catch (error) {
+    console.log(error);
+    toast.error("Error al crear nuevo usuario");
+  }
+};
+
 export const doSignOut = async () => {
   try {
     // Eliminar datos de sessionStorage y localStorage
@@ -144,21 +199,18 @@ export const doSignOut = async () => {
     localStorage.removeItem("authToken");
 
     // Cerrar la sesión con Firebase Auth
-    const res = signOut(auth)
+    await signOut(auth)
       .then(() => {
         // Sign-out successful.
-        toast.success("LogOut");
+        toast.success("Saliendo...");
       })
       .catch((error) => {
         // An error happened.
         toast.error("Error");
         console.log(error);
       });
-
-    console.log(res);
-
     // Redireccionar a la página de inicio de sesión u otra página
-    window.location.replace("/");
+    window.location.replace("/login");
   } catch (error) {
     console.error("Error al cerrar sesión:", error);
   }
