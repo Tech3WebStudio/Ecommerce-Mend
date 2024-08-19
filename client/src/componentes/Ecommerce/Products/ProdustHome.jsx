@@ -7,9 +7,13 @@ import toast from "react-hot-toast";
 
 const ProdustHome = ({ allProducts }) => {
   const dispatch = useDispatch();
+
+  // Obtener los últimos 8 productos
+  const latestProducts = allProducts?.slice(-8);
+
   return (
-    <div className="max-w-screen grid grid-cols-1 mb-8 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-      {allProducts.map((product) => (
+    <div className="max-w-screen grid grid-cols-1 mt-8 mb-8 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+      {latestProducts.map((product) => (
         <FloatingProductCard
           key={product.id}
           product={product}
@@ -45,7 +49,7 @@ const FloatingProductCard = ({ product, dispatch }) => {
 const handleAddToCart = (product, dispatch) => {
   // Lógica para añadir al carrito
   dispatch(addToCart(product));
-  toast.success(`Producto ${product.nombre} añadido al carrito`)
+  toast.success(`Producto ${product.nombre} añadido al carrito`);
 };
 
 export default ProdustHome;

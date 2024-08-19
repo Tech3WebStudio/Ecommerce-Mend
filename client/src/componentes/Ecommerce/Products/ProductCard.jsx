@@ -3,8 +3,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
-import { LazyLoadComponent, LazyLoadImage } from "react-lazy-load-image-component";
-
+import {
+  LazyLoadComponent,
+  LazyLoadImage,
+} from "react-lazy-load-image-component";
 
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
@@ -78,7 +80,7 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
   };
 
   return (
-    <article className="w-64 h-full rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 mb-6">
+    <article className="w-64 h-full rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 mb-6 border border-gray-300">
       <div>
         <div className="relative flex items-end overflow-hidden rounded-xl">
           <Link to={`/product/${id}`}>
@@ -117,6 +119,7 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
             </svg>
             <span className="ml-2 text-sm text-slate-400">4.9</span>
           </div>
+
           <button
             className="absolute bottom-3 left-2 inline-flex items-center rounded-lg bg-white p-2 shadow-lg hover:shadow-lg transition-transform duration-300 transform hover:scale-110"
             // onClick={onAddToFav}
@@ -139,13 +142,19 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
           </button>
         </div>
       </div>
-
+      <div className="absolute top-5 right-5">
+        <div className="relative">
+          <div className="transform flex justify-center items-center rotate-45 rounded-t-3xl rounded-b-sm translate-x-1/2 -translate-y-1/2 w-20 bg-red-500 text-white text-center text-xs font-bold px-6 py-1 shadow-lg">
+            Nuevo
+          </div>
+        </div>
+      </div>
       <div className="mt-1 p-2">
         <h2 className="text-slate-700">{name}</h2>
         <p className="mt-1 text-sm text-slate-400">{sku}</p>
 
         <div className="mt-3 flex items-end justify-between">
-          <p className="text-lg font-bold text-blue-500">${price}</p>
+          <p className="text-lg font-bold text-secondary">${price}</p>
 
           <div
             onClick={() => onAddToCart()}
