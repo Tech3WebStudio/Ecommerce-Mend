@@ -126,7 +126,7 @@ export const doSignInWithEmailAndPassword = async (email, password) => {
       store.dispatch(loginWithGoogle(userInfo));
 
       setTimeout(() => {
-        if (sellerData.rol === "vendedor" || sellerData.rol === "admin") {
+        if (sellerData.rol === "seller" || sellerData.rol === "admin") {
           window.location.replace("/dashboard/dashboard");
         } else {
           window.location.replace("/");
