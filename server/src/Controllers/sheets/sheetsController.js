@@ -410,6 +410,42 @@ async function getAllCategories(auth) {
   }
 }
 
+async function getAllColors (auth) {
+  try {
+    const { products } = await getSheetData(auth);
+
+    const colors = [...new Set(products.map((product) => product.color.trim().toLowerCase().
+    normalize("NFD").replace(/[\u0300-\u036f]/g, "")))];
+
+    return colors;
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
+async function getProductsByColor (auth, color) {
+  try {
+    const { products } = await getSheetData(auth);
+
+    const trimmedColor = color.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    const filteredProducts = products.filter(
+      (product) =>
+        product.color.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === trimmedColor
+    );
+
+    if (filteredProducts.length === 0) {
+      throw new Error("Producto no encontrado");
+    }
+
+    return { products: filteredProducts };
+  } catch (error) {
+    console.log({ error: error.message });
+    throw new Error(error.message);
+  }
+}
+
 
 async function deleteRowById(auth, id) {
   const sheets = google.sheets({ version: "v4", auth });
@@ -653,4 +689,6 @@ module.exports = {
   deleteSalesById,
   getCashFlow,
   addCashFlowEntry,
+  getAllColors,
+  getProductsByColor
 };

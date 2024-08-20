@@ -17,6 +17,8 @@ const {
   getCashFlow,
   addCashFlowEntry,
   getSheetDataById,
+  getAllColors,
+  getProductsByColor,
 } = require("../Controllers/sheets/sheetsController.js");
 const uploadToS3 = require("../Controllers/sheets/uploadImages.js");
 
@@ -175,6 +177,27 @@ sheetsRouter.get("/categories", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+sheetsRouter.get("/colors", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const colors = await getAllColors(auth);
+    res.json(colors);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+})
+
+sheetsRouter.get("/filter/color/:color", async (req, res) => {
+  try {
+    const auth = await authorize();
+    const color = req.params.color;
+    const data = await getProductsByColor(auth, color);
+    res.json(data);
+  } catch (error) {
+    res.status(404).send("Producto no encontrado");
+  }
+})
 
 // Obtener todos los movimientos de caja
 sheetsRouter.get("/cashflow", async (req, res) => {
