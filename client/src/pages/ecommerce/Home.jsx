@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import Navigation from "../../componentes/Ecommerce/Nav/Navigation";
 import Carrousel from "../../componentes/Ecommerce/Carrousel/Carrousel";
-import { fetchSheets, fetchUsers } from "../../redux/actions/actions";
+import { fetchSheets } from "../../redux/actions/actions";
 import ProdustHome from "../../componentes/Ecommerce/Products/ProdustHome";
 import Features from "../../componentes/Ecommerce/Features/Features";
 import FooterPage from "../../componentes/Ecommerce/Footer/FooterPage";
+import WhatsAppBubble from "../../componentes/Ecommerce/Whatsapp/WhatsAppBubble";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const Home = () => {
   return (
     <div className="w-full">
       <Navigation />
+      <WhatsAppBubble />
       <div
         ref={refCarrousel}
         className={`transition-transform duration-1000 ${
@@ -48,12 +50,7 @@ const Home = () => {
         <ProdustHome allProducts={sheetsData} />
       </div>
       <div
-        ref={refProducts}
-        className={`flex w-full justify-center items-center transition-transform duration-1000 bg-pink-100 ${
-          inViewProducts
-            ? "translate-y-0 opacity-100"
-            : "translate-y-20 opacity-0"
-        }`}
+        className={`flex w-full justify-center items-center transition-transform duration-1000 bg-pink-100 `}
       >
         <Features />
       </div>

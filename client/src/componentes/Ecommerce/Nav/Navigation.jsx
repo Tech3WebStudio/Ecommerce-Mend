@@ -58,10 +58,10 @@ const Navigation = () => {
               <div className="hidden lg:block lg:ml-2">
                 <div className="flex">
                   <Link
-                    to="#"
+                    to="/product"
                     className="ml-4 px-3 py-2 rounded-md text-sm leading-5 text-gray-800 hover:bg-tertiary hover:text-white transition duration-150 ease-in-out cursor-pointer focus:outline-none focus:text-white focus:bg-gray-700 "
                   >
-                    Location
+                    Products
                   </Link>
                   <Link
                     to="#"
