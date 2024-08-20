@@ -297,8 +297,6 @@ export const fetchSheets = () => async (dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res.data.products);
-    
     dispatch({
       type: FETCH_SHEETS,
       payload: res.data.products,
@@ -427,16 +425,24 @@ export const getColors = () => async (dispatch) => {
     const response = await intance.get("/api/sheets/colors");
     const colors = response.data;
 
-    dispatch({ type: GET_COLORS, payload: colors });
+    // Transformar el array de colores en un array de colores individuales
+    const separatedColors = colors.flatMap(color =>
+      color.split(',').map(c => c.trim())
+    );
+
+    // Eliminar duplicados usando un Set
+    const uniqueColors = [...new Set(separatedColors)];
+    dispatch({ type: GET_COLORS, payload: uniqueColors });
   } catch (error) {
     console.error("Error fetching colors:", error);
   }
 };
 
+
 export const getProductsByColor = (color) => async (dispatch) => {
   try {
     const response = await intance.get(`/api/sheets/filter/color/${color}`);
-    const products = response.data;
+    const products = response.data.products;
 
     dispatch({ type: FILTER_COLOR, payload: products });
   } catch (error) {
