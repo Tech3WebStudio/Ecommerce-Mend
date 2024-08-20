@@ -154,7 +154,7 @@ sheetsRouter.put("/decrease-stock", async (req, res) => {
   }
 });
 
-sheetsRouter.get("/data/:category", async (req, res) => {
+sheetsRouter.get("/filter/:category", async (req, res) => {
   try {
     const auth = await authorize();
     const category = req.params.category;
