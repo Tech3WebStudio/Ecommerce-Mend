@@ -38,7 +38,7 @@ const PrevArrow = (props) => {
   );
 };
 
-const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
+const ProductCard = ({ id, name, url, sku, price, onAddToCart, isNew }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -75,9 +75,9 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
       </div>
     ),
   };
-  console.log(url)
+  console.log(url);
   return (
-    <article className="w-64 h-full rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 mb-6 border border-gray-300">
+    <article className="w-56 h-full rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 mb-6 border border-gray-300">
       <div>
         <div className="relative flex items-end overflow-hidden rounded-xl">
           <Link to={`/product/${id}`}>
@@ -125,13 +125,15 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
           </button>
         </div>
       </div>
-      <div className="absolute top-5 right-5">
-        <div className="relative">
-          <div className="transform flex justify-center items-center rotate-45 rounded-t-3xl rounded-b-sm translate-x-1/2 -translate-y-1/2 w-20 bg-red-500 text-white text-center text-xs font-bold px-6 py-1 shadow-lg">
-            Nuevo
+      {isNew && (
+        <div className="absolute top-5 right-5">
+          <div className="relative">
+            <div className="transform flex justify-center items-center rotate-45 rounded-t-3xl rounded-b-sm translate-x-1/2 -translate-y-1/2 w-20 bg-red-500 text-white text-center text-xs font-bold px-6 py-1 shadow-lg">
+              Nuevo
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="mt-1 p-2">
         <h2 className="text-slate-700">{name}</h2>
         <p className="mt-1 text-sm text-slate-400">{sku}</p>
@@ -157,7 +159,7 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
                 d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
               />
             </svg>
-            <button className="text-sm text-slate-700">Add to cart</button>
+            <button className="text-sm text-slate-700">Agregar</button>
           </div>
         </div>
       </div>

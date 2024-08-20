@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Compressor from 'compressorjs'
+import Compressor from "compressorjs";
 import {
   addSheetRow,
   updateRow,
@@ -44,7 +44,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
         tamaño: product.talle || "",
         cantidad: product.cantidad || "",
         precio: product.precio || "",
-        url: product.url ? product.url.split(',').map(url => url.trim()) : [],
+        url: product.url ? product.url.split(",").map((url) => url.trim()) : [],
       });
     }
   }, [product]);
@@ -79,7 +79,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
           tamaño: formData.tamaño,
           cantidad: formData.cantidad,
           precio: formData.precio,
-          url: formData.url.join(', '),
+          url: formData.url.join(", "),
         };
 
         if (product) {
@@ -91,7 +91,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
             tamaño: formData.tamaño,
             cantidad: formData.cantidad,
             precio: formData.precio,
-            url: formData.url.join(', '),
+            url: formData.url.join(", "),
           };
 
           console.log("Llego a update row: ", updatedRow);
@@ -109,64 +109,49 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
   };
 
   const handleImageUpload = async (event) => {
-<<<<<<< HEAD
-  const file = event.target.files[0];
-
-  if (!file) return; // No file selected, exit the function.
-
-  // Validar formato de imagen
-  const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
-  if (!allowedFormats.includes(file.type)) {
-    toast.error("Formato de imagen no soportado. Solo se permiten .jpg, .jpeg, .png, y .webp");
-    return;
-  }
-=======
-    
     setIsUploading(true);
+
     const file = event.target.files[0];
-    if(file){
-      try {
-        const compressedFile = await new Promise((resolve, reject)=>{
-          new Compressor(file, {
-            quality: 0.7, // Ajuste según pruebas
-            convertSize: 2000000, // Convierte imágenes mayores a 2MB en WebP
-            success: resolve,
-            error: reject,
-            mimeType: 'image/webp'
-          });
-          
-        })
-        console.log('Tamaño del archivo comprimido:', compressedFile.size);
-        const formDataImage = new FormData()
-        formDataImage.append('file', compressedFile)
-        await dispatch(uploadImages(formDataImage))
-        setIsUploading(false)
-      } catch (error) {
-        console.error("Error uploading images:", error);
-        setIsUploading(false);
-      }
-      
+
+    if (!file) {
+      setIsUploading(false); // No file selected, stop uploading
+      return;
     }
 
- 
+    // Validar formato de imagen
+    const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
+    if (!allowedFormats.includes(file.type)) {
+      toast.error(
+        "Formato de imagen no soportado. Solo se permiten .jpg, .jpeg, .png, y .webp"
+      );
+      setIsUploading(false);
+      return;
+    }
+
+    try {
+      const compressedFile = await new Promise((resolve, reject) => {
+        new Compressor(file, {
+          quality: 0.7, // Ajuste según pruebas
+          convertSize: 2000000, // Convierte imágenes mayores a 2MB en WebP
+          success: resolve,
+          error: reject,
+          mimeType: "image/webp",
+        });
+      });
+
+      console.log("Tamaño del archivo comprimido:", compressedFile.size);
+
+      const formDataImage = new FormData();
+      formDataImage.append("file", compressedFile);
+
+      await dispatch(uploadImages(formDataImage));
+    } catch (error) {
+      console.error("Error uploading images:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
->>>>>>> c9c80e9de97a8642e53376b1806f0da1217f058c
 
-  setIsUploading(true);
-
-  try {
-    const formDataImage = new FormData();
-    formDataImage.append("file", file);
-
-    await dispatch(uploadImages(formDataImage));
-  } catch (error) {
-    console.error("Error uploading images:", error);
-  } finally {
-    setIsUploading(false);
-  }
-};
-
-  
   const handleImageClick = () => {
     document.getElementById("imageUploadInput").click();
   };

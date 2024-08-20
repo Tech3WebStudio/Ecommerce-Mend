@@ -1,5 +1,8 @@
 import React from "react";
-import { LazyLoadComponent, LazyLoadImage } from "react-lazy-load-image-component";
+import {
+  LazyLoadComponent,
+  LazyLoadImage,
+} from "react-lazy-load-image-component";
 
 const ImageComponent = ({ imageUrls }) => {
   // Verificar si hay una o más URLs
@@ -7,11 +10,15 @@ const ImageComponent = ({ imageUrls }) => {
 
   // Selecciona la primera URL por ejemplo
   const selectedUrl = urls[0];
-  console.log(urls)
+  console.log(urls);
 
   return (
     <LazyLoadComponent>
-      <LazyLoadImage src={selectedUrl} alt="Imagen del producto" />
+      <LazyLoadImage
+        className="w-64 h-64 object-cover"
+        src={selectedUrl}
+        alt="Imagen del producto"
+      />
     </LazyLoadComponent>
   );
 };
