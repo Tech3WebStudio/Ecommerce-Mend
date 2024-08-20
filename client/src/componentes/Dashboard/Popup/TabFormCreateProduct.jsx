@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Compressor from 'compressorjs'
 import {
   addSheetRow,
   updateRow,
@@ -108,6 +109,7 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
   };
 
   const handleImageUpload = async (event) => {
+<<<<<<< HEAD
   const file = event.target.files[0];
 
   if (!file) return; // No file selected, exit the function.
@@ -118,6 +120,37 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
     toast.error("Formato de imagen no soportado. Solo se permiten .jpg, .jpeg, .png, y .webp");
     return;
   }
+=======
+    
+    setIsUploading(true);
+    const file = event.target.files[0];
+    if(file){
+      try {
+        const compressedFile = await new Promise((resolve, reject)=>{
+          new Compressor(file, {
+            quality: 0.7, // Ajuste según pruebas
+            convertSize: 2000000, // Convierte imágenes mayores a 2MB en WebP
+            success: resolve,
+            error: reject,
+            mimeType: 'image/webp'
+          });
+          
+        })
+        console.log('Tamaño del archivo comprimido:', compressedFile.size);
+        const formDataImage = new FormData()
+        formDataImage.append('file', compressedFile)
+        await dispatch(uploadImages(formDataImage))
+        setIsUploading(false)
+      } catch (error) {
+        console.error("Error uploading images:", error);
+        setIsUploading(false);
+      }
+      
+    }
+
+ 
+  };
+>>>>>>> c9c80e9de97a8642e53376b1806f0da1217f058c
 
   setIsUploading(true);
 
