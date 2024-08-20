@@ -386,11 +386,13 @@ export const renderCondition = (condition) => ({
 export const filterByCategory = (category) => async (dispatch) => {
   const token = localStorage.getItem("authToken");
   try {
-    const res = await intance.get(`/api/sheets/data/${category}`, {
+
+    const res = await intance.get(`/api/sheets/filter/${category}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    
 
     dispatch({
       type: FILTER_CATEGORY,
@@ -409,6 +411,7 @@ export const getCategories = () => async (dispatch) => {
   try {
     const response = await intance.get("/api/sheets/categories");
     const categories = response.data;
+    
     dispatch({ type: GET_CATEGORIES, payload: categories });
   } catch (error) {
     console.error("Error fetching categories:", error);

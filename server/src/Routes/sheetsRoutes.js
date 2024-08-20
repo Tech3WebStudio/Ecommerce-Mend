@@ -154,16 +154,17 @@ sheetsRouter.put("/decrease-stock", async (req, res) => {
   }
 });
 
-sheetsRouter.get("/data/:category", async (req, res) => {
+sheetsRouter.get("/filter/:category", async (req, res) => {
   try {
     const auth = await authorize();
     const category = req.params.category;
     const data = await getProductsByCategory(auth, category);
     res.json(data);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(404).send("Producto no encontrado");
   }
 });
+
 
 sheetsRouter.get("/categories", async (req, res) => {
   try {

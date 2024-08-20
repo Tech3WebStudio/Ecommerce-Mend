@@ -367,10 +367,24 @@ async function decreaseStock(auth, productId, amount) {
 async function getProductsByCategory(auth, category) {
   try {
     const { products } = await getSheetData(auth);
-    const trimmedCategory = category.trim().toLowerCase(); // Elimina espacios y convierte a minúsculas
+
+    // Normaliza y elimina espacios en blanco de la categoría recibida
+    const trimmedCategory = category.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
+    
+    // Filtra los productos basándose en la categoría normalizada
     const filteredProducts = products.filter(
-      (product) => product.categoria.trim().toLowerCase() === trimmedCategory
+      (product) =>
+        product.categoria.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === trimmedCategory
     );
+
+    
+
+    // Si no se encuentran productos, lanzar un error personalizado
+    if (filteredProducts.length === 0) {
+      throw new Error("Producto no encontrado");
+    }
+
     return { products: filteredProducts };
   } catch (error) {
     console.log({ error: error.message });
@@ -379,19 +393,23 @@ async function getProductsByCategory(auth, category) {
 }
 
 
-
 async function getAllCategories(auth) {
   try {
     const { products } = await getSheetData(auth);
-    const categories = [
-      ...new Set(products.map((product) => product.categoria)),
-    ];
+    
+    const normalizedCategories = products.map((product) =>
+      product.categoria.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    );
+
+    const categories = [...new Set(normalizedCategories)];
+
     return categories;
   } catch (error) {
     console.log({ error: error.message });
     throw new Error(error.message);
   }
 }
+
 
 async function deleteRowById(auth, id) {
   const sheets = google.sheets({ version: "v4", auth });
