@@ -3,10 +3,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
-import {
-  LazyLoadComponent,
-  LazyLoadImage,
-} from "react-lazy-load-image-component";
+import ImageComponent from "../Images/ImageComponent";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
@@ -41,7 +39,6 @@ const PrevArrow = (props) => {
 };
 
 const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
-  const img_product = url?.split(",");
   const settings = {
     dots: true,
     infinite: true,
@@ -78,31 +75,17 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart }) => {
       </div>
     ),
   };
-
+  console.log(url)
   return (
     <article className="w-64 h-full rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300 mb-6 border border-gray-300">
       <div>
         <div className="relative flex items-end overflow-hidden rounded-xl">
           <Link to={`/product/${id}`}>
-            {img_product?.length > 1 ? (
-              <Slider {...settings} className="w-64 h-64">
-                {img_product?.map((logo, index) => {
-                  if (logo) {
-                    return (
-                      <LazyLoadComponent key={index}>
-                        <LazyLoadImage
-                          src={logo}
-                          alt={name}
-                          className="w-64 h-64 object-cover"
-                        />
-                      </LazyLoadComponent>
-                    );
-                  }
-                })}
-              </Slider>
+            {url.includes(",") ? (
+              <ImageComponent imageUrls={url} />
             ) : (
               <LazyLoadImage
-                src={img_product ? img_product : "ninalogo.webp"}
+                src={url}
                 alt={name}
                 className="w-64 h-64 object-cover"
               />

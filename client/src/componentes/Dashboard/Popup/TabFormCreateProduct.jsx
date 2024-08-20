@@ -108,21 +108,32 @@ export default function TabFormCreateProduct({ isOpen, onClose, product }) {
   };
 
   const handleImageUpload = async (event) => {
-    setIsUploading(true);
-    const file = event.target.files[0];
+  const file = event.target.files[0];
 
-    try {
-      const formDataImage = new FormData();
-      formDataImage.append("file", file);
+  if (!file) return; // No file selected, exit the function.
 
-      await dispatch(uploadImages(formDataImage));
-      setIsUploading(false);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      setIsUploading(false);
-    }
-  };
+  // Validar formato de imagen
+  const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
+  if (!allowedFormats.includes(file.type)) {
+    toast.error("Formato de imagen no soportado. Solo se permiten .jpg, .jpeg, .png, y .webp");
+    return;
+  }
 
+  setIsUploading(true);
+
+  try {
+    const formDataImage = new FormData();
+    formDataImage.append("file", file);
+
+    await dispatch(uploadImages(formDataImage));
+  } catch (error) {
+    console.error("Error uploading images:", error);
+  } finally {
+    setIsUploading(false);
+  }
+};
+
+  
   const handleImageClick = () => {
     document.getElementById("imageUploadInput").click();
   };
