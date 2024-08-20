@@ -41,6 +41,7 @@ const FloatingProductCard = ({ product, dispatch }) => {
         sku={product.sku}
         price={product.precio}
         onAddToCart={() => handleAddToCart(product, dispatch)}
+        isNew={true}
       />
     </div>
   );

@@ -242,7 +242,7 @@ const DisplayProductDashboard = ({ products }) => {
                     >
                       <div className="flex flex-row items-center w-2/5">
                         <LazyLoadImage
-                          src={imgUrl[0]}
+                          src={imgUrl}
                           className="w-12 h-12 object-cover rounded-md"
                           alt={`${item.nombre}-${i}`}
                         />

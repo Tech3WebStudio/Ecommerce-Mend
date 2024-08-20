@@ -15,6 +15,7 @@ import Balance from "./pages/dashboard/Balance";
 import CartPage from "./pages/ecommerce/CartPage";
 import Register from "./pages/dashboard/Register";
 import ProductDetail from "./pages/ecommerce/ProductDetail";
+import AllProducts from "./pages/ecommerce/AllProducts";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/product" element={<AllProducts />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         {isAuth ? (
           <>
