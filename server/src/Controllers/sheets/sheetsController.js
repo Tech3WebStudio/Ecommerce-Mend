@@ -89,7 +89,6 @@ async function getSheetDataById(id, auth) {
   }
 }
 
-
 function generateSKU(category, name, color, count) {
   const categoryInitial = category.charAt(0).toLowerCase();
   const nameInitial = name.charAt(0).toLowerCase();
@@ -325,7 +324,6 @@ async function getSalesByDate(auth, date) {
   }
 }
 
-
 async function increaseStock(auth, productId, amount) {
   const sheets = google.sheets({ version: "v4", auth });
   const { rows } = await getSheetData(auth);
@@ -391,7 +389,6 @@ async function getProductsByCategory(auth, category) {
     throw new Error(error.message);
   }
 }
-
 
 async function getAllCategories(auth) {
   try {
