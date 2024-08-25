@@ -10,6 +10,9 @@ export default function ProductList({ allProducts }) {
   const productsPerPage = 8;
   const dispatch = useDispatch();
 
+
+  
+
   // Calcular los índices de inicio y fin de la página actual
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -47,6 +50,7 @@ export default function ProductList({ allProducts }) {
               price={product.precio}
               onAddToCart={() => handleAddToCart(product)}
               isNew={false}
+              color ={product.color}
             />
           ))}
         </div>

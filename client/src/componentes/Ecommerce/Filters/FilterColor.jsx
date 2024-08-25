@@ -1,18 +1,18 @@
 import { useDispatch } from 'react-redux';
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { renderCondition } from '../../../redux/actions/actions';
+import { getProductsByColor, renderCondition } from '../../../redux/actions/actions';
 
 const FilterColor = () => {
 
-    const colors = useSelector((state) => state.sheets.colors);
+    const allColors = useSelector((state) => state.sheets.colors);
     const dispatch = useDispatch();
 
     const handleColorFilter = (event) => {
         const color = event.target.value;
     
     if (color!=="Todos"){
-      dispatch (FilterColor(color));
+      dispatch (getProductsByColor(color));
       dispatch(renderCondition("filteredColor"));
     }else{
       dispatch(renderCondition("allProducts"));
@@ -33,7 +33,7 @@ const FilterColor = () => {
             className="px-4 py-2 bg-primary rounded-2xl text-white text-xs whitespace-nowrap" >
                 Todos
         </button>
-        {colors.map((color, index) => (
+        {allColors.map((color, index) => (
           <button
             key={index}
             value={color}

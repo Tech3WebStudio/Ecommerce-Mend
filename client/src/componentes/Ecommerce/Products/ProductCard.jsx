@@ -38,7 +38,7 @@ const PrevArrow = (props) => {
   );
 };
 
-const ProductCard = ({ id, name, url, sku, price, onAddToCart, isNew }) => {
+const ProductCard = ({ id, name, url, sku, price, onAddToCart, isNew, color }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -137,6 +137,7 @@ const ProductCard = ({ id, name, url, sku, price, onAddToCart, isNew }) => {
       <div className="mt-1 p-2">
         <h2 className="text-slate-700">{name}</h2>
         <p className="mt-1 text-sm text-slate-400">{sku}</p>
+        <p className="mt-1 text-sm text-slate-400">{color}</p>
 
         <div className="mt-3 flex items-end justify-between">
           <p className="text-lg font-bold text-secondary">${price}</p>

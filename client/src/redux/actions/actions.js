@@ -437,7 +437,8 @@ export const getColors = () => async (dispatch) => {
 export const getProductsByColor = (color) => async (dispatch) => {
   try {
     const response = await intance.get(`/api/sheets/filter/color/${color}`);
-    const products = response.data;
+    const products = response.data.products;
+
 
     dispatch({ type: FILTER_COLOR, payload: products });
   } catch (error) {

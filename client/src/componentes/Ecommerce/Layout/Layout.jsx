@@ -1,5 +1,6 @@
 import React from "react";
 import Filter from "../../Dashboard/Filter/Filter"
+import FilterColor from "../Filters/FilterColor";
 
 const Layout = ({ children }) => {
   return (
@@ -11,11 +12,13 @@ const Layout = ({ children }) => {
               <h1 className="text-white text-2xl">Filtrar por categoria</h1>
               <div className="border border-gray-100 p-0 w-full"></div>
               <Filter/>
+              
             </div>
             <div className="mt-8">
-              <h1 className="text-white text-2xl">Filtrar por precio</h1>
+              <h1 className="text-white text-2xl">Filtrar por color</h1>
 
               <div className="border border-gray-100 p-0 w-full"></div>
+              <FilterColor/>
             </div>
           </div>
 
