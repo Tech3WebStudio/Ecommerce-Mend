@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js";
 import intance from "../../api/axiosConfig";
 import toast from "react-hot-toast";
+import instance from "../../api/axiosConfig";
 
 export const LOGIN_WITH_GOOGLE = "LOGIN_WITH_GOOGLE";
 export const AUTHENTICATE_USER_FROM_SESSION = "AUTHENTICATE_USER_FROM_SESSION";
@@ -471,5 +472,19 @@ export const deleteSaleRow = (rowIndex) => async (dispatch) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const createPayment = async (cartItems, payerInfo) => {
+  try {
+    const response = await instance.post('/api/sales/create_payment', {
+      items: cartItems,
+      payer: payerInfo,
+    });
+
+    return response.data.init_point; // URL de Mercado Pago para redirigir
+  } catch (error) {
+    console.error('Error al crear el pago:', error);
+    throw error;
   }
 };
