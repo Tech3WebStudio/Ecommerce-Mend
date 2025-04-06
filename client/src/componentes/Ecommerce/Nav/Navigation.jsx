@@ -51,7 +51,7 @@ const Navigation = () => {
               <Link to="/" className="flex-shrink-0">
                 <img
                   className="h-12 w-12 object-cover rounded-full"
-                  src="../ninalogo.webp"
+                  src="../ninalogo.png"
                   alt="Logo"
                 />
               </Link>
