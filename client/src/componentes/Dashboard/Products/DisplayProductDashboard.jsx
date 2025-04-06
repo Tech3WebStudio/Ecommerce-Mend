@@ -144,7 +144,7 @@ const DisplayProductDashboard = ({ products }) => {
             <div className="text-gray-800">
               <div className="font-bold text-xl flex gap-2 justify-center items-center">
                 <img
-                  src="../ninalogo.webp"
+                  src="../ninalogo.png"
                   className="w-12 h-12 rounded-full"
                   alt=""
                 />

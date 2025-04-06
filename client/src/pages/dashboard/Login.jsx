@@ -3,7 +3,7 @@ import { doSignInWithGoogle } from "../../firebase/auth";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FormLogin } from "../../componentes/Dashboard/Users/FormLogin";
 import { useNavigate } from "react-router-dom";
-import loginVideo from "../../../public/loginvideo.mp4";
+import ninaLogo from "/ninalogo.png";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -15,12 +15,10 @@ const Login = () => {
   return (
     <div className="bg-gray-100 flex justify-center items-center h-screen">
       <div className="w-full md:w-1/2 h-full hidden md:block">
-        <video
-          src={loginVideo} // Ruta del video importado
-          autoPlay
-          loop
-          muted
+        <img
+          src={ninaLogo}
           className="object-cover w-full h-full"
+          alt="nina logo"
         />
       </div>
 

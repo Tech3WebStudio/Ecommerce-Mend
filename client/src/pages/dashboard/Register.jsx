@@ -11,7 +11,7 @@ export default function Register() {
             <div className="mb-2">
               <Link to="/">
                 <img
-                  src={"ninalogo.webp"}
+                  src={"ninalogo.png"}
                   alt="logoImg"
                   className="w-20 h-20 rounded-full mt-4 border border-gray-400 p-1 hover:animate-pulse"
                 />
