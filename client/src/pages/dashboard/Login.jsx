@@ -3,6 +3,7 @@ import { doSignInWithGoogle } from "../../firebase/auth";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FormLogin } from "../../componentes/Dashboard/Users/FormLogin";
 import { useNavigate } from "react-router-dom";
+import loginVideo from "../../../public/loginvideo.mp4";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -13,13 +14,16 @@ const Login = () => {
   };
   return (
     <div className="bg-gray-100 flex justify-center items-center h-screen">
-      <div className="w-1/2 h-full hidden lg:block">
-        <img
-          src={"../initLogin.webp"}
-          alt="Placeholder Image"
-          className="object-fill w-full h-full"
+      <div className="w-full md:w-1/2 h-full hidden md:block">
+        <video
+          src={loginVideo} // Ruta del video importado
+          autoPlay
+          loop
+          muted
+          className="object-cover w-full h-full"
         />
       </div>
+
       <div className="lg:p-36 md:p-52 sm:20 p-8 w-full h-full lg:w-1/2 flex justify-center gap-2 items-center flex-col">
         <h1 className="text-2xl font-semibold mb-4 text-center">Login</h1>
         <div className="mt-6 ml-10 mr-10 w-full">
@@ -33,7 +37,7 @@ const Login = () => {
           >
             <div className="relative flex items-center space-x-4 justify-center">
               <LazyLoadImage
-                src="https://tailus.io/sources/blocks/social/preview/images/google.svg"
+                src="https://iconos8.es/icon/D88KkyiYxbif/google-plus"
                 className="absolute left-0 w-5"
                 alt="google logo"
               />

@@ -9,6 +9,9 @@ const { authorize } = require("../Controllers/sheets/sheetsController");
 loginRoutes.post("/third", async (req, res) => {
   try {
     const { token } = req.body;
+    if (!token) {
+      return res.status(400).json({ message: "Token no proporcionado" });
+    }
     const decodedToken = await verifyToken(token);
     const email = decodedToken.email;
 
